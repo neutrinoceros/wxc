@@ -1,6 +1,8 @@
 from importlib import import_module
 from sys import version as sysversion
 
+from typing import Any
+
 
 class WhychFinder:
     module = None
@@ -15,7 +17,7 @@ class WhychFinder:
             pass
 
     @property
-    def version(self):
+    def version(self) -> Any[str, None]:
         for attr in ("__version__", "VERSION"):
             try:
                 self._version = getattr(self.module, attr)
@@ -32,11 +34,9 @@ class WhychFinder:
         return self._version
 
     @property
-    def path(self):
-        try:
+    def path(self) -> Any[str, None]:
+        if self.module is not None:
             self._path = self.module.__file__
-        except AttributeError:
-            pass  # log it
         return self._path
 
     def get_data(self) -> dict:
