@@ -1,4 +1,3 @@
-
 from importlib import import_module
 from sys import version as sysversion
 
@@ -62,4 +61,3 @@ def whych(module_name: str, query: str = "path") -> str:
         return finder.version or "unknown"
 
     return finder.path
-
