@@ -22,8 +22,6 @@ def cli() -> None:
         query = "path"
     res = whych(module_name=args.module, query=query)
     print(res)
-    if res is None:
-        exit(1)
 
 
 if __name__ == "__main__":
