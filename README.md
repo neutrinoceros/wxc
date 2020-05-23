@@ -51,5 +51,5 @@ so it can be stored as json
 ```python
 import json
 with open("package-data.json", mode="wt") as fileobj:
-  json.dump(data, fileobj)
+    json.dump(data, fileobj)
 ```
