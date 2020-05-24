@@ -1,3 +1,4 @@
+import sysconfig
 from importlib import import_module
 from platform import python_version
 from typing import Union
@@ -23,9 +24,8 @@ class WhychFinder:
             try:
                 self._version = getattr(self.module, attr)
             except AttributeError:
-                pass
-        if self.in_stdlib():
-            self._version = f"python {python_version()}"
+                if self.in_stdlib():
+                    self._version = f"python {python_version()}"
 
         return self._version
 
@@ -35,8 +35,14 @@ class WhychFinder:
             for attr in ("__path__", "__file__"):
                 try:
                     self._path = getattr(self.module, attr)
+                    break
                 except AttributeError:
                     pass
+            else:
+                if self.in_stdlib():
+                    self._path = sysconfig.get_paths()["stdlib"]
+        if isinstance(self._path, list):
+            self._path = self._path[0]
         return self._path
 
     def in_stdlib(self):
