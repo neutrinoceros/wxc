@@ -1,9 +1,33 @@
-steps:
-- uses: actions/checkout@master
-- uses: codecov/codecov-action@v1
-  with:
-    token: 834e486a-edd1-4bd2-a310-d527fde80d34
-    file: ./coverage.xml
-    flags: unittests
-    name: codecov-umbrella
-    fail_ci_if_error: true
+name: CI
+on: [push]
+jobs:
+  run:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    env:
+      OS: ${{ matrix.os }}
+      PYTHON: '3.7'
+    steps:
+    - uses: actions/checkout@master
+    - name: Setup Python
+      uses: actions/setup-python@master
+      with:
+        python-version: 3.8
+    - name: Setup package
+      run: pip install -e .
+    - name: Generate coverage report
+      run: |
+        pip install pytest
+        pip install pytest-cov
+        pytest --cov=./ --cov-report=xml
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v1
+      with:
+        #token: ${{ secrets.CODECOV_TOKEN }}
+        file: ./coverage.xml
+        flags: unittests
+        env_vars: OS,PYTHON
+        name: codecov-umbrella
+        fail_ci_if_error: true

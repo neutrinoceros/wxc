@@ -1,3 +1,4 @@
+import platform
 import random
 from importlib import import_module
 from pathlib import Path
@@ -40,11 +41,12 @@ def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
-    assert isinstance(wf.path, str)
-    p = Path(wf.path)
-    assert p.is_file()
-    if not wf.assumed_stdlib:
-        assert name in p.parts
+    if platform.system() != "Windows":
+        assert isinstance(wf.path, str)
+        p = Path(wf.path)
+        assert p.is_file()
+        if not wf.assumed_stdlib:
+            assert name in p.parts
 
 
 @pytest.mark.parametrize("valid_query", ["path", "version", "info"])
@@ -74,6 +76,10 @@ def test_info_query(name):
         )
 
 
+@pytest.mark.skipif(
+    platform.system() == "Windows",
+    reason="On windows, can't find stdlib packages location yet",
+)
 @pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
 def test_elementary_queries(name):
     version = whych(name, query="version")

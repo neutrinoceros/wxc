@@ -30,7 +30,10 @@ class WhychFinder:
     @property
     def path(self) -> Union[str, None]:
         if self.module is not None:
-            self._path = self.module.__file__
+            try:
+                self._path = self.module.__file__
+            except AttributeError:
+                pass
         return self._path
 
     @property
