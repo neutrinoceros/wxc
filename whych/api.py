@@ -1,6 +1,5 @@
 from importlib import import_module
 from sys import version as sysversion
-
 from typing import Union
 
 
@@ -57,7 +56,11 @@ def whych(module_name: str, query: str = "path") -> str:
         lines = [f"{attr}: {value}" for attr, value in data.items()]
         return "\n".join(lines)
 
-    if query == "version":
-        return finder.version or "unknown"
-
-    return finder.path
+    if query in ("version", "path"):
+        attr = getattr(finder, query)
+        if attr is None:
+            return "unknown"
+        else:
+            return str(attr)
+    else:
+        raise ValueError(f"Unsupported query type '{query}'.")
