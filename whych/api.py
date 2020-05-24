@@ -60,17 +60,13 @@ class WhychFinder:
 
 def whych(module_name: str, query: str = "path") -> str:
     finder = WhychFinder(module_name)
+    data = finder.get_data()
 
     if query == "info":
-        data = finder.get_data()
         lines = [f"{attr}: {value}" for attr, value in data.items()]
         return "\n".join(lines)
 
-    if query in ("version", "path"):
-        attr = getattr(finder, query)
-        if attr is None:
-            return "unknown"
-        else:
-            return str(attr)
-    else:
+    try:
+        return data[query]
+    except KeyError:
         raise ValueError(f"Unsupported query type '{query}'.")
