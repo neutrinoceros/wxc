@@ -1,7 +1,7 @@
 import sysconfig
 from importlib import import_module
 from platform import python_version
-from typing import Union
+from typing import Dict, Union
 
 from stdlib_list import in_stdlib
 
@@ -48,14 +48,15 @@ class WhychFinder:
     def in_stdlib(self):
         return in_stdlib(self.module_name)
 
-    def get_data(self) -> dict:
+    def get_data(self) -> Dict[str, str]:
         data = {
             "module name": self.module_name,
             "path": self.path,
             "version": self.version,
         }
+
         data.update({k: v or "unknown" for k, v in data.items()})
-        return data
+        return data  # type: ignore
 
 
 def whych(module_name: str, query: str = "path") -> str:
