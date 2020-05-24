@@ -19,6 +19,7 @@ jobs:
       run: pip install -e .
     - name: Generate coverage report
       run: |
+        pip install toml
         pip install pytest
         pip install pytest-cov
         pytest --cov=./ --cov-report=xml
