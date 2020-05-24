@@ -41,11 +41,12 @@ def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
-    assert isinstance(wf.path, str)
-    p = Path(wf.path)
-    assert p.is_file()
-    if not wf.assumed_stdlib:
-        assert name in p.parts
+    if platform.system() != "Windows":
+        assert isinstance(wf.path, str)
+        p = Path(wf.path)
+        assert p.is_file()
+        if not wf.assumed_stdlib:
+            assert name in p.parts
 
 
 @pytest.mark.parametrize("valid_query", ["path", "version", "info"])
