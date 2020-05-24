@@ -81,7 +81,7 @@ def test_elementary_queries(name):
     path = whych(name, query="version")
     try:
         import_module(name)
-        if "win" not in platform.system():
+        if platform.system() != "Windows":
             assert version != "unknown"
         assert path != "unknown"
 
