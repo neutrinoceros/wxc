@@ -9,7 +9,11 @@ on:
 
 jobs:
   unit_test:
-  - name: GitHub Action for pytest
-  uses: cclauss/GitHub-Action-for-pytest@0.5.0
-  run: pytest
+    name: Unit
+      runs-on: ubuntu-latest
+      steps:
+
+      - name: GitHub Action for pytest
+        uses: cclauss/GitHub-Action-for-pytest@0.5.0
+        run: pytest
 
