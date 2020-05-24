@@ -1,4 +1,5 @@
 import random
+from importlib import import_module
 from pathlib import Path
 from string import ascii_lowercase
 
@@ -71,3 +72,17 @@ def test_info_query(name):
             or line.startswith("path")
             or line.startswith("module name")
         )
+
+
+@pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
+def test_elementary_queries(name):
+    version = whych(name, query="version")
+    path = whych(name, query="version")
+    try:
+        import_module(name)
+        assert version != "unknown"
+        assert path != "unknown"
+
+    except ImportError:
+        assert version == "unknown"
+        assert path == "unknown"
