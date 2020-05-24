@@ -1,7 +1,7 @@
 import sysconfig
 from importlib import import_module
 from platform import python_version
-from typing import Union
+from typing import Dict, Union
 
 from stdlib_list import in_stdlib
 
@@ -23,9 +23,12 @@ class WhychFinder:
         for attr in ("__version__", "VERSION"):
             try:
                 self._version = getattr(self.module, attr)
+                break
             except AttributeError:
-                if self.in_stdlib():
-                    self._version = f"python {python_version()}"
+                pass
+        else:
+            if self.in_stdlib():
+                self._version = f"python {python_version()}"
 
         return self._version
 
@@ -48,29 +51,27 @@ class WhychFinder:
     def in_stdlib(self):
         return in_stdlib(self.module_name)
 
-    def get_data(self) -> dict:
+    def get_data(self) -> Dict[str, Union[str, bool]]:
         data = {
             "module name": self.module_name,
             "path": self.path,
             "version": self.version,
+            "stdlib": self.in_stdlib(),
         }
-        data.update({k: v or "unknown" for k, v in data.items()})
-        return data
+
+        data.update({k: v if v is not None else "unknown" for k, v in data.items()})
+        return data  # type: ignore
 
 
 def whych(module_name: str, query: str = "path") -> str:
     finder = WhychFinder(module_name)
+    data = finder.get_data()
 
     if query == "info":
-        data = finder.get_data()
         lines = [f"{attr}: {value}" for attr, value in data.items()]
         return "\n".join(lines)
 
-    if query in ("version", "path"):
-        attr = getattr(finder, query)
-        if attr is None:
-            return "unknown"
-        else:
-            return str(attr)
-    else:
+    try:
+        return str(data[query])
+    except KeyError:
         raise ValueError(f"Unsupported query type '{query}'.")
