@@ -1,9 +1,15 @@
-steps:
-- uses: actions/checkout@master
-- uses: codecov/codecov-action@v1
-  with:
-    token: 834e486a-edd1-4bd2-a310-d527fde80d34
-    file: ./coverage.xml
-    flags: unittests
-    name: codecov-umbrella
-    fail_ci_if_error: true
+name: CI
+
+on:
+  push:
+    branches: master
+  pull_request:
+    branches: master
+
+
+jobs:
+  unit_test:
+  - name: GitHub Action for pytest
+  uses: cclauss/GitHub-Action-for-pytest@0.5.0
+  run: pytest
+
