@@ -1,3 +1,4 @@
+import platform
 import random
 from importlib import import_module
 from pathlib import Path
@@ -80,7 +81,8 @@ def test_elementary_queries(name):
     path = whych(name, query="version")
     try:
         import_module(name)
-        assert version != "unknown"
+        if "win" not in platform.system():
+            assert version != "unknown"
         assert path != "unknown"
 
     except ImportError:
