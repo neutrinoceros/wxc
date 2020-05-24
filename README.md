@@ -1,4 +1,5 @@
 # whych
+[![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
 
 `whych` is a CL-tool to retrieve a Python's package location on disk.
 In essence, `whych pandas` is the same as `python -c "import pandas; print(pandas.__version__)"`, though `whych` can also retrieve the package's version with `-v`, or both path and version with `-i`.
