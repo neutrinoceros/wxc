@@ -6,6 +6,19 @@ import pytest  # type: ignore
 
 from whych.api import WhychFinder, whych
 
+packages_sample = [
+    "math",
+    "fraction",
+    "numpy",
+    "matplotlib",
+    "pandas",
+    "requests",
+    "django",
+    "flask",
+    "IPython",
+    "tqdm",
+]
+
 
 def test_unexisting_package():
     name = "NotARealPackage"
@@ -21,21 +34,7 @@ def test_unexisting_package():
     }
 
 
-@pytest.mark.parametrize(
-    "name",
-    [
-        "math",
-        "fraction",
-        "numpy",
-        "matplotlib",
-        "pandas",
-        "requests",
-        "django",
-        "flask",
-        "IPython",
-        "tqdm",
-    ],
-)
+@pytest.mark.parametrize("name", packages_sample)
 def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
@@ -60,3 +59,15 @@ def test_whych_wrong_query(valid_query):
             query = mutate_str(valid_query)
             print(query)
             whych("numpy", query=query)
+
+
+@pytest.mark.parametrize("name", packages_sample)
+def test_info_query(name):
+    res = whych(name, query="info")
+    assert len(res.splitlines()) == 3
+    for line in res.splitlines():
+        assert (
+            line.startswith("version")
+            or line.startswith("path")
+            or line.startswith("module name")
+        )
