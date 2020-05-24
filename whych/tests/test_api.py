@@ -22,6 +22,7 @@ packages_sample = [
     "flask",
     "IPython",
     "tqdm",
+    "toml",
 ]
 
 
