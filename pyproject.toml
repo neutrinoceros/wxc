@@ -3,3 +3,6 @@ requires = ["setuptools", "wheel", "stdlib_list"]
 
 [tool.black]
 line-length = 88
+
+[tool.coverage.run]
+omit = ["setup.py", "whych/__main__.py"]
