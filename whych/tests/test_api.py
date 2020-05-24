@@ -9,8 +9,12 @@ import pytest  # type: ignore
 from whych.api import WhychFinder, whych
 
 packages_sample = [
+    # stdlib
     "math",
+    "platform",
+    "uuid",
     "fraction",
+    # common third party
     "numpy",
     "matplotlib",
     "pandas",
@@ -41,10 +45,10 @@ def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
-    if platform.system() != "Windows":
-        assert isinstance(wf.path, str)
+    if platform.system() != "Windows" or not wf.assumed_stdlib:
+        assert wf.path is not None
         p = Path(wf.path)
-        assert p.is_file()
+        assert p.exists()
         if not wf.assumed_stdlib:
             assert name in p.parts
 

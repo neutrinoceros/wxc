@@ -30,16 +30,17 @@ class WhychFinder:
     @property
     def path(self) -> Union[str, None]:
         if self.module is not None:
-            try:
-                self._path = self.module.__file__
-            except AttributeError:
-                pass
+            for attr in ("__path__", "__file__"):
+                try:
+                    self._path = getattr(self.module, attr)
+                except AttributeError:
+                    pass
         return self._path
 
     @property
     def assumed_stdlib(self) -> bool:
         return (
-            self._version is None
+            self.module is not None
             and self.path is not None
             and "site-package" not in self.path
         )
