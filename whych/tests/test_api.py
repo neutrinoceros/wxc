@@ -26,6 +26,16 @@ packages_sample = [
 ]
 
 
+@pytest.mark.parametrize(
+    "name,except_python_version", [("math", True), ("platform", False)]
+)
+def test_stdlib_versions(name: str, except_python_version: bool):
+    wf = WhychFinder(name)
+    assert wf.in_stdlib()
+    assert wf.version is not None
+    assert except_python_version is wf.version.startswith("python")
+
+
 def test_unexisting_package():
     name = "NotARealPackage"
     wf = WhychFinder(name)
@@ -37,6 +47,7 @@ def test_unexisting_package():
         "module name": name,
         "path": "unknown",
         "version": "unknown",
+        "stdlib": False,
     }
 
 
@@ -70,12 +81,13 @@ def test_whych_wrong_query(valid_query):
 @pytest.mark.parametrize("name", packages_sample)
 def test_info_query(name):
     res = whych(name, query="info")
-    assert len(res.splitlines()) == 3
+    assert len(res.splitlines()) == 4
     for line in res.splitlines():
         assert (
             line.startswith("version")
             or line.startswith("path")
             or line.startswith("module name")
+            or line.startswith("stdlib")
         )
 
 

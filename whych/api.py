@@ -23,9 +23,12 @@ class WhychFinder:
         for attr in ("__version__", "VERSION"):
             try:
                 self._version = getattr(self.module, attr)
+                break
             except AttributeError:
-                if self.in_stdlib():
-                    self._version = f"python {python_version()}"
+                pass
+        else:
+            if self.in_stdlib():
+                self._version = f"python {python_version()}"
 
         return self._version
 
@@ -48,14 +51,15 @@ class WhychFinder:
     def in_stdlib(self):
         return in_stdlib(self.module_name)
 
-    def get_data(self) -> Dict[str, str]:
+    def get_data(self) -> Dict[str, Union[str, bool]]:
         data = {
             "module name": self.module_name,
             "path": self.path,
             "version": self.version,
+            "stdlib": self.in_stdlib(),
         }
 
-        data.update({k: v or "unknown" for k, v in data.items()})
+        data.update({k: v if v is not None else "unknown" for k, v in data.items()})
         return data  # type: ignore
 
 
@@ -68,6 +72,6 @@ def whych(module_name: str, query: str = "path") -> str:
         return "\n".join(lines)
 
     try:
-        return data[query]
+        return str(data[query])
     except KeyError:
         raise ValueError(f"Unsupported query type '{query}'.")
