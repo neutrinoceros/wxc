@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools", "wheel", "stdlib_list"]
 
 [tool.black]
 line-length = 88

@@ -1,4 +1,3 @@
-import platform
 import random
 from importlib import import_module
 from pathlib import Path
@@ -9,8 +8,12 @@ import pytest  # type: ignore
 from whych.api import WhychFinder, whych
 
 packages_sample = [
+    # stdlib
     "math",
+    "platform",
+    "uuid",
     "fraction",
+    # common third party
     "numpy",
     "matplotlib",
     "pandas",
@@ -41,12 +44,11 @@ def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
-    if platform.system() != "Windows":
-        assert isinstance(wf.path, str)
-        p = Path(wf.path)
-        assert p.is_file()
-        if not wf.assumed_stdlib:
-            assert name in p.parts
+    assert wf.path is not None
+    p = Path(wf.path)
+    assert p.exists()
+    if not wf.in_stdlib():
+        assert name in p.parts
 
 
 @pytest.mark.parametrize("valid_query", ["path", "version", "info"])
@@ -57,7 +59,7 @@ def test_whych_wrong_query(valid_query):
         new = random.choice(ascii_lowercase.replace(old, ""))
         return s.replace(old, new, 1)
 
-    for i in range(15):
+    for _ in range(15):
         with pytest.raises(ValueError):
             query = mutate_str(valid_query)
             print(query)
@@ -76,10 +78,10 @@ def test_info_query(name):
         )
 
 
-@pytest.mark.skipif(
-    platform.system() == "Windows",
-    reason="On windows, can't find stdlib packages location yet",
-)
+# @pytest.mark.skipif(
+#    platform.system() == "Windows",
+#    reason="On windows, can't find stdlib packages location yet",
+# )
 @pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
 def test_elementary_queries(name):
     version = whych(name, query="version")
