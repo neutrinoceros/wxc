@@ -5,8 +5,15 @@
      
 [![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
 
-`whych` is a CL-tool to retrieve a Python's package location on disk.
-In essence, `whych pandas` is the same as `python -c "import pandas; print(pandas.__version__)"`, though `whych` can also retrieve the package's version with `-v`, or both path and version with `-i`.
+whych is a command line tool to interogate your Python installation.
+In essence,
+
+```bash
+>> whych pandas
+# and
+>> python -c "import pandas; print(pandas.__file__)"
+```
+are equivalent, though whych can also retrieve the package's version with `-v/--version`, or both path and version with `-i/--info`.
 
 ## Installation
 
@@ -39,22 +46,20 @@ In this example, the `vtk` package does not have a `__version__` attribute.
 
 Equivalent to the CLI examples above
 ```python
-from whych import whych
+>> from whych import whych
 
-print(whych("numpy"))
-print(whych("pandas", query="version"))
-print(whych("vtk", query="info"))
+>> print(whych("numpy"))
+>> print(whych("pandas", query="version"))
+>> print(whych("vtk", query="info"))
 ```
 
 Additionally, the module data obtained with `query="info"` can be retrived as a dictionnary with
 ```python
-from whych import WhychFinder
-data = WhychFinder("vtk").get_data()
-```
-
-so it can be stored as json
-```python
-import json
-with open("package-data.json", mode="wt") as fileobj:
-    json.dump(data, fileobj)
+>> from pprint import pprint
+>> from whych import WhychFinder
+>> data = WhychFinder("vtk").get_data()
+>> pprint(data)
+{'module name': 'vtk',
+'path': '/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules/all.py',
+'version': 'unknown'}
 ```
