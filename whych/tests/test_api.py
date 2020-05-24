@@ -79,10 +79,6 @@ def test_info_query(name):
         )
 
 
-# @pytest.mark.skipif(
-#    platform.system() == "Windows",
-#    reason="On windows, can't find stdlib packages location yet",
-# )
 @pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
 def test_elementary_queries(name):
     version = whych(name, query="version")
