@@ -10,4 +10,5 @@ setup(
     description="Python Distribution Utilities",
     author="Clément Robert",
     entry_points={"console_scripts": ["whych = whych.__main__:cli"]},
+    install_requires=["stdlib_list"],
 )

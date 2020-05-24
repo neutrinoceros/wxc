@@ -2,6 +2,8 @@ from importlib import import_module
 from platform import python_version
 from typing import Union
 
+from stdlib_list import in_stdlib
+
 
 class WhychFinder:
     module = None
@@ -22,7 +24,7 @@ class WhychFinder:
                 self._version = getattr(self.module, attr)
             except AttributeError:
                 pass
-        if self.assumed_stdlib:
+        if self.in_stdlib():
             self._version = f"python {python_version()}"
 
         return self._version
@@ -37,13 +39,8 @@ class WhychFinder:
                     pass
         return self._path
 
-    @property
-    def assumed_stdlib(self) -> bool:
-        return (
-            self.module is not None
-            and self.path is not None
-            and "site-package" not in self.path
-        )
+    def in_stdlib(self):
+        return in_stdlib(self.module_name)
 
     def get_data(self) -> dict:
         data = {

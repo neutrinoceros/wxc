@@ -1,4 +1,3 @@
-import platform
 import random
 from importlib import import_module
 from pathlib import Path
@@ -45,12 +44,11 @@ def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
-    if platform.system() != "Windows" or not wf.assumed_stdlib:
-        assert wf.path is not None
-        p = Path(wf.path)
-        assert p.exists()
-        if not wf.assumed_stdlib:
-            assert name in p.parts
+    assert wf.path is not None
+    p = Path(wf.path)
+    assert p.exists()
+    if not wf.in_stdlib():
+        assert name in p.parts
 
 
 @pytest.mark.parametrize("valid_query", ["path", "version", "info"])
