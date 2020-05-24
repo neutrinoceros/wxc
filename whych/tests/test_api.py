@@ -1,8 +1,10 @@
+import random
 from pathlib import Path
+from string import ascii_lowercase
 
 import pytest  # type: ignore
 
-from whych.api import WhychFinder
+from whych.api import WhychFinder, whych
 
 
 def test_unexisting_package():
@@ -34,7 +36,7 @@ def test_unexisting_package():
         "tqdm",
     ],
 )
-def test_detection(name: str):
+def test_finder(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
@@ -43,3 +45,18 @@ def test_detection(name: str):
     assert p.is_file()
     if not wf.assumed_stdlib:
         assert name in p.parts
+
+
+@pytest.mark.parametrize("valid_query", ["path", "version", "info"])
+def test_whych_wrong_query(valid_query):
+    def mutate_str(s: str) -> str:
+        index = random.randint(0, len(s)) - 1
+        old = s[index]
+        new = random.choice(ascii_lowercase.replace(old, ""))
+        return s.replace(old, new, 1)
+
+    for i in range(15):
+        with pytest.raises(ValueError):
+            query = mutate_str(valid_query)
+            print(query)
+            whych("numpy", query=query)
