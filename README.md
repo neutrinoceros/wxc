@@ -18,10 +18,13 @@ are equivalent, though whych can also retrieve the package's version with `-v/--
 
 ## Installation
 
+Because whych is mostly useful if you use a python enviroment manager (conda ...), it is recommended to install this in your "base" environment, so that it remains available as you switch environments.
+
 From the top level of the repo, run
 ```bash
 pip install -e .
 ```
+
 
 ## Usage
 
