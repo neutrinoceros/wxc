@@ -21,13 +21,25 @@ def test_unexisting_package():
 
 @pytest.mark.parametrize(
     "name",
-    ["numpy", "matplotlib", "pandas", "requests", "django", "flask", "IPython", "tqdm"],
+    [
+        "math",
+        "fraction",
+        "numpy",
+        "matplotlib",
+        "pandas",
+        "requests",
+        "django",
+        "flask",
+        "IPython",
+        "tqdm",
+    ],
 )
-def test_common_third_party(name: str):
+def test_detection(name: str):
     pytest.importorskip(name)
     wf = WhychFinder(name)
     assert wf.module_name == name
     assert isinstance(wf.path, str)
     p = Path(wf.path)
     assert p.is_file()
-    assert name in p.parts
+    if not wf.assumed_stdlib:
+        assert name in p.parts
