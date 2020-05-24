@@ -1,4 +1,8 @@
-# whych
+<img src="logo.jpg"
+     alt="whych logo"
+     height="80"
+     style="float: left; margin-right: 10px;" />
+     
 [![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
 
 `whych` is a CL-tool to retrieve a Python's package location on disk.
