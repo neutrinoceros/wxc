@@ -11,7 +11,10 @@ def cli() -> None:
         "-v", "--version", action="store_true", help="print module version"
     )
     command_group.add_argument(
-        "-i", "--info", action="store_true", help="print module name, path, and version"
+        "-i",
+        "--info",
+        action="store_true",
+        help="print module name, path, and version",
     )
     args = parser.parse_args()
     if args.info:

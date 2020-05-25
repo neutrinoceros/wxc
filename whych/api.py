@@ -81,7 +81,9 @@ class WhychFinder:
             "stdlib": self.in_stdlib(),
         }
 
-        data.update({k: v if v is not None else "unknown" for k, v in data.items()})
+        data.update(
+            {k: v if v is not None else "unknown" for k, v in data.items()}
+        )
         return data  # type: ignore
 
 
