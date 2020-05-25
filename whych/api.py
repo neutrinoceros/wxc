@@ -41,14 +41,13 @@ class WhychFinder:
             return None
         for attr in attrs:
             try:
-                res = getattr(self.module, attr)
-                break
+                return getattr(self.module, attr)
             except AttributeError:
                 pass
         else:
             if self.in_stdlib():
-                res = stdlib_default
-        return res
+                return stdlib_default
+        return None
 
     @property
     def version(self) -> Union[str, None]:
