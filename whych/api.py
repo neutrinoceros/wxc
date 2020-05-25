@@ -5,7 +5,7 @@ from importlib import import_module
 from platform import python_version
 from typing import Dict, Union
 
-from stdlib_list import in_stdlib
+from stdlib_list import in_stdlib  # type: ignore
 
 
 class WhychFinder:
