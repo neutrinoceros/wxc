@@ -117,5 +117,5 @@ def whych(
         except KeyError:
             raise ValueError(f"Unsupported query type '{query}'.")
     if len(res) == 1:
-        res = res[0]  # type: ignore
+        return res[0]
     return res
