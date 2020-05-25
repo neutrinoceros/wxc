@@ -3,7 +3,7 @@ import sysconfig
 from datetime import datetime
 from importlib import import_module
 from platform import python_version
-from typing import Dict, Iterable, Union
+from typing import Dict, Iterable, List, Union
 
 from stdlib_list import in_stdlib  # type: ignore
 
@@ -97,15 +97,25 @@ class WhychFinder:
         return data  # type: ignore
 
 
-def whych(module_name: str, query: str = "path") -> str:
-    finder = WhychFinder(module_name)
-    data = finder.get_data()
+def whych(
+    module_name: Union[str, Iterable[str]], query: str = "path"
+) -> Union[str, List[str]]:
+    finder = WhychFinder()
+    if isinstance(module_name, str):
+        module_name = [module_name]
 
-    if query == "info":
-        lines = [f"{attr}: {value}" for attr, value in data.items()]
-        return "\n".join(lines)
+    res = []
+    for name in module_name:
+        data = finder.get_data(name)
 
-    try:
-        return str(data[query])
-    except KeyError:
-        raise ValueError(f"Unsupported query type '{query}'.")
+        if query == "info":
+            lines = [f"{attr}: {value}" for attr, value in data.items()]
+            res.append("\n".join(lines))
+            continue
+        try:
+            res.append(str(data[query]))
+        except KeyError:
+            raise ValueError(f"Unsupported query type '{query}'.")
+    if len(res) == 1:
+        res = res[0]  # type: ignore
+    return res
