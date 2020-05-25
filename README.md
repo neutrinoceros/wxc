@@ -11,10 +11,15 @@ In essence,
 
 ```bash
 >> whych pandas
-# and
+```
+is equivalent to
+```bash
 >> python -c "import pandas; print(pandas.__path__)"
 ```
-are equivalent, though whych can also retrieve the package's version with `-v/--version`, or both path and version with `-i/--info`.
+
+whych provides additional functionalities to:
+- retrieve the package's version with `-v/--version`
+- generate a small report with `-i/--info`.
 
 ## Installation
 
@@ -42,6 +47,8 @@ Examples
 module name: vtk
 path: /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules
 version: unknown
+last updated: 2020-05-22 11:31:18
+stdlib: False
 ```
 Note that `whych` will replace any unknow value with `"unknown"`.
 In this example, the `vtk` package does not have a `__version__` attribute.
@@ -63,7 +70,9 @@ Additionally, the module data obtained with `query="info"` can be retrived as a 
 >> from whych import WhychFinder
 >> data = WhychFinder("vtk").get_data()
 >> pprint(data)
-{'module name': 'vtk',
-'path': '/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules',
-'version': 'unknown'}
+{'last updated': '2020-05-22 11:31:18',
+ 'module name': 'vtk',
+ 'path': '/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules',
+ 'stdlib': False,
+ 'version': 'unknown'}
 ```
