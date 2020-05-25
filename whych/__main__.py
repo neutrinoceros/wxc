@@ -17,15 +17,17 @@ def cli() -> None:
         help="print module name, path, and version",
     )
     args = parser.parse_args()
+    joiner = "\n"
     if args.info:
         query = "info"
+        joiner = "\n" * 2
     elif args.version:
         query = "version"
     else:
         query = "path"
     res = whych(module_name=args.module, query=query)
     if isinstance(res, list):
-        res = "\n".join(res)
+        res = joiner.join(res)
     print(res)
 
 
