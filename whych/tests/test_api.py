@@ -1,4 +1,5 @@
 import json
+import os
 import random
 from importlib import import_module
 from pathlib import Path
@@ -26,7 +27,11 @@ packages_sample = [
     "toml",
 ]
 
-fake_module_path = Path(__file__).parent / "fake_module"
+fake_empty_module = (Path(__file__).parent / "data", "fake_empty_module")
+fake_versioned_module_path = (
+    Path(__file__).parent / "data",
+    "fake_versioned_module",
+)
 
 
 def test_recycle_finder():
@@ -123,10 +128,14 @@ def test_elementary_queries(name):
         assert path == "unknown"
 
 
-@pytest.mark.parametrize("query", ["path", "version", "info"])
-def test_query_empty_module(monkeypatch, query):
+def test_empty_module_finder(monkeypatch):
     """Check for robustness of WhichPatcher._lookup method
     with an empty module (in particular, no version data)
     """
-    monkeypatch.syspath_prepend(fake_module_path)
-    whych("fake_module", query=query)
+    syspath, name = fake_empty_module
+    monkeypatch.syspath_prepend(syspath)
+
+    finder = WhychFinder()
+    data = finder.get_data(name)
+    assert data["path"] == os.path.join(syspath, name)
+    assert data["version"] == "unknown"
