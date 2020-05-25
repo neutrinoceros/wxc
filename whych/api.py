@@ -3,7 +3,7 @@ import sysconfig
 from datetime import datetime
 from importlib import import_module
 from platform import python_version
-from typing import Dict, Union
+from typing import Dict, Iterable, Union
 
 from stdlib_list import in_stdlib  # type: ignore
 
@@ -31,38 +31,41 @@ class WhychFinder:
             except ModuleNotFoundError:
                 self.module = None
 
-    @property
-    def version(self) -> Union[str, None]:
-        for attr in ("__version__", "VERSION"):
+    def in_stdlib(self):
+        return in_stdlib(self.module_name)
+
+    def _lookup(self, attrs: Iterable[str], default: str) -> Union[str, None]:
+        if self.module is None:
+            return None
+        for attr in attrs:
             try:
-                self._version = getattr(self.module, attr)
+                res = getattr(self.module, attr)
                 break
             except AttributeError:
                 pass
         else:
             if self.in_stdlib():
-                self._version = f"python {python_version()}"
+                res = default
+        return res
 
+    @property
+    def version(self) -> Union[str, None]:
+        self._version = self._lookup(
+            attrs=("__version__", "VERSION"),
+            default=f"python {python_version()}",
+        )
         return self._version
 
     @property
     def path(self) -> Union[str, None]:
-        if self.module is not None:
-            for attr in ("__path__", "__file__"):
-                try:
-                    self._path = getattr(self.module, attr)
-                    break
-                except AttributeError:
-                    pass
-            else:
-                if self.in_stdlib():
-                    self._path = sysconfig.get_paths()["stdlib"]
+        self._path = self._lookup(
+            attrs=("__path__", "__file__"),
+            default=sysconfig.get_paths()["stdlib"],
+        )
+        # additional sanitizing (sometimes useful on Windows)
         if isinstance(self._path, list):
             self._path = self._path[0]
         return self._path
-
-    def in_stdlib(self):
-        return in_stdlib(self.module_name)
 
     @property
     def last_updated(self):
