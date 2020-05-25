@@ -97,7 +97,6 @@ def test_whych_wrong_query(valid_query):
     for _ in range(15):
         with pytest.raises(ValueError):
             query = mutate_str(valid_query)
-            print(query)
             whych("numpy", query=query)
 
 
