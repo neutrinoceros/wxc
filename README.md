@@ -76,3 +76,7 @@ Additionally, the module data obtained with `query="info"` can be retrived as a 
  'stdlib': False,
  'version': 'unknown'}
 ```
+
+## Dependencies
+- whych is tested on macOS, Linux and Windows against Python 3.8, and should be backwards compatible down to Python 3.6
+- whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list) to determine which packages are part of the standard library.
