@@ -143,4 +143,4 @@ def test_empty_module_finder(monkeypatch):
 
 def test_muliple_packages():
     res = whych(["math", "platform", "numpy"])
-    assert len(res.splitlines()) == 3
+    assert len(res) == 3
