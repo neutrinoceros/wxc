@@ -1,3 +1,4 @@
+import json
 import random
 from importlib import import_module
 from pathlib import Path
@@ -43,12 +44,15 @@ def test_unexisting_package():
     assert wf.path is None
     assert wf.version is None
 
-    assert wf.get_data() == {
+    expected = {
         "module name": name,
         "path": "unknown",
         "version": "unknown",
         "stdlib": False,
     }
+    actual = wf.get_data()
+    for k, v in expected.items():
+        assert actual[k] == v
 
 
 @pytest.mark.parametrize("name", packages_sample)
@@ -79,16 +83,10 @@ def test_whych_wrong_query(valid_query):
 
 
 @pytest.mark.parametrize("name", packages_sample)
-def test_info_query(name):
+def test_info_query(name, tmp_path):
     res = whych(name, query="info")
-    assert len(res.splitlines()) == 4
-    for line in res.splitlines():
-        assert (
-            line.startswith("version")
-            or line.startswith("path")
-            or line.startswith("module name")
-            or line.startswith("stdlib")
-        )
+    with open(tmp_path / "package_data.json", mode="wt") as fileobj:
+        json.dump(res, fileobj)
 
 
 @pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
