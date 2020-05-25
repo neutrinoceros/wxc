@@ -139,3 +139,8 @@ def test_empty_module_finder(monkeypatch):
     data = finder.get_data(name)
     assert data["path"] == os.path.join(syspath, name)
     assert data["version"] == "unknown"
+
+
+def test_muliple_packages():
+    res = whych(["math", "platform", "numpy"])
+    assert len(res) == 3
