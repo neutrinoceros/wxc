@@ -37,18 +37,17 @@ class WhychFinder:
     def _lookup(
         self, attrs: Iterable[str], stdlib_default: str
     ) -> Union[str, None]:
-        if self.module is None:
-            return None
+
         for attr in attrs:
             try:
-                res = getattr(self.module, attr)
-                break
+                return getattr(self.module, attr)
             except AttributeError:
                 pass
-        else:
-            if self.in_stdlib():
-                res = stdlib_default
-        return res
+
+        if self.in_stdlib():
+            return stdlib_default
+
+        return None
 
     @property
     def version(self) -> Union[str, None]:

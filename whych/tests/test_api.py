@@ -26,6 +26,8 @@ packages_sample = [
     "toml",
 ]
 
+fake_module_path = Path(__file__).parent / "fake_module"
+
 
 def test_recycle_finder():
     wf = WhychFinder("math")
@@ -119,3 +121,12 @@ def test_elementary_queries(name):
     except ImportError:
         assert version == "unknown"
         assert path == "unknown"
+
+
+@pytest.mark.parametrize("query", ["path", "version", "info"])
+def test_query_empty_module(monkeypatch, query):
+    """Check for robustness of WhichPatcher._lookup method
+    with an empty module (in particular, no version data)
+    """
+    monkeypatch.syspath_prepend(fake_module_path)
+    whych("fake_module", query=query)
