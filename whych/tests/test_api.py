@@ -27,6 +27,14 @@ packages_sample = [
 ]
 
 
+def test_recycle_finder():
+    wf = WhychFinder("math")
+    v1 = wf.version
+    wf.module_name = "platform"
+    v2 = wf.version
+    assert v1 != v2
+
+
 @pytest.mark.parametrize(
     "name,except_python_version", [("math", True), ("platform", False)]
 )

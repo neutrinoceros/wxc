@@ -10,16 +10,25 @@ from stdlib_list import in_stdlib  # type: ignore
 
 class WhychFinder:
     module = None
+    _module_name = None
     _version = None
     _path = None
     _last_updated = None
 
     def __init__(self, module_name: str):
         self.module_name = module_name
+
+    @property
+    def module_name(self):
+        return self._module_name
+
+    @module_name.setter
+    def module_name(self, new: str):
+        self._module_name = new
         try:
-            self.module = import_module(module_name)
+            self.module = import_module(new)
         except ModuleNotFoundError:
-            pass
+            self.module = None
 
     @property
     def version(self) -> Union[str, None]:
