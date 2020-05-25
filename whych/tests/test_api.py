@@ -132,22 +132,10 @@ def test_empty_module_finder(monkeypatch):
     """Check for robustness of WhichPatcher._lookup method
     with an empty module (in particular, no version data)
     """
-    path = os.path.join(*fake_empty_module)
-    name = fake_empty_module[1]
-    monkeypatch.syspath_prepend(path)
+    syspath, name = fake_empty_module
+    monkeypatch.syspath_prepend(syspath)
 
     finder = WhychFinder()
     data = finder.get_data(name)
-    assert data["path"] == path
+    assert data["path"] == os.path.join(syspath, name)
     assert data["version"] == "unknown"
-
-
-@pytest.mark.parametrize("query", ["path", "version", "info"])
-def test_query_empty_module(monkeypatch, query):
-    """Check for robustness of WhichPatcher._lookup method
-    with an empty module (in particular, no version data)
-    """
-    path = os.path.join(*fake_empty_module)
-    name = fake_empty_module[1]
-    monkeypatch.syspath_prepend(path)
-    whych(name, query=query)
