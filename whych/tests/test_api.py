@@ -38,6 +38,14 @@ def test_recycle_finder():
         assert d2[k] != d1[k]
 
 
+def test_rolling_interface():
+    wf = WhychFinder()
+    with pytest.raises(RuntimeError):
+        wf.get_data()
+    for name in packages_sample:
+        wf.get_data(name)
+
+
 @pytest.mark.parametrize(
     "name,except_python_version", [("math", True), ("platform", False)]
 )

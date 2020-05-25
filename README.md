@@ -66,10 +66,9 @@ Equivalent to the CLI examples above
 
 Additionally, the module data obtained with `query="info"` can be retrived as a dictionnary with
 ```python
->> from pprint import pprint
 >> from whych import WhychFinder
->> data = WhychFinder("vtk").get_data()
->> pprint(data)
+>> wf = WhychFinder()
+>> wf.get_data("vtk")
 {'last updated': '2020-05-22 11:31:18',
  'module name': 'vtk',
  'path': '/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules',

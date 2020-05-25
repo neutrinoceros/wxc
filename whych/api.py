@@ -15,7 +15,7 @@ class WhychFinder:
     _path = None
     _last_updated = None
 
-    def __init__(self, module_name: str):
+    def __init__(self, module_name: str = None):
         self.module_name = module_name
 
     @property
@@ -25,10 +25,11 @@ class WhychFinder:
     @module_name.setter
     def module_name(self, new: str):
         self._module_name = new
-        try:
-            self.module = import_module(new)
-        except ModuleNotFoundError:
-            self.module = None
+        if new is not None:
+            try:
+                self.module = import_module(new)
+            except ModuleNotFoundError:
+                self.module = None
 
     @property
     def version(self) -> Union[str, None]:
@@ -72,7 +73,12 @@ class WhychFinder:
             )
         return self._last_updated
 
-    def get_data(self) -> Dict[str, Union[str, bool]]:
+    def get_data(self, module_name: str = None) -> Dict[str, Union[str, bool]]:
+        if module_name is not None:
+            self.module_name = module_name
+        elif self._module_name is None:
+            raise RuntimeError
+
         data = {
             "module name": self.module_name,
             "path": self.path,
