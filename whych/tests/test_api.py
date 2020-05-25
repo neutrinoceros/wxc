@@ -29,10 +29,13 @@ packages_sample = [
 
 def test_recycle_finder():
     wf = WhychFinder("math")
-    v1 = wf.version
+    d1 = wf.get_data()
     wf.module_name = "platform"
-    v2 = wf.version
-    assert v1 != v2
+    d2 = wf.get_data()
+    keys = list(d1.keys())
+    keys.remove("stdlib")
+    for k in keys:
+        assert d2[k] != d1[k]
 
 
 @pytest.mark.parametrize(
