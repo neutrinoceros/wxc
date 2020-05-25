@@ -34,7 +34,9 @@ class WhychFinder:
     def in_stdlib(self):
         return in_stdlib(self.module_name)
 
-    def _lookup(self, attrs: Iterable[str], default: str) -> Union[str, None]:
+    def _lookup(
+        self, attrs: Iterable[str], stdlib_default: str
+    ) -> Union[str, None]:
         if self.module is None:
             return None
         for attr in attrs:
@@ -45,14 +47,14 @@ class WhychFinder:
                 pass
         else:
             if self.in_stdlib():
-                res = default
+                res = stdlib_default
         return res
 
     @property
     def version(self) -> Union[str, None]:
         self._version = self._lookup(
             attrs=("__version__", "VERSION"),
-            default=f"python {python_version()}",
+            stdlib_default=f"python {python_version()}",
         )
         return self._version
 
@@ -60,7 +62,7 @@ class WhychFinder:
     def path(self) -> Union[str, None]:
         self._path = self._lookup(
             attrs=("__path__", "__file__"),
-            default=sysconfig.get_paths()["stdlib"],
+            stdlib_default=sysconfig.get_paths()["stdlib"],
         )
         # additional sanitizing (sometimes useful on Windows)
         if isinstance(self._path, list):
