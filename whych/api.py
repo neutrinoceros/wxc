@@ -1,4 +1,6 @@
+import os
 import sysconfig
+from datetime import datetime
 from importlib import import_module
 from platform import python_version
 from typing import Dict, Union
@@ -10,6 +12,7 @@ class WhychFinder:
     module = None
     _version = None
     _path = None
+    _last_updated = None
 
     def __init__(self, module_name: str):
         self.module_name = module_name
@@ -51,11 +54,21 @@ class WhychFinder:
     def in_stdlib(self):
         return in_stdlib(self.module_name)
 
+    @property
+    def last_updated(self):
+        if self.path is not None:
+            ts = int(os.path.getmtime(self.path))
+            self._last_updated = datetime.utcfromtimestamp(ts).strftime(
+                "%Y-%m-%d %H:%M:%S"
+            )
+        return self._last_updated
+
     def get_data(self) -> Dict[str, Union[str, bool]]:
         data = {
             "module name": self.module_name,
             "path": self.path,
             "version": self.version,
+            "last updated": self.last_updated,
             "stdlib": self.in_stdlib(),
         }
 
