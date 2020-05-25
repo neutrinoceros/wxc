@@ -129,7 +129,7 @@ def test_elementary_queries(name):
 
 
 def test_empty_module_finder(monkeypatch):
-    """Check for robustness of WhichPatcher._lookup method
+    """Check for robustness of WhichFinder.get_data()
     with an empty module (in particular, no version data)
     """
     syspath, name = fake_empty_module
