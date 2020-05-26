@@ -32,10 +32,13 @@ class WhychFinder:
         for i, _ in enumerate(parts):
             name = ".".join(parts[: len(parts) - i])
             try:
-                self.module = import_module(name)
+                module = import_module(name)
+                if i > 0:
+                    getattr(module, parts[-1])
+                self.module = module
                 self._module_name = name
                 break
-            except ModuleNotFoundError:
+            except (ModuleNotFoundError, AttributeError):
                 pass
 
     def in_stdlib(self):
