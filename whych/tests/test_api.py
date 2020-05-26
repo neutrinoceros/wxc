@@ -63,8 +63,8 @@ def test_stdlib_versions(name: str, except_python_version: bool):
     assert except_python_version is wf.version.startswith("python")
 
 
-def test_unexisting_package():
-    name = "NotARealPackage"
+@pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
+def test_unexisting_member(name):
     wf = WhychFinder(name)
     assert wf.module_name is None
     assert wf.path is None
@@ -146,7 +146,7 @@ def test_muliple_packages():
     assert len(res) == 3
 
 
-def test_query_function():
+def test_query_member():
     finder = WhychFinder()
     d1 = finder.get_data("os.path")
     d2 = finder.get_data("os.path.expanduser")
