@@ -1,3 +1,3 @@
-from .api import WhychFinder, whych
+from .api import get_data, whych
 
 __version__ = "0.1dev"

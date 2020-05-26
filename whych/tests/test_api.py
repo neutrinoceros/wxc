@@ -7,7 +7,7 @@ from string import ascii_lowercase
 
 import pytest  # type: ignore
 
-from whych.api import WhychFinder, whych
+from whych.api import Importable, get_data, whych
 
 packages_sample = [
     # stdlib
@@ -34,33 +34,15 @@ fake_versioned_module_path = (
 )
 
 
-def test_recycle_finder():
-    wf = WhychFinder("math")
-    d1 = wf.get_data()
-    wf.module_name = "platform"
-    d2 = wf.get_data()
-    keys = list(d1.keys())
-    keys.remove("stdlib")
-    for k in keys:
-        assert d2[k] != d1[k]
-
-
-def test_rolling_interface():
-    wf = WhychFinder()
-    dold = wf.get_data()
-    for name in packages_sample[1:]:
-        dnew = wf.get_data(name)
-        assert dold != dnew
-
-
 @pytest.mark.parametrize(
     "name,except_python_version", [("math", True), ("platform", False)]
 )
 def test_stdlib_versions(name: str, except_python_version: bool):
-    wf = WhychFinder(name)
-    assert wf.in_stdlib()
-    assert wf.version is not None
-    assert except_python_version is wf.version.startswith("python")
+    imp = Importable(name)
+    assert imp.is_found
+    assert imp.is_stdlib
+    assert imp.version is not None
+    assert except_python_version is imp.version.startswith("python")
 
 
 @pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
