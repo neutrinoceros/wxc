@@ -117,8 +117,7 @@ def test_empty_module_finder(monkeypatch):
     syspath, name = fake_empty_module
     monkeypatch.syspath_prepend(syspath)
 
-    finder = WhychFinder()
-    data = finder.get_data(name)
+    data = get_data(name)
     assert data["path"] == os.path.join(syspath, name)
     assert data["version"] == "unknown"
 
@@ -129,9 +128,8 @@ def test_muliple_packages():
 
 
 def test_query_member():
-    finder = WhychFinder()
-    d1 = finder.get_data("os.path")
-    d2 = finder.get_data("os.path.expanduser")
+    d1 = get_data("os.path")
+    d2 = get_data("os.path.expanduser")
 
     assert d2["path"].startswith(d1["path"])
     assert d2["module name"] == d1["module name"] == "os.path"
