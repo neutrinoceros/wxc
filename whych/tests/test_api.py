@@ -7,7 +7,7 @@ from string import ascii_lowercase
 
 import pytest  # type: ignore
 
-from whych.api import Importable, get_data, whych
+from whych.api import Importable, get_data, query
 
 packages_sample = [
     # stdlib
@@ -75,8 +75,8 @@ def test_finder(name: str):
         assert name in p.parts
 
 
-@pytest.mark.parametrize("valid_query", ["path", "version", "info"])
-def test_whych_wrong_query(valid_query):
+@pytest.mark.parametrize("valid_field", ["path", "version", "info"])
+def test_query_wrong_field(valid_field):
     def mutate_str(s: str) -> str:
         index = random.randint(0, len(s)) - 1
         old = s[index]
@@ -85,21 +85,21 @@ def test_whych_wrong_query(valid_query):
 
     for _ in range(15):
         with pytest.raises(ValueError):
-            query = mutate_str(valid_query)
-            whych("numpy", query=query)
+            field = mutate_str(valid_field)
+            query("numpy", field=field)
 
 
 @pytest.mark.parametrize("name", packages_sample)
-def test_info_query(name, tmp_path):
-    res = whych(name, query="info")
+def test_info_field(name, tmp_path):
+    res = query(name, field="info")
     with open(tmp_path / "package_data.json", mode="wt") as fileobj:
         json.dump(res, fileobj)
 
 
 @pytest.mark.parametrize("name", packages_sample + ["NotARealPackage"])
 def test_elementary_queries(name):
-    version = whych(name, query="version")
-    path = whych(name, query="version")
+    version = query(name, field="version")
+    path = query(name, field="version")
     try:
         import_module(name)
         assert version != "unknown"
@@ -123,11 +123,11 @@ def test_empty_module_finder(monkeypatch):
 
 
 def test_muliple_packages():
-    res = whych(["math", "platform", "numpy"])
+    res = query(["math", "platform", "numpy"])
     assert len(res) == 3
 
 
-def test_query_member():
+def test_field_member():
     d1 = get_data("os.path")
     d2 = get_data("os.path.expanduser")
 

@@ -58,23 +58,22 @@ In this example, the `vtk` package does not have a `__version__` attribute.
 
 Equivalent to the CLI examples above
 ```python
-from whych import whych
+from whych import query
 
 print(
-     whych("numpy", query="path"),
-     whych("pandas", query="version"),
-     whych("vtk", query="info")
+     query("numpy", field="path"),
+     query("pandas", field="version"),
+     query("vtk", field="info")
 )
 ```
 
-Or, using a OOP approach, where `WhychFinder.get_data()` returns a dictionnary
+Alternatively, use `whych.get_data()` to handle dictionnaries:
 ```python
-from whych import WhychFinder
-finder = WhychFinder()
+from whych import get_data
 print(
-     finder.get_data("numpy")["path"],
-     finder.get_data("numpy")["version"],
-     finder.get_data("vtk")
+     get_data("numpy")["path"],
+     get_data("numpy")["version"],
+     get_data("vtk")
 )
 ```
 

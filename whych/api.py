@@ -96,8 +96,8 @@ def get_data(
     return data  # type: ignore
 
 
-def whych(
-    importable_names: Union[str, Iterable[str]], query: str = "path"
+def query(
+    importable_names: Union[str, Iterable[str]], field: str = "path"
 ) -> Union[str, List[str]]:
     if isinstance(importable_names, str):
         importable_names = [importable_names]
@@ -106,14 +106,14 @@ def whych(
     for name in importable_names:
         data = get_data(name)
 
-        if query == "info":
+        if field == "info":
             lines = [f"{attr}: {value}" for attr, value in data.items()]
             res.append("\n".join(lines))
             continue
         try:
-            res.append(str(data[query]))
+            res.append(str(data[field]))
         except KeyError:
-            raise ValueError(f"Unsupported query type '{query}'.")
+            raise ValueError(f"Unsupported query type '{field}'.")
     if len(res) == 1:
         return res[0]
     return res
