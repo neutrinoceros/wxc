@@ -12,6 +12,8 @@ class Importable:
     _module = None
     module_name: str = None
     path: str = None
+    version: str = None
+    last_updated: str = None
     is_found: bool = False
     is_stdlib: bool = False
 
@@ -76,7 +78,7 @@ def get_data(
         "path": imp.path,
         "version": imp.version,
         "last updated": imp.last_updated,
-        "stdlib": imp.in_stdlib,
+        "stdlib": imp.is_stdlib,
     }
 
     data.update(

@@ -47,10 +47,10 @@ def test_stdlib_versions(name: str, except_python_version: bool):
 
 @pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
 def test_unexisting_member(name):
-    wf = WhychFinder(name)
-    assert wf.module_name is None
-    assert wf.path is None
-    assert wf.version is None
+    imp = Importable(name)
+    assert imp.module_name is None
+    assert imp.path is None
+    assert imp.version is None
 
     expected = {
         "module name": "unknown",
@@ -58,7 +58,7 @@ def test_unexisting_member(name):
         "version": "unknown",
         "stdlib": False,
     }
-    actual = wf.get_data()
+    actual = get_data(name)
     for k, v in expected.items():
         assert actual[k] == v
 
@@ -66,12 +66,12 @@ def test_unexisting_member(name):
 @pytest.mark.parametrize("name", packages_sample)
 def test_finder(name: str):
     pytest.importorskip(name)
-    wf = WhychFinder(name)
-    assert wf.module_name == name
-    assert wf.path is not None
-    p = Path(wf.path)
+    imp = Importable(name)
+    assert imp.module_name == name
+    assert imp.path is not None
+    p = Path(imp.path)
     assert p.exists()
-    if not wf.in_stdlib():
+    if not imp.in_stdlib:
         assert name in p.parts
 
 
