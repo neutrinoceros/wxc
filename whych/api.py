@@ -10,7 +10,7 @@ from stdlib_list import in_stdlib  # type: ignore
 
 class WhychFinder:
     module = None
-    _module_name = None  # tmp : rename this
+    _module_name = None
     _version = None
     _path = None
     _last_updated = None
