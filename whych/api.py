@@ -26,13 +26,17 @@ class Importable:
             module_name = self.member
 
         try:
-            self._module = import_module(module_name)
+            module = import_module(module_name)
+            if parts:
+                getattr(module, self.member)
+            self._module = module
             self.module_name = module_name
             self.is_found = True
-        except ImportError:
+        except (ImportError, AttributeError):
             pass
 
         if self.is_found:
+
             self.is_stdlib = in_stdlib(self.module_name)
 
             self.version = self._lookup(
