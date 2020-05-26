@@ -59,7 +59,6 @@ In this example, the `vtk` package does not have a `__version__` attribute.
 Equivalent to the CLI examples above
 ```python
 from whych import query
-
 print(
      query("numpy", field="path"),
      query("pandas", field="version"),
