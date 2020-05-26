@@ -144,3 +144,14 @@ def test_empty_module_finder(monkeypatch):
 def test_muliple_packages():
     res = whych(["math", "platform", "numpy"])
     assert len(res) == 3
+
+
+def test_query_function():
+    finder = WhychFinder()
+    d1 = finder.get_data("os.path")
+    d2 = finder.get_data("os.path.expanduser")
+
+    assert d2["path"].startswith(d1["path"])
+    assert d2["module name"] == d1["module name"] == "os.path"
+    assert d2["version"] == d1["version"]
+    assert d2["stdlib"] is d1["stdlib"] is True
