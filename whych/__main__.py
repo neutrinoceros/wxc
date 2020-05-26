@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-from .api import whych
+from .api import query
 
 
 def cli() -> None:
@@ -19,13 +19,13 @@ def cli() -> None:
     args = parser.parse_args()
     joiner = "\n"
     if args.info:
-        query = "info"
+        field = "info"
         joiner = "\n" * 2
     elif args.version:
-        query = "version"
+        field = "version"
     else:
-        query = "path"
-    res = whych(module_name=args.module, query=query)
+        field = "path"
+    res = query(importable_names=args.module, field=field)
     if isinstance(res, list):
         res = joiner.join(res)
     print(res)

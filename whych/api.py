@@ -8,41 +8,58 @@ from typing import Dict, Iterable, List, Union
 from stdlib_list import in_stdlib  # type: ignore
 
 
-class WhychFinder:
-    module = None
-    _module_name = None
-    _version = None
-    _path = None
-    _last_updated = None
+class Importable:
+    _module = None
+    package_name: Union[str, None] = None
+    module_name: Union[str, None] = None
+    path: Union[str, None] = None
+    version: Union[str, None] = None
+    last_updated: Union[str, None] = None
+    is_found: bool = False
+    is_stdlib: bool = False
 
-    def __init__(self, module_name: str = None):
-        self.module_name = module_name
+    def __init__(self, importable_name: str):
+        parts = importable_name.split(".")
+        self.member = parts[-1]
+        names_to_try = [importable_name]
+        if parts:
+            names_to_try.append(".".join(parts[:-1]))
 
-    @property
-    def module_name(self):
-        return self._module_name
-
-    @module_name.setter
-    def module_name(self, new: str):
-        self.module = None
-        if new is None:
-            return
-
-        parts = new.split(".")
-        for i, _ in enumerate(parts):
-            name = ".".join(parts[: len(parts) - i])
+        for name in names_to_try:
             try:
                 module = import_module(name)
-                if i > 0:
-                    getattr(module, parts[-1])
-                self.module = module
-                self._module_name = name
+                if name != importable_name:
+                    getattr(module, self.member)
+
+                self._module = module
+                self.package_name = parts[0]
+                self.module_name = module.__name__
+                self.is_found = True
                 break
-            except (ModuleNotFoundError, AttributeError):
+            except (ModuleNotFoundError, ValueError, AttributeError):
                 pass
 
-    def in_stdlib(self):
-        return in_stdlib(self.module_name)
+        if self.is_found:
+
+            self.is_stdlib = in_stdlib(self.package_name)
+
+            self.version = self._lookup(
+                attrs=("__version__", "VERSION"),
+                stdlib_default=f"python {python_version()}",
+            )
+            self.path = self._lookup(
+                attrs=("__path__", "__file__"),
+                stdlib_default=sysconfig.get_paths()["stdlib"],
+            )
+            # additional sanitizing (sometimes useful on Windows)
+            if isinstance(self.path, list):
+                self.path = self.path[0]
+
+            if isinstance(self.path, str):
+                ts = int(os.path.getmtime(self.path))
+                self.last_updated = datetime.utcfromtimestamp(ts).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
 
     def _lookup(
         self, attrs: Iterable[str], stdlib_default: str
@@ -50,80 +67,53 @@ class WhychFinder:
 
         for attr in attrs:
             try:
-                return getattr(self.module, attr)
+                return getattr(self._module, attr)
             except AttributeError:
                 pass
 
-        if self.in_stdlib():
+        if self.is_stdlib:
             return stdlib_default
 
         return None
 
-    @property
-    def version(self) -> Union[str, None]:
-        self._version = self._lookup(
-            attrs=("__version__", "VERSION"),
-            stdlib_default=f"python {python_version()}",
-        )
-        return self._version
 
-    @property
-    def path(self) -> Union[str, None]:
-        self._path = self._lookup(
-            attrs=("__path__", "__file__"),
-            stdlib_default=sysconfig.get_paths()["stdlib"],
-        )
-        # additional sanitizing (sometimes useful on Windows)
-        if isinstance(self._path, list):
-            self._path = self._path[0]
-        return self._path
+def get_data(
+    importable_name: str, fill_value="unknown"
+) -> Dict[str, Union[str, bool]]:
+    imp = Importable(importable_name)
 
-    @property
-    def last_updated(self):
-        if self.path is not None:
-            ts = int(os.path.getmtime(self.path))
-            self._last_updated = datetime.utcfromtimestamp(ts).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
-        return self._last_updated
+    data = {
+        "module name": imp.module_name,
+        "path": imp.path,
+        "version": imp.version,
+        "last updated": imp.last_updated,
+        "stdlib": imp.is_stdlib,
+    }
 
-    def get_data(self, module_name: str = None) -> Dict[str, Union[str, bool]]:
-        if module_name is not None:
-            self.module_name = module_name
-
-        data = {
-            "module name": self.module_name,
-            "path": self.path,
-            "version": self.version,
-            "last updated": self.last_updated,
-            "stdlib": self.in_stdlib(),
-        }
-
-        data.update(
-            {k: v if v is not None else "unknown" for k, v in data.items()}
-        )
-        return data  # type: ignore
+    data.update(
+        {k: v if v is not None else fill_value for k, v in data.items()}
+    )
+    return data  # type: ignore
 
 
-def whych(
-    module_name: Union[str, Iterable[str]], query: str = "path"
+def query(
+    importable_names: Union[str, Iterable[str]], field: str = "path"
 ) -> Union[str, List[str]]:
-    finder = WhychFinder()
-    if isinstance(module_name, str):
-        module_name = [module_name]
+    if isinstance(importable_names, str):
+        importable_names = [importable_names]
 
     res = []
-    for name in module_name:
-        data = finder.get_data(name)
+    for name in importable_names:
+        data = get_data(name)
 
-        if query == "info":
+        if field == "info":
             lines = [f"{attr}: {value}" for attr, value in data.items()]
             res.append("\n".join(lines))
             continue
         try:
-            res.append(str(data[query]))
+            res.append(str(data[field]))
         except KeyError:
-            raise ValueError(f"Unsupported query type '{query}'.")
+            raise ValueError(f"Unsupported query type '{field}'.")
     if len(res) == 1:
         return res[0]
     return res
