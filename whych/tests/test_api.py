@@ -47,10 +47,10 @@ def test_recycle_finder():
 
 def test_rolling_interface():
     wf = WhychFinder()
-    with pytest.raises(RuntimeError):
-        wf.get_data()
-    for name in packages_sample:
-        wf.get_data(name)
+    dold = wf.get_data()
+    for name in packages_sample[1:]:
+        dnew = wf.get_data(name)
+        assert dold != dnew
 
 
 @pytest.mark.parametrize(
@@ -66,12 +66,12 @@ def test_stdlib_versions(name: str, except_python_version: bool):
 def test_unexisting_package():
     name = "NotARealPackage"
     wf = WhychFinder(name)
-    assert wf.module_name == name
+    assert wf.module_name is None
     assert wf.path is None
     assert wf.version is None
 
     expected = {
-        "module name": name,
+        "module name": "unknown",
         "path": "unknown",
         "version": "unknown",
         "stdlib": False,

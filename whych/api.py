@@ -87,8 +87,6 @@ class WhychFinder:
     def get_data(self, module_name: str = None) -> Dict[str, Union[str, bool]]:
         if module_name is not None:
             self.module_name = module_name
-        elif self._module_name is None:
-            raise RuntimeError
 
         data = {
             "module name": self.module_name,
