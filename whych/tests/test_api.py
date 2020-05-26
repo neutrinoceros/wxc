@@ -1,5 +1,6 @@
 import json
 import os
+import platform
 import random
 from importlib import import_module
 from pathlib import Path
@@ -131,6 +132,7 @@ def test_field_member():
     d1 = get_data("os.path")
     d2 = get_data("os.path.expanduser")
 
-    assert d2["module name"] == d1["module name"] == "posixpath"
+    if platform.system() != "Windows":
+        assert d2["module name"] == d1["module name"] == "posixpath"
     assert d2["version"] == d1["version"]
     assert d2["stdlib"] is d1["stdlib"] is True
