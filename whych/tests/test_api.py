@@ -47,10 +47,10 @@ def test_recycle_finder():
 
 def test_rolling_interface():
     wf = WhychFinder()
-    with pytest.raises(RuntimeError):
-        wf.get_data()
-    for name in packages_sample:
-        wf.get_data(name)
+    dold = wf.get_data()
+    for name in packages_sample[1:]:
+        dnew = wf.get_data(name)
+        assert dold != dnew
 
 
 @pytest.mark.parametrize(
@@ -63,15 +63,15 @@ def test_stdlib_versions(name: str, except_python_version: bool):
     assert except_python_version is wf.version.startswith("python")
 
 
-def test_unexisting_package():
-    name = "NotARealPackage"
+@pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
+def test_unexisting_member(name):
     wf = WhychFinder(name)
-    assert wf.module_name == name
+    assert wf.module_name is None
     assert wf.path is None
     assert wf.version is None
 
     expected = {
-        "module name": name,
+        "module name": "unknown",
         "path": "unknown",
         "version": "unknown",
         "stdlib": False,
@@ -144,3 +144,14 @@ def test_empty_module_finder(monkeypatch):
 def test_muliple_packages():
     res = whych(["math", "platform", "numpy"])
     assert len(res) == 3
+
+
+def test_query_member():
+    finder = WhychFinder()
+    d1 = finder.get_data("os.path")
+    d2 = finder.get_data("os.path.expanduser")
+
+    assert d2["path"].startswith(d1["path"])
+    assert d2["module name"] == d1["module name"] == "os.path"
+    assert d2["version"] == d1["version"]
+    assert d2["stdlib"] is d1["stdlib"] is True

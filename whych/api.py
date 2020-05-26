@@ -10,7 +10,7 @@ from stdlib_list import in_stdlib  # type: ignore
 
 class WhychFinder:
     module = None
-    _module_name = None
+    _module_name = None  # tmp : rename this
     _version = None
     _path = None
     _last_updated = None
@@ -24,12 +24,22 @@ class WhychFinder:
 
     @module_name.setter
     def module_name(self, new: str):
-        self._module_name = new
-        if new is not None:
+        self.module = None
+        if new is None:
+            return
+
+        parts = new.split(".")
+        for i, _ in enumerate(parts):
+            name = ".".join(parts[: len(parts) - i])
             try:
-                self.module = import_module(new)
-            except ModuleNotFoundError:
-                self.module = None
+                module = import_module(name)
+                if i > 0:
+                    getattr(module, parts[-1])
+                self.module = module
+                self._module_name = name
+                break
+            except (ModuleNotFoundError, AttributeError):
+                pass
 
     def in_stdlib(self):
         return in_stdlib(self.module_name)
@@ -80,8 +90,6 @@ class WhychFinder:
     def get_data(self, module_name: str = None) -> Dict[str, Union[str, bool]]:
         if module_name is not None:
             self.module_name = module_name
-        elif self._module_name is None:
-            raise RuntimeError
 
         data = {
             "module name": self.module_name,
