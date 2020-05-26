@@ -71,7 +71,7 @@ def test_finder(name: str):
     assert imp.path is not None
     p = Path(imp.path)
     assert p.exists()
-    if not imp.in_stdlib:
+    if not imp.is_stdlib:
         assert name in p.parts
 
 
