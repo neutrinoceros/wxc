@@ -23,7 +23,8 @@ whych provides additional functionalities to:
 
 ## Installation
 
-Because whych is mostly useful if you use a python enviroment manager (conda ...), it is recommended to install this in your "base" environment, so that it remains available as you switch environments.
+Because whych is mostly useful if you use a python enviroment manager (conda ...), it is recommended
+to install this in your "base" environment, so that it remains available as you switch environments.
 
 From the top level of the repo, run
 ```bash
@@ -57,25 +58,30 @@ In this example, the `vtk` package does not have a `__version__` attribute.
 
 Equivalent to the CLI examples above
 ```python
->> from whych import whych
+from whych import whych
 
->> print(whych("numpy"))
->> print(whych("pandas", query="version"))
->> print(whych("vtk", query="info"))
+print(
+     whych("numpy", query="path"),
+     whych("pandas", query="version"),
+     whych("vtk", query="info")
+)
 ```
 
-Additionally, the module data obtained with `query="info"` can be retrived as a dictionnary with
+Or, using a OOP approach, where `WhychFinder.get_data()` returns a dictionnary
 ```python
->> from whych import WhychFinder
->> wf = WhychFinder()
->> wf.get_data("vtk")
-{'last updated': '2020-05-22 11:31:18',
- 'module name': 'vtk',
- 'path': '/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules',
- 'stdlib': False,
- 'version': 'unknown'}
+from whych import WhychFinder
+finder = WhychFinder()
+print(
+     finder.get_data("numpy")["path"],
+     finder.get_data("numpy")["version"],
+     finder.get_data("vtk")
+)
 ```
 
-## Dependencies
-- whych is tested on macOS, Linux and Windows against Python 3.8, and should be backwards compatible down to Python 3.6
-- whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list) to determine which packages are part of the standard library.
+## Notes
+- whych is tested on macOS, Linux and Windows against Python 3.8, and should be backwards compatible
+  down to Python 3.6
+- whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list) to determine which
+  packages are part of the standard library.
+- whych tries to determine the source file from whych the object is imported. In
+  some cases (e.g. for the standard library on windows), it will fall back to a directory.
