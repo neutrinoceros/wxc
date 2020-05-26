@@ -10,11 +10,11 @@ from stdlib_list import in_stdlib  # type: ignore
 
 class Importable:
     _module = None
-    package_name: str = None
-    module_name: str = None
-    path: str = None
-    version: str = None
-    last_updated: str = None
+    package_name: Union[str, None] = None
+    module_name: Union[str, None] = None
+    path: Union[str, None] = None
+    version: Union[str, None] = None
+    last_updated: Union[str, None] = None
     is_found: bool = False
     is_stdlib: bool = False
 
@@ -55,10 +55,11 @@ class Importable:
             if isinstance(self.path, list):
                 self.path = self.path[0]
 
-            ts = int(os.path.getmtime(self.path))
-            self.last_updated = datetime.utcfromtimestamp(ts).strftime(
-                "%Y-%m-%d %H:%M:%S"
-            )
+            if isinstance(self.path, str):
+                ts = int(os.path.getmtime(self.path))
+                self.last_updated = datetime.utcfromtimestamp(ts).strftime(
+                    "%Y-%m-%d %H:%M:%S"
+                )
 
     def _lookup(
         self, attrs: Iterable[str], stdlib_default: str
