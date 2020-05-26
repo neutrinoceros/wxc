@@ -10,6 +10,7 @@ from stdlib_list import in_stdlib  # type: ignore
 
 class Importable:
     _module = None
+    package_name: str = None
     module_name: str = None
     path: str = None
     version: str = None
@@ -19,25 +20,28 @@ class Importable:
 
     def __init__(self, importable_name: str):
         parts = importable_name.split(".")
-        self.member = parts.pop()
+        self.member = parts[-1]
+        names_to_try = [importable_name]
         if parts:
-            module_name = ".".join(parts)
-        else:
-            module_name = self.member
+            names_to_try.append(".".join(parts[:-1]))
 
-        try:
-            module = import_module(module_name)
-            if parts:
-                getattr(module, self.member)
-            self._module = module
-            self.module_name = module_name
-            self.is_found = True
-        except (ImportError, AttributeError):
-            pass
+        for name in names_to_try:
+            try:
+                module = import_module(name)
+                if name != importable_name:
+                    getattr(module, self.member)
+
+                self._module = module
+                self.package_name = parts[0]
+                self.module_name = module.__name__
+                self.is_found = True
+                break
+            except (ModuleNotFoundError, ValueError, AttributeError):
+                pass
 
         if self.is_found:
 
-            self.is_stdlib = in_stdlib(self.module_name)
+            self.is_stdlib = in_stdlib(self.package_name)
 
             self.version = self._lookup(
                 attrs=("__version__", "VERSION"),

@@ -25,7 +25,7 @@ def cli() -> None:
         query = "version"
     else:
         query = "path"
-    res = whych(module_name=args.module, query=query)
+    res = whych(importable_names=args.module, query=query)
     if isinstance(res, list):
         res = joiner.join(res)
     print(res)
