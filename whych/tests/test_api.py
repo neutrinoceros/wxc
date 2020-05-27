@@ -111,15 +111,15 @@ def test_elementary_queries(name):
         assert path == "unknown"
 
 
-def test_empty_module_finder(monkeypatch):
-    """Check for robustness of WhichFinder.get_data()
+def test_empty_module_query(monkeypatch):
+    """Check for robustness of get_data()
     with an empty module (in particular, no version data)
     """
     syspath, name = fake_empty_module
     monkeypatch.syspath_prepend(syspath)
 
     data = get_data(name)
-    assert data["path"] == os.path.join(syspath, name)
+    assert data["path"].startswith(os.path.join(syspath, name))
     assert data["version"] == "unknown"
 
 
