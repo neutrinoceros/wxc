@@ -138,5 +138,5 @@ def test_field_member():
     assert d2["stdlib"] is d1["stdlib"] is True
 
 
-def test_compiled_stdline_member():
+def test_compiled_stdlib_member():
     get_data("math.sqrt")
