@@ -53,9 +53,9 @@ def test_unexisting_member(name):
     assert imp.version is None
 
     expected = {
-        "module name": "unknown",
-        "path": "unknown",
-        "version": "unknown",
+        "module name": None,
+        "path": None,
+        "version": None,
         "stdlib": False,
     }
     actual = get_data(name)
@@ -102,12 +102,12 @@ def test_elementary_queries(name):
     path = query(name, field="version")
     try:
         import_module(name)
-        assert version != "unknown"
-        assert path != "unknown"
+        assert version is not None
+        assert path is not None
 
-    except ImportError:
-        assert version == "unknown"
-        assert path == "unknown"
+    except (ModuleNotFoundError, ImportError):
+        assert version is None
+        assert path is None
 
 
 def test_empty_module_query(monkeypatch):
@@ -119,7 +119,7 @@ def test_empty_module_query(monkeypatch):
 
     data = get_data(name)
     assert Path(syspath, name) in Path(data["path"]).parents
-    assert data["version"] == "unknown"
+    assert data["version"] is None
 
 
 def test_muliple_packages():

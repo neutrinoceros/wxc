@@ -94,9 +94,7 @@ class Importable:
         return None
 
 
-def get_data(
-    importable_name: str, fill_value=None
-) -> Dict[str, Union[str, bool, int]]:
+def get_data(importable_name: str, fill_value=None) -> Dict[str, Any]:
     imp = Importable(importable_name)
 
     data = {
@@ -120,7 +118,7 @@ def query(
     importable_names: Union[str, Iterable[str]],
     field: str = "path",
     fill_value: Any = None,
-) -> Union[str, List[str]]:
+) -> Union[Any, List[Any]]:
     if isinstance(importable_names, str):
         importable_names = [importable_names]
 
@@ -142,7 +140,7 @@ def query(
             res.append(p)
             continue
         try:
-            res.append(str(data[field]))
+            res.append(data[field])
         except KeyError:
             raise ValueError(f"Unsupported query type '{field}'.")
     if len(res) == 1:
