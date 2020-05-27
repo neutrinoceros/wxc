@@ -53,7 +53,10 @@ class Importable:
                 stdlib_default=f"python {python_version()}",
             )
             self.path = self.resolve_path()
-            self.line = inspect.getsourcelines(self._member)[1]
+            try:
+                self.line = inspect.getsourcelines(self._member)[1]
+            except OSError:
+                pass
 
             if isinstance(self.path, str):
                 ts = int(os.path.getmtime(self.path))
@@ -125,7 +128,7 @@ def query(
             res.append("\n".join(lines))
             continue
         elif field == "path":
-            if data["path"] != "unknown":
+            if data["path"] != "unknown" and data["line"] != "unknown":
                 res.append(":".join([str(data["path"]), str(data["line"])]))
             else:
                 res.append(str(data["path"]))
