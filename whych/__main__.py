@@ -24,8 +24,9 @@ def cli() -> None:
     elif args.version:
         field = "version"
     else:
-        field = "path"
-    res = query(importable_names=args.module, field=field)
+        field = "path_and_line"
+    res = query(importable_names=args.module, field=field, fill_value="unknown")
+
     if isinstance(res, list):
         res = joiner.join(res)
     print(res)
