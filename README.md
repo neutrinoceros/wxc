@@ -14,12 +14,16 @@ In essence,
 ```
 is equivalent to
 ```bash
->> python -c "import pandas; print(pandas.__path__)"
+>> python -c "import pandas; print(pandas.__file__)"
 ```
 
-whych provides additional functionalities to:
-- retrieve the package's version with `-v/--version`
-- generate a small report with `-i/--info`.
+whych can also be used to navigate source code, by locating classes and functions by file+line
+
+```bash
+>> whych pandas.Dataframe
+/Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/pandas/core/frame.py:319
+```
+
 
 ## Installation
 
@@ -34,9 +38,10 @@ pip install -e .
 
 ## Usage
 
-### CLI
+### On the command line
 
 Examples
+
 ```bash
 >> whych numpy
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/numpy
@@ -45,14 +50,15 @@ Examples
 1.0.3
 
 >> whych vtk --info
-module name: vtk
-path: /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules
-version: unknown
-last updated: 2020-05-22 11:31:18
+module name: vtkmodules.all
+path: /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules/all.py
+version: None
+last updated: 2020-04-09 19:14:12
 stdlib: False
+line: 0
+is a module: True
+found: True
 ```
-Note that `whych` will replace any unknow value with `"unknown"`.
-In this example, the `vtk` package does not have a `__version__` attribute.
 
 ### From a python session
 
