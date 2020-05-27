@@ -136,3 +136,7 @@ def test_field_member():
         assert d2["module name"] == d1["module name"] == "posixpath"
     assert d2["version"] == d1["version"]
     assert d2["stdlib"] is d1["stdlib"] is True
+
+
+def test_compiled_stdline_member():
+    get_data("math.sqrt")
