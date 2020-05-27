@@ -128,7 +128,7 @@ def query(
             res.append("\n".join(lines))
             continue
         elif field == "path":
-            if data["path"] != "unknown" and data["line"] != "unknown":
+            if data["path"] != "unknown" and data["line"] not in ("unknown", 0):
                 res.append(":".join([str(data["path"]), str(data["line"])]))
             else:
                 res.append(str(data["path"]))
