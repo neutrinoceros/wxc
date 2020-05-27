@@ -55,7 +55,7 @@ class Importable:
             self.path = self.resolve_path()
             try:
                 self.line = inspect.getsourcelines(self._member)[1]
-            except OSError:
+            except (TypeError, OSError):
                 pass
 
             if isinstance(self.path, str):
