@@ -19,6 +19,7 @@ class Importable:
     is_found: bool = False
     is_stdlib: bool = False
     _member: Any = None
+    line: Union[int, None] = None
 
     def __init__(self, importable_name: str):
         parts = importable_name.split(".")
@@ -52,6 +53,7 @@ class Importable:
                 stdlib_default=f"python {python_version()}",
             )
             self.path = self.resolve_path()
+            self.line = inspect.getsourcelines(self._member)[1]
 
             if isinstance(self.path, str):
                 ts = int(os.path.getmtime(self.path))
@@ -90,7 +92,7 @@ class Importable:
 
 def get_data(
     importable_name: str, fill_value="unknown"
-) -> Dict[str, Union[str, bool]]:
+) -> Dict[str, Union[str, bool, int]]:
     imp = Importable(importable_name)
 
     data = {
@@ -99,6 +101,7 @@ def get_data(
         "version": imp.version,
         "last updated": imp.last_updated,
         "stdlib": imp.is_stdlib,
+        "line": imp.line,
     }
 
     data.update(
@@ -120,6 +123,12 @@ def query(
         if field == "info":
             lines = [f"{attr}: {value}" for attr, value in data.items()]
             res.append("\n".join(lines))
+            continue
+        elif field == "path":
+            if data["path"] != "unknown":
+                res.append(":".join([str(data["path"]), str(data["line"])]))
+            else:
+                res.append(str(data["path"]))
             continue
         try:
             res.append(str(data[field]))
