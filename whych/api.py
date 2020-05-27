@@ -1,9 +1,10 @@
+import inspect
 import os
 import sysconfig
 from datetime import datetime
 from importlib import import_module
 from platform import python_version
-from typing import Dict, Iterable, List, Union
+from typing import Any, Dict, Iterable, List, Union
 
 from stdlib_list import in_stdlib  # type: ignore
 
@@ -17,6 +18,7 @@ class Importable:
     last_updated: Union[str, None] = None
     is_found: bool = False
     is_stdlib: bool = False
+    _member: Any = None
 
     def __init__(self, importable_name: str):
         parts = importable_name.split(".")
@@ -28,8 +30,10 @@ class Importable:
         for name in names_to_try:
             try:
                 module = import_module(name)
-                if name != importable_name:
-                    getattr(module, self.member)
+                if name == importable_name:
+                    self._member = module
+                else:
+                    self._member = getattr(module, self.member)
 
                 self._module = module
                 self.package_name = parts[0]
@@ -47,19 +51,26 @@ class Importable:
                 attrs=("__version__", "VERSION"),
                 stdlib_default=f"python {python_version()}",
             )
-            self.path = self._lookup(
-                attrs=("__path__", "__file__"),
-                stdlib_default=sysconfig.get_paths()["stdlib"],
-            )
-            # additional sanitizing (sometimes useful on Windows)
-            if isinstance(self.path, list):
-                self.path = self.path[0]
+            self.path = self.resolve_path()
 
             if isinstance(self.path, str):
                 ts = int(os.path.getmtime(self.path))
                 self.last_updated = datetime.utcfromtimestamp(ts).strftime(
                     "%Y-%m-%d %H:%M:%S"
                 )
+
+    def resolve_path(self):
+        try:
+            return inspect.getabsfile(self._member)
+        except TypeError:
+            path = self._lookup(
+                attrs=("__file__", "__path__"),
+                stdlib_default=sysconfig.get_paths()["stdlib"],
+            )
+            # additional sanitizing (sometimes useful on Windows)
+            if isinstance(path, list):
+                return path[0]
+            return path
 
     def _lookup(
         self, attrs: Iterable[str], stdlib_default: str
