@@ -20,6 +20,7 @@ class Importable:
     is_stdlib: bool = False
     _member: Any = None
     line: Union[int, None] = None
+    is_module: bool = False
 
     def __init__(self, importable_name: str):
         parts = importable_name.split(".")
@@ -35,7 +36,7 @@ class Importable:
                     self._member = module
                 else:
                     self._member = getattr(module, self.member)
-
+                self.is_module = inspect.ismodule(self._member)
                 self._module = module
                 self.package_name = parts[0]
                 self.module_name = module.__name__
@@ -94,7 +95,7 @@ class Importable:
 
 
 def get_data(
-    importable_name: str, fill_value="unknown"
+    importable_name: str, fill_value=None
 ) -> Dict[str, Union[str, bool, int]]:
     imp = Importable(importable_name)
 
@@ -105,6 +106,8 @@ def get_data(
         "last updated": imp.last_updated,
         "stdlib": imp.is_stdlib,
         "line": imp.line,
+        "is a module": imp.is_module,
+        "found": imp.is_found,
     }
 
     data.update(
@@ -114,7 +117,9 @@ def get_data(
 
 
 def query(
-    importable_names: Union[str, Iterable[str]], field: str = "path"
+    importable_names: Union[str, Iterable[str]],
+    field: str = "path",
+    fill_value: Any = None,
 ) -> Union[str, List[str]]:
     if isinstance(importable_names, str):
         importable_names = [importable_names]
@@ -127,11 +132,14 @@ def query(
             lines = [f"{attr}: {value}" for attr, value in data.items()]
             res.append("\n".join(lines))
             continue
-        elif field == "path":
-            if data["path"] != "unknown" and data["line"] not in ("unknown", 0):
-                res.append(":".join([str(data["path"]), str(data["line"])]))
-            else:
-                res.append(str(data["path"]))
+        elif field == "path_and_line":
+            p: Any = fill_value
+            if data["found"]:
+                p = str(data["path"])
+                if not data["is a module"]:
+                    p += f":{data['line']}"
+
+            res.append(p)
             continue
         try:
             res.append(str(data[field]))
