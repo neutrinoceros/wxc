@@ -1,5 +1,4 @@
 import json
-import os
 import platform
 import random
 from importlib import import_module
@@ -119,7 +118,7 @@ def test_empty_module_query(monkeypatch):
     monkeypatch.syspath_prepend(syspath)
 
     data = get_data(name)
-    assert data["path"].startswith(os.path.join(syspath, name))
+    assert Path(syspath, name) in Path(data["path"]).parents
     assert data["version"] == "unknown"
 
 
