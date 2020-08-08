@@ -5,4 +5,4 @@ requires = ["setuptools", "wheel", "stdlib_list"]
 line-length = 80
 
 [tool.coverage.run]
-omit = ["setup.py", "whych/__main__.py"]
+omit = ["setup.py", "whych/__main__.py", "whych/cli.py"]
