@@ -3,7 +3,7 @@ from argparse import ArgumentParser
 from .api import query
 
 
-def cli() -> None:
+def main() -> None:
     parser = ArgumentParser()
     parser.add_argument("module", nargs="+", help="target Python module(s)")
     command_group = parser.add_mutually_exclusive_group()
@@ -30,7 +30,3 @@ def cli() -> None:
     if isinstance(res, list):
         res = joiner.join(res)
     print(res)
-
-
-if __name__ == "__main__":
-    cli()
