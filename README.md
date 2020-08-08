@@ -93,9 +93,10 @@ print(
 ```
 
 ## Notes
-- whych is tested on macOS, Linux and Windows against Python 3.8, and should be backwards compatible
-  down to Python 3.6
-- whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list) to determine which
-  packages are part of the standard library.
+- whych is tested on macOS, Linux and Windows against Python 3.8, and should be
+  backwards compatible down to Python 3.6
+- whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
+  to determine which packages are part of the standard library.
 - whych tries to determine the source file from whych the object is imported. In
-  some cases (e.g. for the standard library on windows), it will fall back to a directory.
+  some cases (e.g. for the standard library on Windows), it will fall back to a
+  directory.
