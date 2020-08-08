@@ -1,3 +1,3 @@
 from .api import get_data, query
 
-__version__ = "1.0"
+__version__ = "1.1"
