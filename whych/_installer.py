@@ -1,3 +1,5 @@
+import os
+import stat
 from pathlib import Path
 
 
@@ -41,11 +43,13 @@ def main(install_dir=None, rcfile=None):
         )
         exit(1)
 
+    # create an executable symlink
     app_file = install_dir / "whych"
-
     app_file.symlink_to(repo_dir.joinpath("whych", "__main__.py"))
+    st = os.stat(app_file)
+    os.chmod(app_file, st.st_mode | stat.S_IEXEC)
 
-    # prepend $PATH and $PYTHONPATH
+    # prepend $PATH and $PYTHONPATH to rcfile
     if rcfile is None:
         rcfile = _lookup_rcfile(interactive=False)
 
