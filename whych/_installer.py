@@ -25,7 +25,7 @@ def _lookup_rcfile(interactive: bool):
 
 def main(install_dir=None, rcfile=None):
     this_file = Path(__file__).resolve()
-    repo_dir = this_file.parent
+    repo_dir = this_file.parents[1]
     if install_dir is None:
         install_dir = repo_dir / ".app"
 
