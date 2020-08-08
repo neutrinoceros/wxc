@@ -24,16 +24,26 @@ whych can also be used to navigate source code, by locating classes and function
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/pandas/core/frame.py:319
 ```
 
-
 ## Installation
 
-Because whych is mostly useful if you use a python enviroment manager (conda ...), it is recommended
-to install this in your "base" environment, so that it remains available as you switch environments.
+### Command line app
+
+``whych``'s command line application shines most if you use isolated Python
+environments. In order to make it available from anywhere on your system and
+against the current environment run
+```bash
+python install_app.py
+```
+
+### Python api
 
 From the top level of the repo, run
 ```bash
 pip install -e .
 ```
+
+This will make `whych`'s internal functionalities available from a Python
+session in the current environment.
 
 
 ## Usage
@@ -60,7 +70,7 @@ is a module: True
 found: True
 ```
 
-### From a python session
+### From a Python session
 
 Equivalent to the CLI examples above
 ```python
@@ -72,7 +82,7 @@ print(
 )
 ```
 
-Alternatively, use `whych.get_data()` to handle dictionnaries:
+Alternatively, use `whych.get_data()`, which returns dictionnaries:
 ```python
 from whych import get_data
 print(
