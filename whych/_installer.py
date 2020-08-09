@@ -2,10 +2,14 @@ import os
 import stat
 from pathlib import Path
 
+RCFILE_LOOKUP_TABLE = [".zshrc", ".bashrc", ".bash_profile"]
+
 
 def _lookup_rcfile(interactive: bool):
-    lookup_table = [".zshrc", ".bashrc", ".bash_profile"]
-    found = [file for file in lookup_table if (Path.home() / file).is_file()]
+
+    found = [
+        file for file in RCFILE_LOOKUP_TABLE if (Path.home() / file).is_file()
+    ]
     if not found:
         raise FileNotFoundError(
             "Could not determine your shell configuration file"
