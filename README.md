@@ -2,7 +2,8 @@
      alt="whych logo"
      height="80"
      style="float: left; margin-right: 10px;" />
-     
+
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/neutrinoceros/whych)
 [![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
