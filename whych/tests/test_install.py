@@ -1,9 +1,11 @@
 import os
 import sys
 import tempfile
+from pathlib import Path
+from unittest import mock
 
 import pytest
-
+from whych import _installer
 from whych._installer import _lookup_rcfile, main
 
 
@@ -15,5 +17,10 @@ def test_lookup_rcfile():
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="no windows support")
 def test_install():
+
     with tempfile.TemporaryDirectory() as tmpdir:
-        main(install_dir=os.path.join(tmpdir, ".app"))
+        with tempfile.NamedTemporaryFile(dir=str(Path.home())) as tmprcfile:
+            with mock.patch.object(
+                _installer, "RCFILE_LOOKUP_TABLE", [tmprcfile.name]
+            ):
+                main(install_dir=os.path.join(tmpdir, ".app"))
