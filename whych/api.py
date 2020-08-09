@@ -6,11 +6,7 @@ from importlib import import_module
 from platform import python_version
 from typing import Any, Dict, Iterable, List, Union
 
-try:
-    from stdlib_list import in_stdlib  # type: ignore
-except ImportError:
-    # fall back to a vendored version if package is not in the current env
-    from .externs._stdlib_list import in_stdlib
+from .externs._stdlib_list import in_stdlib
 
 
 class Importable:
