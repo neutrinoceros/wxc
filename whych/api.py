@@ -9,7 +9,8 @@ from typing import Any, Dict, Iterable, List, Union
 try:
     from stdlib_list import in_stdlib  # type: ignore
 except ImportError:
-    pass
+    # fall back to a vendored version if package is not in the current env
+    from .externs._stdlib_list import in_stdlib
 
 
 class Importable:
@@ -50,10 +51,7 @@ class Importable:
 
         if self.is_found:
 
-            try:
-                self.is_stdlib = in_stdlib(self.package_name)
-            except NameError:
-                pass
+            self.is_stdlib = in_stdlib(self.package_name)
 
             self.version = self._lookup(
                 attrs=("__version__", "VERSION"),
