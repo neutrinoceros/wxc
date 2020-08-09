@@ -2,6 +2,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 from unittest import mock
 
 import pytest
@@ -20,6 +21,19 @@ def test_lookup_rcfile():
     with mock.patch.object(_installer, "RCFILE_LOOKUP_TABLE", [filename]):
         with pytest.raises(FileNotFoundError):
             _lookup_rcfile(interactive=False)
+
+
+def test_lookup_rcfile_interactive():
+    tmprc1 = NamedTemporaryFile(dir=Path.home())
+    tmprc2 = NamedTemporaryFile(dir=Path.home())
+    fake_lookup_table = [tmprc1.name, tmprc2.name]
+    with mock.patch.object(
+        _installer, "RCFILE_LOOKUP_TABLE", fake_lookup_table
+    ):
+        for fname in fake_lookup_table:
+            with mock.patch("builtins.input", return_value=fname):
+                result = _lookup_rcfile(interactive=True)
+            assert Path(result) == Path(fname)
 
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="no windows support")
