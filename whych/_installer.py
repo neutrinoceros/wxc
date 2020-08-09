@@ -3,6 +3,9 @@ import stat
 from pathlib import Path
 
 RCFILE_LOOKUP_TABLE = [".zshrc", ".bashrc", ".bash_profile"]
+THIS_FILE = Path(__file__).resolve()
+REPO_DIR = THIS_FILE.parents[1]
+DEFAULT_INSTALL_DIR = REPO_DIR / ".app"
 
 
 def _lookup_rcfile(interactive: bool):
@@ -30,11 +33,9 @@ def _lookup_rcfile(interactive: bool):
 
 
 def main(install_dir=None, rcfile=None):
-    this_file = Path(__file__).resolve()
-    repo_dir = this_file.parents[1]
-    if install_dir is None:
-        install_dir = repo_dir / ".app"
 
+    if install_dir is None:
+        install_dir = DEFAULT_INSTALL_DIR
     install_dir = Path(install_dir)
 
     try:
@@ -49,7 +50,7 @@ def main(install_dir=None, rcfile=None):
 
     # create an executable symlink
     app_file = install_dir / "whych"
-    app_file.symlink_to(repo_dir.joinpath("whych", "__main__.py"))
+    app_file.symlink_to(REPO_DIR.joinpath("whych", "__main__.py"))
     st = os.stat(app_file)
     os.chmod(app_file, st.st_mode | stat.S_IEXEC)
 
@@ -61,9 +62,9 @@ def main(install_dir=None, rcfile=None):
         fileh.write(
             "\n".join(
                 [
-                    f"# Created by {this_file}",
+                    f"# Created by {THIS_FILE}",
                     f"export PATH={install_dir}:$PATH",
-                    f"export PYTHONPATH={repo_dir}:$PATH\n",
+                    f"export PYTHONPATH={REPO_DIR}:$PATH\n",
                 ]
             )
         )

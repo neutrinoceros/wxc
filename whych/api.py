@@ -6,11 +6,7 @@ from importlib import import_module
 from platform import python_version
 from typing import Any, Dict, Iterable, List, Union
 
-try:
-    from stdlib_list import in_stdlib  # type: ignore
-except ImportError:
-    # fall back to a vendored version if package is not in the current env
-    from .externs._stdlib_list import in_stdlib
+from .externs._stdlib_list import in_stdlib
 
 
 class Importable:
@@ -77,9 +73,6 @@ class Importable:
                 attrs=("__file__", "__path__"),
                 stdlib_default=sysconfig.get_paths()["stdlib"],
             )
-            # additional sanitizing (sometimes useful on Windows)
-            if isinstance(path, list):
-                return path[0]
             return path
 
     def _lookup(

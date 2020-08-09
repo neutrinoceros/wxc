@@ -74,7 +74,16 @@ def test_finder(name: str):
         assert name in p.parts
 
 
-@pytest.mark.parametrize("valid_field", ["path", "version", "info"])
+known_valid_query_fields = ["path", "version", "info", "path_and_line"]
+
+
+@pytest.mark.parametrize("valid_field", known_valid_query_fields)
+def test_query_valid_field(valid_field):
+    query("os", field=valid_field)
+    query("os.path.join", field=valid_field)
+
+
+@pytest.mark.parametrize("valid_field", known_valid_query_fields)
 def test_query_wrong_field(valid_field):
     def mutate_str(s: str) -> str:
         index = random.randint(0, len(s)) - 1
