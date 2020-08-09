@@ -23,4 +23,7 @@ def test_install():
             with mock.patch.object(
                 _installer, "RCFILE_LOOKUP_TABLE", [tmprcfile.name]
             ):
-                main(install_dir=os.path.join(tmpdir, ".app"))
+                install_dir = os.path.join(tmpdir, ".app")
+                main(install_dir=install_dir)
+                with pytest.raises(SystemExit):
+                    main(install_dir=install_dir)
