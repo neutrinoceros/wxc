@@ -35,6 +35,9 @@ against the current environment run
 ```bash
 python install_app.py
 ```
+:warning: Currently only Linux and MacOS are supported. On Windows, it is still
+possible to install `whych` on an specific environment by installing the Python
+package (see next section).
 
 ### Python api
 
@@ -94,7 +97,7 @@ print(
 ```
 
 ## Notes
-- whych is tested on macOS, Linux and Windows against Python 3.8, and should be
+- the Python api is tested on macOS, Linux and Windows against Python 3.8, and should be
   backwards compatible down to Python 3.6
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
