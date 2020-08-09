@@ -6,7 +6,11 @@ from importlib import import_module
 from platform import python_version
 from typing import Any, Dict, Iterable, List, Union
 
-from stdlib_list import in_stdlib  # type: ignore
+try:
+    from stdlib_list import in_stdlib  # type: ignore
+except ImportError:
+    # fall back to a vendored version if package is not in the current env
+    from .externs._stdlib_list import in_stdlib
 
 
 class Importable:
@@ -17,7 +21,7 @@ class Importable:
     version: Union[str, None] = None
     last_updated: Union[str, None] = None
     is_found: bool = False
-    is_stdlib: bool = False
+    is_stdlib: Union[bool, None] = None
     _member: Any = None
     line: Union[int, None] = None
     is_module: bool = False
