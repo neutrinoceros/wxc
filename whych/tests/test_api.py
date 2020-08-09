@@ -80,6 +80,7 @@ known_valid_query_fields = ["path", "version", "info", "path_and_line"]
 @pytest.mark.parametrize("valid_field", known_valid_query_fields)
 def test_query_valid_field(valid_field):
     query("os", field=valid_field)
+    query("os.path.join", field=valid_field)
 
 
 @pytest.mark.parametrize("valid_field", known_valid_query_fields)
