@@ -6,7 +6,10 @@ from importlib import import_module
 from platform import python_version
 from typing import Any, Dict, Iterable, List, Union
 
-from stdlib_list import in_stdlib  # type: ignore
+try:
+    from stdlib_list import in_stdlib  # type: ignore
+except ImportError:
+    pass
 
 
 class Importable:
@@ -17,7 +20,7 @@ class Importable:
     version: Union[str, None] = None
     last_updated: Union[str, None] = None
     is_found: bool = False
-    is_stdlib: bool = False
+    is_stdlib: Union[bool, None] = None
     _member: Any = None
     line: Union[int, None] = None
     is_module: bool = False
@@ -47,7 +50,10 @@ class Importable:
 
         if self.is_found:
 
-            self.is_stdlib = in_stdlib(self.package_name)
+            try:
+                self.is_stdlib = in_stdlib(self.package_name)
+            except NameError:
+                pass
 
             self.version = self._lookup(
                 attrs=("__version__", "VERSION"),
