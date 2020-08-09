@@ -6,7 +6,6 @@ from pathlib import Path
 from string import ascii_lowercase
 
 import pytest  # type: ignore
-
 from whych.api import Importable, get_data, query
 
 packages_sample = [
@@ -56,7 +55,7 @@ def test_unexisting_member(name):
         "module name": None,
         "path": None,
         "version": None,
-        "stdlib": False,
+        "stdlib": None,
     }
     actual = get_data(name)
     for k, v in expected.items():
