@@ -73,9 +73,6 @@ class Importable:
                 attrs=("__file__", "__path__"),
                 stdlib_default=sysconfig.get_paths()["stdlib"],
             )
-            # additional sanitizing (sometimes useful on Windows)
-            if isinstance(path, list):
-                return path[0]
             return path
 
     def _lookup(
