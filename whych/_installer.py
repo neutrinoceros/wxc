@@ -1,5 +1,6 @@
 import os
 import stat
+import sys
 from pathlib import Path
 
 RCFILE_LOOKUP_TABLE = [".zshrc", ".bashrc", ".bash_profile"]
@@ -46,7 +47,7 @@ def main(install_dir=None, rcfile=None):
             "Please remove this directory before installing again. "
             "You might also need to cleanup your shell rc file."
         )
-        exit(1)
+        sys.exit(1)
 
     # create an executable symlink
     app_file = install_dir / "whych"

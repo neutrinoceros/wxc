@@ -34,6 +34,8 @@ def test_lookup_rcfile_interactive():
             with mock.patch("builtins.input", return_value=fname):
                 result = _lookup_rcfile(interactive=True)
             assert Path(result) == Path(fname)
+    tmprc1.close()
+    tmprc2.close()
 
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="no windows support")
