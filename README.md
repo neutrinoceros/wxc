@@ -21,7 +21,7 @@ is equivalent to
 whych can also be used to navigate source code, by locating classes and functions by file+line
 
 ```bash
->> whych pandas.Dataframe
+>> whych pandas.DataFrame
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/pandas/core/frame.py:319
 ```
 
