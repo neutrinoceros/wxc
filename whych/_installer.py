@@ -65,7 +65,7 @@ def main(install_dir=None, rcfile=None):
                 [
                     f"# Created by {THIS_FILE}",
                     f"export PATH={install_dir}:$PATH",
-                    f"export PYTHONPATH={REPO_DIR}:$PATH\n",
+                    f"export PYTHONPATH={REPO_DIR}:$PYTHONPATH\n",
                 ]
             )
         )
