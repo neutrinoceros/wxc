@@ -3,6 +3,8 @@ import os
 import sysconfig
 from datetime import datetime
 from importlib import import_module
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as md_version
 from platform import python_version
 from typing import Any, Dict, Iterable, List, Union
 
@@ -53,6 +55,12 @@ class Importable:
                 attrs=("__version__", "VERSION"),
                 stdlib_default=f"python {python_version()}",
             )
+            if self.version is None:
+                try:
+                    self.version = md_version(self.package_name)
+                except PackageNotFoundError:
+                    pass
+
             self.path = self.resolve_path()
             try:
                 self.line = inspect.getsourcelines(self._member)[1]
@@ -76,7 +84,7 @@ class Importable:
             return path
 
     def _lookup(
-        self, attrs: Iterable[str], stdlib_default: str
+        self, attrs: Iterable[str], stdlib_default: str,
     ) -> Union[str, None]:
 
         for attr in attrs:
