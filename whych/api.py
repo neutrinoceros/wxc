@@ -40,7 +40,7 @@ class Importable(dict):
             return
 
         self["module_name"] = module.__name__
-        self["is_module"] = inspect.ismodule(module)
+        self["is_module"] = name == importable_name and inspect.ismodule(module)
 
         ver = self._lookup(
             module,
