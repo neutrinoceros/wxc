@@ -42,7 +42,7 @@ def test_empty_module_query(monkeypatch):
 
     data = Importable(name)
     assert Path(syspath, name) in Path(data["path"]).parents
-    assert data["version"] is None
+    assert "version" not in data
 
     template.validate(data)
 
@@ -57,7 +57,7 @@ def test_field_member():
     if platform.system() != "Windows":
         assert d2["module_name"] == d1["module_name"] == "posixpath"
     assert d2["version"] == d1["version"]
-    assert d2["stdlib"] is d1["stdlib"] is True
+    assert d2["is_stdlib"] is d1["is_stdlib"] is True
 
 
 def test_compiled_stdlib_member():

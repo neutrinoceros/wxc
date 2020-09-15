@@ -19,14 +19,20 @@ class Importable(dict):
     def from_name(self, importable_name: str):
         parts = importable_name.split(".")
 
+        names = [importable_name]
+        if len(parts) > 1:
+            names.append(".".join(parts[:-1]))
         self["package_name"] = parts[0]
         self["member"] = parts[-1]
         self["is_stdlib"] = in_stdlib(self["package_name"])
 
-        try:
-            module = import_module(importable_name)
-        except ModuleNotFoundError:
-            module = None
+        module = None
+        for name in names:
+            try:
+                module = import_module(name)
+                break
+            except ModuleNotFoundError:
+                continue
 
         self["is_available"] = module is not None
 
@@ -34,23 +40,24 @@ class Importable(dict):
             return
 
         self["module_name"] = module.__name__
-        self["member"] = module
-        self["is_module"] = inspect.ismodule(self["member"])
+        self["is_module"] = inspect.ismodule(module)
 
-        self["version"] = self._lookup(
+        ver = self._lookup(
             module,
             attrs=("__version__", "VERSION"),
             stdlib_default=f"python {python_version()}",
         )
-        if self["version"] is None:
+        if ver is None:
             try:
-                self["version"] = md_version(self["package_name"])
+                ver = md_version(self["package_name"])
             except PackageNotFoundError:
                 pass
+        if ver:
+            self["version"] = ver
 
         self["path"] = self.resolve_path(module)
         try:
-            self["line"] = inspect.getsourcelines(self["member"])[1]
+            self["line"] = inspect.getsourcelines(module)[1]
         except (TypeError, OSError):
             pass
 
