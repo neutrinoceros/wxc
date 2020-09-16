@@ -22,6 +22,7 @@ template = Schema(
         Optional("path"): str,
         Optional("version"): str,
         Optional("last_updated"): str,
+        Optional("git_hash"): str,
         Optional("line"): int,
     }
 )
