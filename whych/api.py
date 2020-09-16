@@ -5,7 +5,9 @@ from datetime import datetime
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError
 from importlib.metadata import version as md_version
+from pathlib import Path
 from platform import python_version
+from subprocess import CalledProcessError, run
 from typing import Any, Iterable, List, Union
 
 from .externs._stdlib_list import in_stdlib
@@ -65,6 +67,17 @@ class Importable(dict):
         self["last_updated"] = datetime.utcfromtimestamp(ts).strftime(
             "%Y-%m-%d %H:%M:%S"
         )
+
+        try:
+            os.chdir(Path(self["path"]).parent)
+            process = run(
+                ["git", "rev-parse", "HEAD"], check=True, capture_output=True,
+            )
+            hash = process.stdout.decode("utf-8")
+            self["git_hash"] = hash.replace("\n", "")
+        except (FileNotFoundError, CalledProcessError):
+            print("ah")
+            pass
 
     def resolve_path(self, module):
         try:
