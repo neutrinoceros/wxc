@@ -76,7 +76,6 @@ class Importable(dict):
             hash = process.stdout.decode("utf-8")
             self["git_hash"] = hash.replace("\n", "")
         except (FileNotFoundError, CalledProcessError):
-            print("ah")
             pass
 
     def resolve_path(self, module):
