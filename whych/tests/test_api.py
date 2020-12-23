@@ -94,3 +94,11 @@ def test_elementary_queries(name):
 def test_muliple_packages():
     res = query(["math", "platform", "uuid"])
     assert len(res) == 3
+
+
+def test_get_git_hash():
+    """Check that we retrieve the git hash of a package installed from a repo"""
+    # whych itself is the only repo that can reliably be used to test this
+    # feature
+    res = Importable("whych")
+    assert "git_hash" in res
