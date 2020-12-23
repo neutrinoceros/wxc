@@ -5,12 +5,6 @@ import pytest
 from schema import Optional, Schema
 from whych.api import Importable
 
-fake_empty_module = (Path(__file__).parent / "data", "fake_empty_module")
-fake_versioned_module_path = (
-    Path(__file__).parent / "data",
-    "fake_versioned_module",
-)
-
 template = Schema(
     {
         "is_available": bool,
@@ -34,11 +28,12 @@ def test_non_existing_member(name):
     template.validate(data)
 
 
-def test_empty_module_query(monkeypatch):
+def test_empty_module_query(shared_datadir, monkeypatch):
     """Check for robustness of Importable()
     with an empty module (in particular, no version data)
     """
-    syspath, name = fake_empty_module
+    fake_module = shared_datadir / "fake_empty_module"
+    syspath, name = fake_module.parent, fake_module.name
     monkeypatch.syspath_prepend(syspath)
 
     data = Importable(name)
