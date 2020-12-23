@@ -7,12 +7,6 @@ from string import ascii_lowercase
 import pytest  # type: ignore
 from whych.api import Importable, query
 
-fake_empty_module = (Path(__file__).parent / "data", "fake_empty_module")
-fake_versioned_module_path = (
-    Path(__file__).parent / "data",
-    "fake_versioned_module",
-)
-
 packages_sample = [
     # stdlib
     "math",
