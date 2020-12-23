@@ -97,8 +97,8 @@ print(
 ```
 
 ## Notes
-- the Python api is tested on macOS, Linux and Windows
-- only Python>=3.8 is supported (because of type annotation)
+- the Python api is tested on macOS, Linux and Windows, for Python 3.6 and 3.9
+  (because whych uses type annotations, it can not support older versions)
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
 - whych tries to determine the source file from whych the object is imported. In
