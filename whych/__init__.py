@@ -1,3 +1,3 @@
-from .api import get_data, query
+from .api import query
 
-__version__ = "1.7"
+__version__ = "2.0"
