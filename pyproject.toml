@@ -3,7 +3,7 @@ requires = ["setuptools", "wheel"]
 
 [tool.black]
 line-length = 80
-exclude = '''
+force-exclude = '''
 /(
     \.eggs
   | \.git
@@ -15,9 +15,15 @@ exclude = '''
   | buck-out
   | build
   | dist
-  | whych/externs/*
+  | whych/externs
 )/
 '''
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+skip = "whych/externs"
+
 
 [tool.coverage.run]
 omit = ["setup.py", "whych/__main__.py", "whych/cli.py", "install_app.py", "whych/externs/*"]
