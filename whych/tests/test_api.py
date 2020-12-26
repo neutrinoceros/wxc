@@ -56,7 +56,7 @@ known_valid_query_fields = ["path", "version", "info", "path_and_line"]
 @pytest.mark.parametrize("valid_field", known_valid_query_fields)
 def test_query_valid_field(valid_field):
     query("os", field=valid_field)
-    # query("os.path.join", field=valid_field) # tmp deactivate
+    query("os.path.join", field=valid_field)
 
 
 @pytest.mark.parametrize("valid_field", known_valid_query_fields)
@@ -94,3 +94,11 @@ def test_elementary_queries(name):
 def test_muliple_packages():
     res = query(["math", "platform", "uuid"])
     assert len(res) == 3
+
+
+def test_get_git_hash():
+    """Check that we retrieve the git hash of a package installed from a repo"""
+    # whych itself is the only repo that can reliably be used to test this
+    # feature
+    res = Importable("whych")
+    assert "git_hash" in res
