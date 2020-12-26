@@ -3,11 +3,16 @@ import warnings
 
 from sphinx.ext.intersphinx import fetch_inventory
 
-from . import base_dir, get_canonical_version, short_versions, list_dir
+from . import base_dir, get_canonical_version, list_dir, short_versions
 
 
 class DummyConfig(object):
-    def __init__(self, intersphinx_mapping=None, intersphinx_cache_limit=5, intersphinx_timeout=None):
+    def __init__(
+        self,
+        intersphinx_mapping=None,
+        intersphinx_cache_limit=5,
+        intersphinx_timeout=None,
+    ):
         self.intersphinx_mapping = intersphinx_mapping or {}
         self.intersphinx_cache_limit = intersphinx_cache_limit
         self.intersphinx_timeout = intersphinx_timeout
@@ -61,9 +66,7 @@ def fetch_list(version=None):
         url = "http://docs.python.org/{}/objects.inv".format(version)
 
         modules = sorted(
-            list(
-                fetch_inventory(DummyApp(), "", url).get("py:module").keys()
-            )
+            list(fetch_inventory(DummyApp(), "", url).get("py:module").keys())
         )
 
         with open(os.path.join(list_dir, "{}.txt".format(version)), "w") as f:
