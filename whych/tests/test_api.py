@@ -5,6 +5,7 @@ from pathlib import Path
 from string import ascii_lowercase
 
 import pytest  # type: ignore
+
 from whych.api import Importable, query
 
 packages_sample = [

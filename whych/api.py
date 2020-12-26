@@ -3,8 +3,7 @@ import os
 import sysconfig
 from datetime import datetime
 from importlib import import_module
-from importlib.metadata import PackageNotFoundError
-from importlib.metadata import version as md_version
+from importlib.metadata import PackageNotFoundError, version as md_version
 from pathlib import Path
 from platform import python_version
 from subprocess import CalledProcessError, run
@@ -71,7 +70,9 @@ class Importable(dict):
         try:
             os.chdir(Path(self["path"]).parent)
             process = run(
-                ["git", "rev-parse", "HEAD"], check=True, capture_output=True,
+                ["git", "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
             )
             hash = process.stdout.decode("utf-8")
             self["git_hash"] = hash.replace("\n", "")

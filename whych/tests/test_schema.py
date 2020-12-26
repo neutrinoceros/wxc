@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 from schema import Optional, Schema
+
 from whych.api import Importable
 
 template = Schema(

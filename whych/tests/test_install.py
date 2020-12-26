@@ -6,6 +6,7 @@ from tempfile import NamedTemporaryFile
 from unittest import mock
 
 import pytest
+
 from whych import _installer
 from whych._installer import _lookup_rcfile, main
 
