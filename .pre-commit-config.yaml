@@ -1,11 +1,11 @@
 repos:
   - repo: https://gitlab.com/pycqa/flake8
-    rev: 3.7.7
+    rev: 3.8.4
     hooks:
     -   id: flake8
 
   - repo: https://github.com/timothycrosley/isort
-    rev: ''
+    rev: 5.6.4
     hooks:
     -   id: isort
 
