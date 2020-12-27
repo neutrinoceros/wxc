@@ -70,9 +70,7 @@ class Importable(dict):
         try:
             os.chdir(Path(self["path"]).parent)
             process = run(
-                ["git", "rev-parse", "HEAD"],
-                check=True,
-                capture_output=True,
+                ["git", "rev-parse", "HEAD"], check=True, capture_output=True,
             )
             hash = process.stdout.decode("utf-8")
             self["git_hash"] = hash.replace("\n", "")
@@ -106,7 +104,7 @@ class Importable(dict):
         return None
 
     def __str__(self):
-        lines = [f"{attr}: {value}" for attr, value in self.items()]
+        lines = [f"{attr}: {value}" for attr, value in sorted(self.items())]
         return "\n".join(lines)
 
 
