@@ -57,21 +57,23 @@ session in the current environment.
 Examples
 
 ```bash
->> whych numpy
+$ whych numpy
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/numpy
 
->> whych pandas --version
+$ whych pandas --version
 1.0.3
 
->> whych vtk --info
-module name: vtkmodules.all
-path: /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/vtkmodules/all.py
-version: None
-last updated: 2020-04-09 19:14:12
-stdlib: False
+$ whych vtk --info
+is_available: True
+is_module: True
+is_stdlib: False
+last_updated: 2020-09-28 19:52:03
 line: 0
-is a module: True
-found: True
+member: vtk
+module_name: vtkmodules.all
+package_name: vtk
+path: /Users/yourname/miniconda3/envs/project/lib/python3.8/site-packages/vtkmodules/all.py
+version: 9.0.1
 ```
 
 ### From a Python session
