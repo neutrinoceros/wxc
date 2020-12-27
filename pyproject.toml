@@ -22,7 +22,7 @@ force-exclude = '''
 [tool.isort]
 profile = "black"
 combine_as_imports = true
-skip_glob = "whych/externs"
+skip_glob = "whych/externs/*"
 
 
 [tool.coverage.run]
