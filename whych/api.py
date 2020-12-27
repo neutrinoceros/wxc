@@ -70,7 +70,9 @@ class Importable(dict):
         try:
             os.chdir(Path(self["path"]).parent)
             process = run(
-                ["git", "rev-parse", "HEAD"], check=True, capture_output=True,
+                ["git", "rev-parse", "HEAD"],
+                check=True,
+                capture_output=True,
             )
             hash = process.stdout.decode("utf-8")
             self["git_hash"] = hash.replace("\n", "")
