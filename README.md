@@ -5,6 +5,7 @@
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/neutrinoceros/whych)
 [![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/whych/master.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/whych/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 whych is a command line tool to interogate your Python installation.
