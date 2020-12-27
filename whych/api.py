@@ -106,7 +106,7 @@ class Importable(dict):
         return None
 
     def __str__(self):
-        lines = [f"{attr}: {value}" for attr, value in self.items()]
+        lines = [f"{attr}: {value}" for attr, value in sorted(self.items())]
         return "\n".join(lines)
 
 
