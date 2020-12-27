@@ -1,6 +1,6 @@
 import inspect
-import sysconfig
 import os
+import sysconfig
 from datetime import datetime
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError, version as md_version
@@ -13,7 +13,7 @@ from .externs._stdlib_list import in_stdlib
 
 
 class Importable(dict):
-    def __init__(self, n = None ) :
+    def __init__(self, n=None):
         if isinstance(n, (str, bytes)):
             self.from_name(n)
 
