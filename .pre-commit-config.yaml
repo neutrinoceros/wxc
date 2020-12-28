@@ -1,4 +1,4 @@
-additional_dependencies: [toml] # needed for isort
+exclude: "^(whych/externs)"
 
 repos:
   - repo: https://gitlab.com/pycqa/flake8
@@ -10,6 +10,7 @@ repos:
     rev: 5.6.4
     hooks:
       - id: isort
+        additional_dependencies: [toml]
 
   - repo: https://github.com/psf/black
     rev: 20.8b1
