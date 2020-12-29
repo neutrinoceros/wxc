@@ -6,7 +6,10 @@ repos:
     hooks:
       - id: trailing-whitespace
       - id: check-toml
+      - id: check-yaml
       - id: no-commit-to-branch  # master is the default protected branch
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
 
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
