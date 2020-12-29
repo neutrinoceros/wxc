@@ -11,18 +11,18 @@
 whych is a command line tool to interogate your Python installation.
 In essence,
 
-```bash
->> whych pandas
+```shell
+$ whych pandas
 ```
 is equivalent to
-```bash
->> python -c "import pandas; print(pandas.__file__)"
+```shell
+$ python -c "import pandas; print(pandas.__file__)"
 ```
 
 whych can also be used to navigate source code, by locating classes and functions by file+line
 
-```bash
->> whych pandas.DataFrame
+```shell
+$ whych pandas.DataFrame
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/pandas/core/frame.py:319
 ```
 
@@ -33,8 +33,8 @@ whych can also be used to navigate source code, by locating classes and function
 ``whych``'s command line application shines most if you use isolated Python
 environments. In order to make it available from anywhere on your system and
 against the current environment run
-```bash
-python install_app.py
+```shell
+$ python install_app.py
 ```
 :warning: Currently only Linux and MacOS are supported. On Windows, it is still
 possible to install `whych` on an specific environment by installing the Python
@@ -43,8 +43,8 @@ package (see next section).
 ### Python api
 
 From the top level of the repo, run
-```bash
-pip install -e .
+```shell
+$ pip install -e .
 ```
 
 This will make `whych`'s internal functionalities available from a Python
@@ -57,7 +57,7 @@ session in the current environment.
 
 Examples
 
-```bash
+```shell
 $ whych numpy
 /Users/yourname/miniconda3/envs/production/lib/python3.8/site-packages/numpy
 
@@ -81,21 +81,21 @@ version: 9.0.1
 
 Equivalent to the CLI examples above
 ```python
-from whych import query
+import whych
 print(
-     query("numpy", field="path"),
-     query("pandas", field="version"),
-     query("vtk", field="info")
+     whych.query("numpy", field="path"),
+     whych.query("pandas", field="version"),
+     whych.query("vtk", field="info")
 )
 ```
 
-Alternatively, use `whych.get_data()`, which returns dictionnaries:
+Alternatively, use `whych.get_data()`, which returns dictionaries:
 ```python
-from whych import get_data
+import whych
 print(
-     get_data("numpy")["path"],
-     get_data("numpy")["version"],
-     get_data("vtk")
+     whych.get_data("numpy")["path"],
+     whych.get_data("numpy")["version"],
+     whych.get_data("vtk")
 )
 ```
 
@@ -104,6 +104,6 @@ print(
   (because whych uses type annotations, it can not support older versions)
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
-- whych tries to determine the source file from whych the object is imported. In
+- whych tries to determine the source file from which the object is imported. In
   some cases (e.g. for the standard library on Windows), it will fall back to a
   directory.
