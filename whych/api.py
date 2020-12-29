@@ -27,17 +27,15 @@ class Importable(dict):
         self["member"] = parts[-1]
         self["is_stdlib"] = in_stdlib(self["package_name"])
 
-        module = None
         for name in names:
             try:
                 module = import_module(name)
+                self["is_available"] = True
                 break
             except ModuleNotFoundError:
                 continue
-
-        self["is_available"] = module is not None
-
-        if not self["is_available"]:
+        else:
+            self["is_available"] = False
             return
 
         self["module_name"] = module.__name__
@@ -96,7 +94,12 @@ class Importable(dict):
 
         for attr in attrs:
             try:
-                return getattr(module, attr)
+                ret = getattr(module, attr)
+                if not isinstance(ret, str):
+                    raise RuntimeError(
+                        f"Unexpected return value {ret=}, with type {type(ret)}"
+                    )
+                return ret
             except AttributeError:
                 pass
 

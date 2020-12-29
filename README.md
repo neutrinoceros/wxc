@@ -100,8 +100,9 @@ print(
 ```
 
 ## Notes
-- the Python api is tested on macOS, Linux and Windows, for Python 3.6 and 3.9
-  (because whych uses type annotations, it can not support older versions)
+- the Python api is tested on macOS, Linux and Windows, for Python 3.8 and 3.9
+  It should be possible to run it against Python 3.6 with the additional
+  requirement that `importlib_metadata` is installed in the runtime environment.
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
 - whych tries to determine the source file from whych the object is imported. In
