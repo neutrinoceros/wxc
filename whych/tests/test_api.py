@@ -103,3 +103,13 @@ def test_get_git_hash():
     # feature
     res = Importable("whych")
     assert "git_hash" in res
+
+
+def test_lookup_error():
+    """Check that Importable._lookup internal function fails
+    with LookupError in case we use it to retrieve a non-str attribute
+    in an existing module.
+    """
+    imp = Importable("pathlib")
+    with pytest.raises(LookupError):
+        imp._lookup(module=json, attrs=("dump",), stdlib_default="")

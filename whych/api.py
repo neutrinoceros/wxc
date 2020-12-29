@@ -96,7 +96,7 @@ class Importable(dict):
             try:
                 ret = getattr(module, attr)
                 if not isinstance(ret, str):
-                    raise RuntimeError(
+                    raise LookupError(
                         f"Unexpected return value {ret=}, with type {type(ret)}"
                     )
                 return ret
