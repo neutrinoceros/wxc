@@ -4,6 +4,7 @@
      style="float: left; margin-right: 10px;" />
 
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/neutrinoceros/whych)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6c8abd6bf81143319e30603ab60047f8)](https://app.codacy.com/gh/neutrinoceros/whych?utm_source=github.com&utm_medium=referral&utm_content=neutrinoceros/whych&utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/neutrinoceros/whych/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/whych)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/whych/master.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/whych/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
