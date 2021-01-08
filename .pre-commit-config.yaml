@@ -1,16 +1,23 @@
 exclude: "^(whych/externs)"
 
+# a curated list of available hooks
+# https://pre-commit.com/hooks.html
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v3.4.0
     hooks:
       - id: trailing-whitespace
+      - id: end-of-file-fixer
       - id: check-toml
       - id: check-yaml
-      - id: no-commit-to-branch  # master is the default protected branch
       - id: check-merge-conflict
-      - id: end-of-file-fixer
+      - id: no-commit-to-branch
 
+  - repo: https://github.com/Lucas-C/pre-commit-hooks
+    rev: v1.1.7
+    hooks:
+        - id: remove-tabs
   - repo: https://gitlab.com/pycqa/flake8
     rev: 3.8.4
     hooks:
