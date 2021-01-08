@@ -86,7 +86,7 @@ def test_elementary_queries(name):
 
     try:
         import_module(name)
-    except (ModuleNotFoundError, ImportError):
+    except ImportError:
         pytest.skip()
 
     query(name, field="version")
