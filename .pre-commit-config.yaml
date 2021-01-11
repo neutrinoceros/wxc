@@ -15,7 +15,7 @@ repos:
       - id: no-commit-to-branch
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.7
+    rev: v1.1.9
     hooks:
         - id: remove-tabs
   - repo: https://gitlab.com/pycqa/flake8
