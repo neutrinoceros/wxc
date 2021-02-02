@@ -27,6 +27,4 @@ def main() -> None:
         field = "path_and_line"
     res = query(importable_names=args.module, field=field, fill_value="unknown")
 
-    if isinstance(res, list):
-        res = joiner.join(res)
-    print(res)
+    print(joiner.join([str(r) for r in res]))
