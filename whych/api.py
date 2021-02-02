@@ -4,6 +4,7 @@ import sysconfig
 from datetime import datetime
 from importlib import import_module
 from importlib.metadata import PackageNotFoundError, version as md_version
+from itertools import accumulate
 from pathlib import Path
 from platform import python_version
 from subprocess import CalledProcessError, run
@@ -20,19 +21,19 @@ class Importable(dict):
     def from_name(self, importable_name: str):
         parts = importable_name.split(".")
 
-        names = [importable_name]
-        if len(parts) > 1:
-            names.append(".".join(parts[:-1]))
         self["package_name"] = parts[0]
-        self["member"] = parts[-1]
         self["is_stdlib"] = in_stdlib(self["package_name"])
 
-        for name in names:
+        idx = 0
+        name_candidates = list(accumulate(parts, lambda x, y: ".".join([x, y])))
+        for name in reversed(name_candidates):
             try:
                 module = import_module(name)
                 self["is_available"] = True
+                self["member"] = ".".join(parts[idx + 1 :])
                 break
             except ModuleNotFoundError:
+                idx += 1
                 continue
         else:
             self["is_available"] = False
@@ -55,9 +56,15 @@ class Importable(dict):
             self["version"] = ver
 
         self["path"] = self.resolve_path(module)
+
         try:
-            self["line"] = inspect.getsourcelines(module)[1]
-        except (TypeError, OSError):
+            obj = import_module(parts[0])
+            if len(parts) > 1:
+                for part in parts[1:]:
+                    obj = getattr(obj, part)
+
+            self["line"] = inspect.getsourcelines(obj)[1]
+        except (TypeError, OSError, AttributeError):
             pass
 
         ts = int(os.path.getmtime(self["path"]))
@@ -79,7 +86,7 @@ class Importable(dict):
 
     def resolve_path(self, module):
         try:
-            return inspect.getabsfile(self["member"])
+            return inspect.getabsfile(self["module_name"])
         except TypeError:
             path = self._lookup(
                 module,

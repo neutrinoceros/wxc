@@ -113,3 +113,11 @@ def test_lookup_error():
     imp = Importable("pathlib")
     with pytest.raises(LookupError):
         imp._lookup(module=json, attrs=("dump",), stdlib_default="")
+
+
+def test_getline():
+    imp = Importable("pathlib.Path")
+    assert imp.get("line", -1) > 0
+
+    imp = Importable("pathlib.Path.home")
+    assert imp.get("line", -1) > 0
