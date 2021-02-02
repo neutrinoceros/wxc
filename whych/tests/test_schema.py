@@ -10,8 +10,8 @@ template = Schema(
     {
         "is_available": bool,
         "is_stdlib": bool,
-        "member": str,
         "package_name": str,
+        Optional("member"): str,
         Optional("module_name"): str,
         Optional("is_module"): bool,
         Optional("path"): str,
