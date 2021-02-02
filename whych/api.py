@@ -7,15 +7,16 @@ from importlib.metadata import PackageNotFoundError, version as md_version
 from pathlib import Path
 from platform import python_version
 from subprocess import CalledProcessError, run
-from typing import Any, Iterable, List, Union
+from types import ModuleType
+from typing import Iterable, List, Optional, Union
 
 from .externs._stdlib_list import in_stdlib
 
 
 class Importable(dict):
-    def __init__(self, n=None):
-        if isinstance(n, (str, bytes)):
-            self.from_name(n)
+    def __init__(self, n: Optional[Union[str, bytes]] = None):
+        if n is not None:
+            self.from_name(str(n))
 
     def from_name(self, importable_name: str):
         parts = importable_name.split(".")
@@ -43,7 +44,7 @@ class Importable(dict):
 
         ver = self._lookup(
             module,
-            attrs=("__version__", "VERSION"),
+            attrs=["__version__", "VERSION"],
             stdlib_default=f"python {python_version()}",
         )
         if ver is None:
@@ -77,20 +78,19 @@ class Importable(dict):
         except (FileNotFoundError, CalledProcessError):
             pass
 
-    def resolve_path(self, module):
+    def resolve_path(self, module: ModuleType) -> Optional[str]:
         try:
             return inspect.getabsfile(self["member"])
         except TypeError:
-            path = self._lookup(
+            return self._lookup(
                 module,
-                attrs=("__file__", "__path__"),
+                attrs=["__file__", "__path__"],
                 stdlib_default=sysconfig.get_paths()["stdlib"],
             )
-            return path
 
     def _lookup(
-        self, module: Any, attrs: Iterable[str], stdlib_default: str
-    ) -> Union[str, None]:
+        self, module: ModuleType, attrs: List[str], stdlib_default: str
+    ) -> Optional[str]:
 
         for attr in attrs:
             try:
@@ -116,12 +116,12 @@ class Importable(dict):
 def query(
     importable_names: Union[str, Iterable[str]],
     field: str = "path",
-    fill_value: Any = None,
-) -> Union[Any, List[Any]]:
+    fill_value: Optional[str] = None,
+) -> List[Optional[str]]:
     if isinstance(importable_names, str):
         importable_names = [importable_names]
 
-    res = []
+    res: List[Optional[str]] = []
     for name in importable_names:
         data = Importable(name)
 
@@ -129,7 +129,7 @@ def query(
             res.append(str(data))
             continue
         elif field == "path_and_line":
-            p: Any = fill_value
+            p: Optional[str] = fill_value
             if data["is_available"]:
                 p = str(data["path"])
                 if not data["is_module"]:
@@ -141,6 +141,5 @@ def query(
             res.append(data[field])
         except KeyError as err:
             raise ValueError(f"Could not determine field `{field}`.") from err
-    if len(res) == 1:
-        return res[0]
+
     return res
