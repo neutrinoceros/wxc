@@ -139,7 +139,7 @@ def query(
             p: Optional[str] = fill_value
             if data["is_available"]:
                 p = str(data["path"])
-                if not data["is_module"]:
+                if not data["is_module"] and "line" in data:
                     p += f":{data['line']}"
 
             res.append(p)
