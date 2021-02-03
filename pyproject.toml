@@ -15,7 +15,6 @@ combine_as_imports = true
 omit = [
   "setup.py",
   "whych/__main__.py",
-  "whych/cli.py",
   "install_app.py",
   "whych/externs/*"
 ]

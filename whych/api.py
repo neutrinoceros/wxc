@@ -9,7 +9,7 @@ from pathlib import Path
 from platform import python_version
 from subprocess import CalledProcessError, run
 from types import ModuleType
-from typing import Iterable, List, Optional, Union
+from typing import List, Optional, Union
 
 from .externs._stdlib_list import in_stdlib
 
@@ -122,37 +122,5 @@ class Scope(dict):
         return None
 
     def __str__(self):
-        lines = [f"{attr}: {value}" for attr, value in sorted(self.items())]
+        lines = [f"{attr}: {value}" for attr, value in self.items()]
         return "\n".join(lines)
-
-
-def query(
-    scope_names: Union[str, Iterable[str]],
-    field: str = "path",
-    fill_value: Optional[str] = None,
-) -> List[Optional[str]]:
-    if isinstance(scope_names, str):
-        scope_names = [scope_names]
-
-    res: List[Optional[str]] = []
-    for name in scope_names:
-        data = Scope(name)
-
-        if field == "info":
-            res.append(str(data))
-            continue
-        elif field == "path_and_line":
-            p: Optional[str] = fill_value
-            if data["is_available"]:
-                p = str(data["path"])
-                if not data["is_module"] and "line" in data:
-                    p += f":{data['line']}"
-
-            res.append(p)
-            continue
-        try:
-            res.append(data[field])
-        except KeyError as err:
-            raise ValueError(f"Could not determine field `{field}`.") from err
-
-    return res
