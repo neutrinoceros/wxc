@@ -14,14 +14,21 @@ from typing import Iterable, List, Optional, Union
 from .externs._stdlib_list import in_stdlib
 
 
-class Importable(dict):
+class Scope(dict):
+    """
+    A `Scope` is a Python code object that can be imported and/or called from an
+    importable super-scope.
+    Packages, modules, classes, functions and class methods qualify.
+    """
+
     def __init__(self, n: Optional[Union[str, bytes]] = None):
         if n is not None:
             self.from_name(str(n))
 
-    def from_name(self, importable_name: str):
-        parts = importable_name.split(".")
+    def from_name(self, scope_name: str):
+        parts = scope_name.split(".")
 
+        self["scope_name"] = scope_name
         self["package_name"] = parts[0]
         self["is_stdlib"] = in_stdlib(self["package_name"])
 
@@ -31,7 +38,6 @@ class Importable(dict):
             try:
                 module = import_module(name)
                 self["is_available"] = True
-                self["member"] = ".".join(parts[idx + 1 :])
                 break
             except ModuleNotFoundError:
                 idx += 1
@@ -41,7 +47,7 @@ class Importable(dict):
             return
 
         self["module_name"] = module.__name__
-        self["is_module"] = name == importable_name and inspect.ismodule(module)
+        self["is_module"] = name == scope_name and inspect.ismodule(module)
 
         ver = self._lookup(
             module,
@@ -121,16 +127,16 @@ class Importable(dict):
 
 
 def query(
-    importable_names: Union[str, Iterable[str]],
+    scope_names: Union[str, Iterable[str]],
     field: str = "path",
     fill_value: Optional[str] = None,
 ) -> List[Optional[str]]:
-    if isinstance(importable_names, str):
-        importable_names = [importable_names]
+    if isinstance(scope_names, str):
+        scope_names = [scope_names]
 
     res: List[Optional[str]] = []
-    for name in importable_names:
-        data = Importable(name)
+    for name in scope_names:
+        data = Scope(name)
 
         if field == "info":
             res.append(str(data))
