@@ -6,7 +6,7 @@ from string import ascii_lowercase
 
 import pytest  # type: ignore
 
-from whych.api import Importable, query
+from whych.api import Scope, query
 
 packages_sample = [
     # stdlib
@@ -31,7 +31,7 @@ packages_sample = [
     "name,except_python_version", [("math", True), ("platform", False)]
 )
 def test_stdlib_versions(name: str, except_python_version: bool):
-    imp = Importable(name)
+    imp = Scope(name)
     assert imp["is_available"]
     assert imp["is_stdlib"]
     assert "version" in imp
@@ -41,7 +41,7 @@ def test_stdlib_versions(name: str, except_python_version: bool):
 @pytest.mark.parametrize("name", packages_sample)
 def test_finder(name: str):
     pytest.importorskip(name)
-    imp = Importable(name)
+    imp = Scope(name)
     assert imp["module_name"] == name
     assert "path" in imp
 
@@ -101,23 +101,23 @@ def test_get_git_hash():
     """Check that we retrieve the git hash of a package installed from a repo"""
     # whych itself is the only repo that can reliably be used to test this
     # feature
-    res = Importable("whych")
+    res = Scope("whych")
     assert "git_hash" in res
 
 
 def test_lookup_error():
-    """Check that Importable._lookup internal function fails
+    """Check that Scope._lookup internal function fails
     with LookupError in case we use it to retrieve a non-str attribute
     in an existing module.
     """
-    imp = Importable("pathlib")
+    imp = Scope("pathlib")
     with pytest.raises(LookupError):
         imp._lookup(module=json, attrs=("dump",), stdlib_default="")
 
 
 def test_getline():
-    imp = Importable("pathlib.Path")
+    imp = Scope("pathlib.Path")
     assert imp.get("line", -1) > 0
 
-    imp = Importable("pathlib.Path.home")
+    imp = Scope("pathlib.Path.home")
     assert imp.get("line", -1) > 0

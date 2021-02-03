@@ -4,14 +4,14 @@ from pathlib import Path
 import pytest
 from schema import Optional, Schema
 
-from whych.api import Importable
+from whych.api import Scope
 
 template = Schema(
     {
         "is_available": bool,
         "is_stdlib": bool,
         "package_name": str,
-        Optional("member"): str,
+        "scope_name": str,
         Optional("module_name"): str,
         Optional("is_module"): bool,
         Optional("path"): str,
@@ -25,19 +25,19 @@ template = Schema(
 
 @pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
 def test_non_existing_member(name):
-    data = Importable(name)
+    data = Scope(name)
     template.validate(data)
 
 
 def test_empty_module_query(shared_datadir, monkeypatch):
-    """Check for robustness of Importable()
+    """Check for robustness of Scope()
     with an empty module (in particular, no version data)
     """
     fake_module = shared_datadir / "fake_empty_module"
     syspath, name = fake_module.parent, fake_module.name
     monkeypatch.syspath_prepend(syspath)
 
-    data = Importable(name)
+    data = Scope(name)
     assert Path(syspath, name) in Path(data["path"]).parents
     assert "version" not in data
 
@@ -45,8 +45,8 @@ def test_empty_module_query(shared_datadir, monkeypatch):
 
 
 def test_field_member():
-    d1 = Importable("os.path")
-    d2 = Importable("os.path.expanduser")
+    d1 = Scope("os.path")
+    d2 = Scope("os.path.expanduser")
 
     template.validate(d1)
     template.validate(d2)
@@ -58,4 +58,4 @@ def test_field_member():
 
 
 def test_compiled_stdlib_member():
-    Importable("math.sqrt")
+    Scope("math.sqrt")
