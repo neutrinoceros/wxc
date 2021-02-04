@@ -40,3 +40,16 @@ def test_falty_queries(capsys, arg):
     out, err = capsys.readouterr()
     assert out == ""
     assert err.startswith("unknown")
+
+
+def test_failed_query(capsys, mocker):
+    def mock_Scope(self, name):
+        self["is_available"] = True
+
+    mocker.patch("whych.api.Scope.__init__", mock_Scope)
+
+    res = main(["lol", "--version"])
+    assert res != 0
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert err.startswith("unknown")
