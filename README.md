@@ -92,9 +92,9 @@ $ whych yt --json
 ```
 
 ## Notes
-- the Python api is tested on macOS, Linux and Windows, for Python 3.8 and 3.9
-  It should be possible to run it against Python 3.6 with the additional
-  requirement that `importlib_metadata` is installed in the runtime environment.
+- the Python api is tested on macOS, Linux and Windows, for Python 3.6 and 3.9
+  Note that with Python versions older than 3.8, installing `importlib-metadata`
+  helps to discover the version number in certain projects.
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
 - whych tries to determine the source file from which the object is imported. In

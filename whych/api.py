@@ -3,7 +3,6 @@ import os
 import sysconfig
 from datetime import datetime
 from importlib import import_module
-from importlib.metadata import PackageNotFoundError, version as md_version
 from itertools import accumulate
 from pathlib import Path
 from platform import python_version
@@ -26,6 +25,7 @@ class Scope(dict):
             self.from_name(str(n))
 
     def from_name(self, scope_name: str):
+
         parts = scope_name.split(".")
 
         self["scope_name"] = scope_name
@@ -49,19 +49,7 @@ class Scope(dict):
         self["module_name"] = module.__name__
         self["is_module"] = name == scope_name and inspect.ismodule(module)
 
-        ver = self._lookup(
-            module,
-            attrs=["__version__", "VERSION"],
-            stdlib_default=f"python {python_version()}",
-        )
-        if ver is None:
-            try:
-                ver = md_version(self["package_name"])
-            except PackageNotFoundError:
-                pass
-        if ver:
-            self["version"] = ver
-
+        self._set_version(module)
         self["path"] = self.resolve_path(module)
 
         try:
@@ -91,6 +79,25 @@ class Scope(dict):
         except (FileNotFoundError, CalledProcessError):
             pass
 
+    def _set_version(self, module):
+        try:
+            # this is standard in Python 3.8 and pip-installable otherwise
+            import importlib.metadata as md
+        except ImportError:
+            md = None  # type: ignore
+        ver = self._lookup(
+            module,
+            attrs=["__version__", "VERSION"],
+            stdlib_default=f"python {python_version()}",
+        )
+        if ver is None and md is not None:
+            try:
+                ver = md.version(self["package_name"])
+            except md.PackageNotFoundError:
+                pass
+        if ver:
+            self["version"] = ver
+
     def resolve_path(self, module: ModuleType) -> Optional[str]:
         try:
             return inspect.getabsfile(self["module_name"])
@@ -110,7 +117,7 @@ class Scope(dict):
                 ret = getattr(module, attr)
                 if not isinstance(ret, str):
                     raise LookupError(
-                        f"Unexpected return value {ret=}, with type {type(ret)}"
+                        f"Unexpected return value ret={ret}, with type {type(ret)}"
                     )
                 return ret
             except AttributeError:
