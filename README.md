@@ -19,7 +19,7 @@ is equivalent to
 $ python -c "import pandas; print(pandas.__file__)"
 ```
 
-whych can also be used to navigate source code, by locating classes and functions by file+line
+whych can also be used to navigate source code, by locating classes and functions by `file:line
 
 ```shell
 $ whych pandas.DataFrame
@@ -28,7 +28,7 @@ $ whych pandas.DataFrame
 
 ## Installation
 
-### Command line app
+### Usage
 
 ``whych``'s command line application shines most if you use isolated Python
 environments. In order to make it available from anywhere on your system and
@@ -37,8 +37,8 @@ against the current environment run
 $ python install_app.py
 ```
 :warning: Currently only Linux and MacOS are supported. On Windows, it is still
-possible to install `whych` on an specific environment by installing the Python
-package (see next section).
+possible to install `whych` on an specific environment by installing it as a
+Python package (see next section).
 
 ### Python api
 
@@ -53,8 +53,6 @@ session in the current environment.
 
 ## Usage
 
-### On the command line
-
 Examples
 
 ```shell
@@ -64,45 +62,39 @@ $ whych numpy
 $ whych pandas --version
 1.0.3
 
-$ whych vtk --info
-is_available: True
-is_module: True
+$ whych yt --info
+scope_name: yt
+package_name: yt
 is_stdlib: False
-last_updated: 2020-09-28 19:52:03
+is_available: True
+module_name: yt
+is_module: True
+version: 4.0.dev0
+path: /Users/clm/dev/python/yt-project/yt/yt/__init__.py
 line: 0
-member: vtk
-module_name: vtkmodules.all
-package_name: vtk
-path: /Users/yourname/miniconda3/envs/project/lib/python3.8/site-packages/vtkmodules/all.py
-version: 9.0.1
-```
+last_updated: 2021-02-01 19:09:24
+git_hash: 0d31a4a14ce254fbad356a4c1d50bbe41beed6da
 
-### From a Python session
-
-Equivalent to the CLI examples above
-```python
-import whych
-print(
-     whych.query("numpy", field="path"),
-     whych.query("pandas", field="version"),
-     whych.query("vtk", field="info")
-)
-```
-
-Alternatively, use `whych.get_data()`, which returns dictionaries:
-```python
-import whych
-print(
-     whych.get_data("numpy")["path"],
-     whych.get_data("numpy")["version"],
-     whych.get_data("vtk")
-)
+$ whych yt --json
+{
+  "scope_name": "yt",
+  "package_name": "yt",
+  "is_stdlib": false,
+  "is_available": true,
+  "module_name": "yt",
+  "is_module": true,
+  "version": "4.0.dev0",
+  "path": "/Users/clm/dev/python/yt-project/yt/yt/__init__.py",
+  "line": 0,
+  "last_updated": "2021-02-01 19:09:24",
+  "git_hash": "0d31a4a14ce254fbad356a4c1d50bbe41beed6da"
+}
 ```
 
 ## Notes
-- the Python api is tested on macOS, Linux and Windows, for Python 3.8 and 3.9
-  It should be possible to run it against Python 3.6 with the additional
-  requirement that `importlib_metadata` is installed in the runtime environment.
+- the Python api is tested on macOS, Linux and Windows, for Python 3.6 and 3.9
+  Note that with Python versions older than 3.8, installing `importlib-metadata`
+  helps to discover the version number in certain projects.
 - whych relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
 - whych tries to determine the source file from which the object is imported. In

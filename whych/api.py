@@ -3,61 +3,63 @@ import os
 import sysconfig
 from datetime import datetime
 from importlib import import_module
-from importlib.metadata import PackageNotFoundError, version as md_version
+from itertools import accumulate
 from pathlib import Path
 from platform import python_version
 from subprocess import CalledProcessError, run
-from typing import Any, Iterable, List, Union
+from types import ModuleType
+from typing import List, Optional, Union
 
 from .externs._stdlib_list import in_stdlib
 
 
-class Importable(dict):
-    def __init__(self, n=None):
-        if isinstance(n, (str, bytes)):
-            self.from_name(n)
+class Scope(dict):
+    """
+    A `Scope` is a Python code object that can be imported and/or called from an
+    importable super-scope.
+    Packages, modules, classes, functions and class methods qualify.
+    """
 
-    def from_name(self, importable_name: str):
-        parts = importable_name.split(".")
+    def __init__(self, n: Optional[Union[str, bytes]] = None):
+        if n is not None:
+            self.from_name(str(n))
 
-        names = [importable_name]
-        if len(parts) > 1:
-            names.append(".".join(parts[:-1]))
+    def from_name(self, scope_name: str):
+
+        parts = scope_name.split(".")
+
+        self["scope_name"] = scope_name
         self["package_name"] = parts[0]
-        self["member"] = parts[-1]
         self["is_stdlib"] = in_stdlib(self["package_name"])
 
-        for name in names:
+        idx = 0
+        name_candidates = list(accumulate(parts, lambda x, y: ".".join([x, y])))
+        for name in reversed(name_candidates):
             try:
                 module = import_module(name)
                 self["is_available"] = True
                 break
             except ModuleNotFoundError:
+                idx += 1
                 continue
         else:
             self["is_available"] = False
             return
 
         self["module_name"] = module.__name__
-        self["is_module"] = name == importable_name and inspect.ismodule(module)
+        self["is_module"] = name == scope_name and inspect.ismodule(module)
 
-        ver = self._lookup(
-            module,
-            attrs=("__version__", "VERSION"),
-            stdlib_default=f"python {python_version()}",
-        )
-        if ver is None:
-            try:
-                ver = md_version(self["package_name"])
-            except PackageNotFoundError:
-                pass
-        if ver:
-            self["version"] = ver
-
+        self._set_version(module)
         self["path"] = self.resolve_path(module)
+
         try:
-            self["line"] = inspect.getsourcelines(module)[1]
-        except (TypeError, OSError):
+            obj = import_module(parts[0])
+            if len(parts) > 1:
+                for part in parts[1:]:
+                    obj = getattr(obj, part)
+
+            self["line"] = inspect.getsourcelines(obj)[1]
+        except (TypeError, OSError, AttributeError):
             pass
 
         ts = int(os.path.getmtime(self["path"]))
@@ -77,27 +79,45 @@ class Importable(dict):
         except (FileNotFoundError, CalledProcessError):
             pass
 
-    def resolve_path(self, module):
+    def _set_version(self, module):
         try:
-            return inspect.getabsfile(self["member"])
+            # this is standard in Python 3.8 and pip-installable otherwise
+            import importlib.metadata as md
+        except ImportError:
+            md = None  # type: ignore
+        ver = self._lookup(
+            module,
+            attrs=["__version__", "VERSION"],
+            stdlib_default=f"python {python_version()}",
+        )
+        if ver is None and md is not None:
+            try:
+                ver = md.version(self["package_name"])
+            except md.PackageNotFoundError:
+                pass
+        if ver:
+            self["version"] = ver
+
+    def resolve_path(self, module: ModuleType) -> Optional[str]:
+        try:
+            return inspect.getabsfile(self["module_name"])
         except TypeError:
-            path = self._lookup(
+            return self._lookup(
                 module,
-                attrs=("__file__", "__path__"),
+                attrs=["__file__", "__path__"],
                 stdlib_default=sysconfig.get_paths()["stdlib"],
             )
-            return path
 
     def _lookup(
-        self, module: Any, attrs: Iterable[str], stdlib_default: str
-    ) -> Union[str, None]:
+        self, module: ModuleType, attrs: List[str], stdlib_default: str
+    ) -> Optional[str]:
 
         for attr in attrs:
             try:
                 ret = getattr(module, attr)
                 if not isinstance(ret, str):
                     raise LookupError(
-                        f"Unexpected return value {ret=}, with type {type(ret)}"
+                        f"Unexpected return value ret={ret}, with type {type(ret)}"
                     )
                 return ret
             except AttributeError:
@@ -109,38 +129,5 @@ class Importable(dict):
         return None
 
     def __str__(self):
-        lines = [f"{attr}: {value}" for attr, value in sorted(self.items())]
+        lines = [f"{attr}: {value}" for attr, value in self.items()]
         return "\n".join(lines)
-
-
-def query(
-    importable_names: Union[str, Iterable[str]],
-    field: str = "path",
-    fill_value: Any = None,
-) -> Union[Any, List[Any]]:
-    if isinstance(importable_names, str):
-        importable_names = [importable_names]
-
-    res = []
-    for name in importable_names:
-        data = Importable(name)
-
-        if field == "info":
-            res.append(str(data))
-            continue
-        elif field == "path_and_line":
-            p: Any = fill_value
-            if data["is_available"]:
-                p = str(data["path"])
-                if not data["is_module"]:
-                    p += f":{data['line']}"
-
-            res.append(p)
-            continue
-        try:
-            res.append(data[field])
-        except KeyError as err:
-            raise ValueError(f"Could not determine field `{field}`.") from err
-    if len(res) == 1:
-        return res[0]
-    return res
