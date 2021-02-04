@@ -1,12 +1,12 @@
 import inspect
 import os
+import subprocess
 import sysconfig
 from datetime import datetime
 from importlib import import_module
 from itertools import accumulate
 from pathlib import Path
 from platform import python_version
-from subprocess import CalledProcessError, run
 from types import ModuleType
 from typing import List, Optional, Union
 
@@ -69,14 +69,15 @@ class Scope(dict):
 
         try:
             os.chdir(Path(self["path"]).parent)
-            process = run(
+            process = subprocess.run(
                 ["git", "rev-parse", "HEAD"],
                 check=True,
-                capture_output=True,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
             )
             hash = process.stdout.decode("utf-8")
             self["git_hash"] = hash.replace("\n", "")
-        except (FileNotFoundError, CalledProcessError):
+        except (FileNotFoundError, subprocess.CalledProcessError):
             pass
 
     def _set_version(self, module):
