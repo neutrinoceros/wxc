@@ -7,8 +7,8 @@ from unittest import mock
 
 import pytest
 
-from whych import _installer
-from whych._installer import _lookup_rcfile, main
+from pyw import _installer
+from pyw._installer import _lookup_rcfile, main
 
 
 @pytest.mark.skipif(sys.platform.startswith("win"), reason="no windows support")

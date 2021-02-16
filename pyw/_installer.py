@@ -50,8 +50,8 @@ def main(install_dir=None, rcfile=None):
         sys.exit(1)
 
     # create an executable symlink
-    app_file = install_dir / "whych"
-    app_file.symlink_to(REPO_DIR.joinpath("whych", "__main__.py"))
+    app_file = install_dir / "pyw"
+    app_file.symlink_to(REPO_DIR.joinpath("pyw", "__main__.py"))
     st = os.stat(app_file)
     os.chmod(app_file, st.st_mode | stat.S_IEXEC)
 
@@ -72,6 +72,6 @@ def main(install_dir=None, rcfile=None):
 
     print(
         "Installation complete. "
-        "To start using whych, please open a new terminal, or run\n"
+        "To start using pyw, please open a new terminal, or run\n"
         f"source {rcfile}"
     )

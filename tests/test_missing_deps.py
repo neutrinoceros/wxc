@@ -11,7 +11,7 @@ def has_importlib_metadata(request, monkeypatch):
 
 
 def test_foo(has_importlib_metadata):
-    from whych.cli import main
+    from pyw.cli import main
 
     res = main(["os.path.join"])
     assert res == 0

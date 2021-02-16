@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest  # type: ignore
 
-from whych.api import Scope
+from pyw.api import Scope
 
 
 @pytest.mark.parametrize(
@@ -31,9 +31,9 @@ def test_finder(a_package):
 
 def test_get_git_hash():
     """Check that we retrieve the git hash of a package installed from a repo"""
-    # whych itself is the only repo that can reliably be used to test this
+    # pyw itself is the only repo that can reliably be used to test this
     # feature
-    res = Scope("whych")
+    res = Scope("pyw")
     assert "git_hash" in res
 
 
