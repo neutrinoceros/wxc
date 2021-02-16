@@ -2,7 +2,7 @@ from importlib import import_module
 
 import pytest
 
-from whych.cli import main
+from pyw.cli import main
 
 valid_queries = [None, "--version", "--info", "--json"]
 
@@ -46,7 +46,7 @@ def test_failed_query(capsys, mocker):
     def mock_Scope(self, name):
         self["is_available"] = True
 
-    mocker.patch("whych.api.Scope.__init__", mock_Scope)
+    mocker.patch("pyw.api.Scope.__init__", mock_Scope)
 
     res = main(["lol", "--version"])
     assert res != 0

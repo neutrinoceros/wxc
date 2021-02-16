@@ -1,4 +1,4 @@
-exclude: "^(whych/externs)"
+exclude: "^(pyw/externs)"
 
 # a curated list of available hooks
 # https://pre-commit.com/hooks.html

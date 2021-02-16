@@ -4,7 +4,7 @@ from pathlib import Path
 import pytest
 from schema import Optional, Schema
 
-from whych.api import Scope
+from pyw.api import Scope
 
 template = Schema(
     {
