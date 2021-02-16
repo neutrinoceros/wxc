@@ -10,5 +10,4 @@ setup(
     description="Python Distribution Utilities",
     author="Clément Robert",
     entry_points={"console_scripts": ["pyw=pyw.cli:main"]},
-    install_requires=["stdlib_list"],
 )

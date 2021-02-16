@@ -16,5 +16,4 @@ omit = [
   "setup.py",
   "pyw/__main__.py",
   "install_app.py",
-  "pyw/externs/*"
 ]

@@ -10,7 +10,7 @@ from platform import python_version
 from types import ModuleType
 from typing import List, Optional, Union
 
-from .externs._stdlib_list import in_stdlib
+from stdlib_list import in_stdlib
 
 
 class Scope(dict):
