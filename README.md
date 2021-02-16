@@ -38,6 +38,9 @@ Or, if you want the bleeding edge devleopment version
 $ pip install git+https://github.com/neutrinoceros/pyw@development
 ```
 
+> Note that `pyw` should never be installed in isolation (for instance via
+[pipx](https://pipxproject.github.io/pipx/)) because it completely defeats the
+purpose.
 ## Usage
 
 Examples
