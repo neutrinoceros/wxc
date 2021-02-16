@@ -1,4 +1,4 @@
 #!/usr/bin/env python
-from whych.cli import main
+from pyw.cli import main
 
 main()

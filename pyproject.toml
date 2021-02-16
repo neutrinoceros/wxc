@@ -14,7 +14,6 @@ combine_as_imports = true
 [tool.coverage.run]
 omit = [
   "setup.py",
-  "whych/__main__.py",
+  "pyw/__main__.py",
   "install_app.py",
-  "whych/externs/*"
 ]

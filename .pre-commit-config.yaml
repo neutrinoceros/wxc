@@ -1,5 +1,3 @@
-exclude: "^(whych/externs)"
-
 # a curated list of available hooks
 # https://pre-commit.com/hooks.html
 
