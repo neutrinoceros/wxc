@@ -28,28 +28,15 @@ $ pyw pandas.DataFrame
 
 ## Installation
 
-### Usage
-
-``pyw``'s command line application shines most if you use isolated Python
-environments. In order to make it available from anywhere on your system and
-against the current environment run
+Get the latest stable version
 ```shell
-$ python install_app.py
-```
-:warning: Currently only Linux and MacOS are supported. On Windows, it is still
-possible to install `pyw` on an specific environment by installing it as a
-Python package (see next section).
-
-### Python api
-
-From the top level of the repo, run
-```shell
-$ pip install -e .
+$ pip install pyw
 ```
 
-This will make `pyw`'s internal functionalities available from a Python
-session in the current environment.
-
+Or, if you want the bleeding edge devleopment version
+```shell
+$ pip install git+https://github.com/neutrinoceros/pyw@development
+```
 
 ## Usage
 
