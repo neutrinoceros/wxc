@@ -31,7 +31,7 @@ $ pyw pandas.DataFrame
 
 Get the latest stable version
 ```shell
-$ pip install pyw
+$ pip install git+https://github.com/neutrinoceros/pyw@main
 ```
 
 Or, if you want the bleeding edge devleopment version
