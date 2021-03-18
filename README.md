@@ -1,6 +1,6 @@
 <img src="logo.jpg"
      alt="pyw logo"
-     height="80"
+     height="100"
      style="float: left; margin-right: 10px;" />
 
 <!-- ![PyPI](https://img.shields.io/pypi/v/pyw) -->
