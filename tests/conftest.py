@@ -20,5 +20,5 @@ packages_to_try = [
 
 
 @pytest.fixture(params=packages_to_try)
-def a_package(request):
+def package_name(request):
     return request.param

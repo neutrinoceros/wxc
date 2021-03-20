@@ -9,9 +9,9 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/pyw/master.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/pyw/master)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-pyw is a command line tool to interogate your Python installation.
-In essence,
+pyw is a command line tool to explore your python environment, wrapping functionalities from the very useful but fragile builtin module `inspect`.
 
+In essence,
 ```shell
 $ pyw pandas
 ```
@@ -29,14 +29,9 @@ $ pyw pandas.DataFrame
 
 ## Installation
 
-Get the latest stable version
+Here's the recommended installation method
 ```shell
 $ pip install git+https://github.com/neutrinoceros/pyw@main
-```
-
-Or, if you want the bleeding edge devleopment version
-```shell
-$ pip install git+https://github.com/neutrinoceros/pyw@development
 ```
 
 > Note that `pyw` should never be installed in isolation (for instance via
@@ -53,43 +48,16 @@ $ pyw numpy
 $ pyw pandas --version
 1.0.3
 
-$ pyw yt --info
-scope_name: yt
-package_name: yt
-is_stdlib: False
-is_available: True
-module_name: yt
-is_module: True
-version: 4.0.dev0
-path: /Users/clm/dev/python/yt-project/yt/yt/__init__.py
-line: 0
-last_updated: 2021-02-01 19:09:24
-git_hash: 0d31a4a14ce254fbad356a4c1d50bbe41beed6da
-
-$ pyw yt --json
-{
-  "scope_name": "yt",
-  "package_name": "yt",
-  "is_stdlib": false,
-  "is_available": true,
-  "module_name": "yt",
-  "is_module": true,
-  "version": "4.0.dev0",
-  "path": "/Users/clm/dev/python/yt-project/yt/yt/__init__.py",
-  "line": 0,
-  "last_updated": "2021-02-01 19:09:24",
-  "git_hash": "0d31a4a14ce254fbad356a4c1d50bbe41beed6da"
-}
+$ pyw stdlib_list --full
+source = <>pyw_dev/lib/python3.9/site-packages/stdlib_list/__init__.py:0
+version = v0.8.0
+in_stdlib = False
+name = stdlib_list
 ```
 
 ## Notes
-- the Python api is tested on macOS, Linux and Windows, for Python 3.6 and 3.9
-  Note that with Python versions older than 3.8, installing `importlib-metadata`
-  helps to discover the version number in certain projects.
+- the Python api is tested on macOS, Linux, for Python 3.6 and 3.9
 - pyw relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
-- pyw tries to determine the source file from which the object is imported. In
-  some cases (e.g. for the standard library on Windows), it will fall back to a
-  directory.
 - this project was formally named "whych" and renamed to avoid confusion with the
   pypi-available package of the same name.
