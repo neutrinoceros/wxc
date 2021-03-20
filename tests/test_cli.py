@@ -4,7 +4,7 @@ import pytest
 
 from pyw.cli import main
 
-valid_queries = [None, "--version", "--info", "--json"]
+valid_queries = [None, "--version", "-v", "--full", "-f"]
 
 
 @pytest.mark.parametrize("arg", valid_queries)
@@ -15,14 +15,14 @@ def test_query_valid_field(arg):
     main(argv)
 
 
-def test_elementary_queries(capsys, a_package):
+def test_elementary_queries(capsys, package_name):
 
     try:
-        import_module(a_package)
+        import_module(package_name)
     except ImportError:
         pytest.skip()
 
-    res = main([a_package, "--version"])
+    res = main([package_name, "--version"])
     assert res == 0
 
     out, err = capsys.readouterr()
@@ -39,17 +39,12 @@ def test_falty_queries(capsys, arg):
     assert res != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err.startswith("unknown")
+    assert err == "Error: did not resolve any data for 'NotARealPackage'\n"
 
 
-def test_failed_query(capsys, mocker):
-    def mock_Scope(self, name):
-        self["is_available"] = True
-
-    mocker.patch("pyw.api.Scope.__init__", mock_Scope)
-
-    res = main(["lol", "--version"])
-    assert res != 0
+def test_non_existing_member(capsys):
+    ret = main(["pathlib.lol"])
+    assert ret != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err.startswith("unknown")
+    assert err == "Error: did not resolve any data for 'pathlib.lol'\n"

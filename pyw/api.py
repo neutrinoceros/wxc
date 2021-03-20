@@ -1,134 +1,105 @@
+import sys
+
+if sys.version_info.minor >= 8:
+    import importlib.metadata as md
+else:
+    import importlib_metadata as md
+
 import inspect
-import os
-import subprocess
-import sysconfig
-from datetime import datetime
+from collections import defaultdict
+from functools import reduce
 from importlib import import_module
-from itertools import accumulate
-from pathlib import Path
 from platform import python_version
-from types import ModuleType
-from typing import List, Optional, Union
 
 from stdlib_list import in_stdlib
 
+VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION"))
 
-class Scope(dict):
-    """
-    A `Scope` is a Python code object that can be imported and/or called from an
-    importable super-scope.
-    Packages, modules, classes, functions and class methods qualify.
-    """
 
-    def __init__(self, n: Optional[Union[str, bytes]] = None):
-        if n is not None:
-            self.from_name(str(n))
-
-    def from_name(self, scope_name: str):
-
-        parts = scope_name.split(".")
-
-        self["scope_name"] = scope_name
-        self["package_name"] = parts[0]
-        self["is_stdlib"] = in_stdlib(self["package_name"])
-
-        idx = 0
-        name_candidates = list(accumulate(parts, lambda x, y: ".".join([x, y])))
-        for name in reversed(name_candidates):
-            try:
-                module = import_module(name)
-                self["is_available"] = True
-                break
-            except ModuleNotFoundError:
-                idx += 1
-                continue
-        else:
-            self["is_available"] = False
-            return
-
-        self["module_name"] = module.__name__
-        self["is_module"] = name == scope_name and inspect.ismodule(module)
-
-        self._set_version(module)
-        self["path"] = self.resolve_path(module)
-
+def get_importable_obj(name: str):
+    name_in = name
+    attrs = []
+    while name:
         try:
-            obj = import_module(parts[0])
-            if len(parts) > 1:
-                for part in parts[1:]:
-                    obj = getattr(obj, part)
-
-            self["line"] = inspect.getsourcelines(obj)[1]
-        except (TypeError, OSError, AttributeError):
-            pass
-
-        ts = int(os.path.getmtime(self["path"]))
-        self["last_updated"] = datetime.utcfromtimestamp(ts).strftime(
-            "%Y-%m-%d %H:%M:%S"
-        )
-
-        try:
-            os.chdir(Path(self["path"]).parent)
-            process = subprocess.run(
-                ["git", "rev-parse", "HEAD"],
-                check=True,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.STDOUT,
-            )
-            hash = process.stdout.decode("utf-8")
-            self["git_hash"] = hash.replace("\n", "")
-        except (FileNotFoundError, subprocess.CalledProcessError):
-            pass
-
-    def _set_version(self, module):
-        try:
-            # this is standard in Python 3.8 and pip-installable otherwise
-            import importlib.metadata as md
+            obj = import_module(name)
+            break
         except ImportError:
-            md = None  # type: ignore
-        ver = self._lookup(
-            module,
-            attrs=["__version__", "VERSION"],
-            stdlib_default=f"python {python_version()}",
-        )
-        if ver is None and md is not None:
-            try:
-                ver = md.version(self["package_name"])
-            except md.PackageNotFoundError:
-                pass
-        if ver:
-            self["version"] = ver
+            name, _, attr = name.rpartition(".")
+            attrs.append(attr)
+    if not name:
+        raise ImportError(name_in)
+    if attrs:
+        obj = getattr(obj, attrs.pop())
 
-    def resolve_path(self, module: ModuleType) -> Optional[str]:
-        try:
-            return inspect.getabsfile(self["module_name"])
-        except TypeError:
-            return self._lookup(
-                module,
-                attrs=["__file__", "__path__"],
-                stdlib_default=sysconfig.get_paths()["stdlib"],
-            )
+    # will raise AttributeError in case of missing attr
+    reduce(getattr, [obj, *attrs])
+    return obj
 
-    def _lookup(
-        self, module: ModuleType, attrs: List[str], stdlib_default: str
-    ) -> Optional[str]:
 
-        for attr in attrs:
-            try:
-                ret = getattr(module, attr)
-                if not isinstance(ret, str):
-                    raise LookupError(
-                        f"Unexpected return value ret={ret}, with type {type(ret)}"
-                    )
-                return ret
-            except AttributeError:
-                pass
+def get_sourcefile(obj):
+    try:
+        file = inspect.getfile(obj)
+    except OSError:
+        file = obj.__file__
+    except TypeError:
+        # this happens for instance wiht `math.sqrt`
+        # because inspect.getsourcefile doesn't work on builtin (compiled) function
+        module = inspect.getmodule(obj)
+        return get_sourcefile(module)
+    return file
 
-        if self["is_stdlib"]:
-            return stdlib_default
 
-        return None
+def get_sourceline(obj):
+    return inspect.getsourcelines(obj)[1]
 
-    def __str__(self):
-        lines = [f"{attr}: {value}" for attr, value in self.items()]
-        return "\n".join(lines)
+
+def get_version(package_name: str) -> str:
+    package = get_importable_obj(package_name)
+    for version_attr in VERSION_ATTR_LOOKUP_TABLE:
+        if hasattr(package, version_attr):
+            return getattr(package, version_attr)
+
+    try:
+        return md.version(package_name)
+    except md.PackageNotFoundError:
+        pass
+
+    if in_stdlib(package_name):
+        return f"Python {python_version()}"
+
+    raise LookupError(
+        "Could not determine version metadata from '{package_name}'"
+    )
+
+
+def get_full_data(name: str) -> dict:
+    data = defaultdict(None)
+    package_name, _, _ = name.partition(".")
+
+    try:
+        obj = get_importable_obj(name)
+    except (ImportError, AttributeError):
+        return data
+
+    try:
+        source = get_sourcefile(obj)
+    except RecursionError:
+        source = ""
+
+    try:
+        lineno = get_sourceline(obj)
+        source += f":{lineno}" if lineno else ""
+    except (OSError, TypeError):
+        pass
+
+    if source:
+        data["source"] = source
+
+    try:
+        data["version"] = get_version(package_name)
+    except LookupError:
+        pass
+
+    data["in_stdlib"] = in_stdlib(package_name)
+
+    return data
