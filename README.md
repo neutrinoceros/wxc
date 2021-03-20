@@ -6,7 +6,7 @@
 <!-- ![PyPI](https://img.shields.io/pypi/v/pyw) -->
 ![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/neutrinoceros/whych)
 [![codecov](https://codecov.io/gh/neutrinoceros/pyw/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/pyw)
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/pyw/master.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/pyw/master)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/pyw/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/pyw/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 pyw is a command line tool to explore your python environment, wrapping functionalities from the very useful but fragile builtin module `inspect`.
