@@ -8,9 +8,6 @@ line-length = 80
 profile = "black"
 combine_as_imports = true
 
-[tool.flakehell.plugins]
-"flake8-bugbear" = ["+*"]
-
 [tool.coverage.run]
 omit = [
   "setup.py",
