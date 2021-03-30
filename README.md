@@ -59,5 +59,5 @@ name = stdlib_list
 - the Python api is tested on macOS, Linux, for Python 3.6 and 3.9
 - pyw relies on [stdlib_list](https://github.com/jackmaney/python-stdlib-list)
   to determine which packages are part of the standard library.
-- this project was formally named "whych" and renamed to avoid confusion with the
+- this project was formerly named "whych" and renamed to avoid confusion with the
   pypi-available package of the same name.
