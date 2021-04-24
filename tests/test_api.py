@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest  # type: ignore
 
-from pyw.api import get_full_data
+from wxc.api import get_full_data
 
 
 @pytest.mark.parametrize(

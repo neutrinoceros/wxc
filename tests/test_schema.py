@@ -3,7 +3,7 @@ from pathlib import Path
 import pytest
 from schema import Optional, Schema
 
-from pyw.api import get_full_data
+from wxc.api import get_full_data
 
 template = Schema(
     {
