@@ -2,7 +2,7 @@ import sys
 from argparse import ArgumentParser
 from typing import List, Optional
 
-from pyw.api import get_full_data
+from wxc.api import get_full_data
 
 
 def main(argv: Optional[List[str]] = None) -> int:

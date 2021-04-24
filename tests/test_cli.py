@@ -2,7 +2,7 @@ from importlib import import_module
 
 import pytest
 
-from pyw.cli import main
+from wxc.cli import main
 
 valid_queries = [None, "--version", "-v", "--full", "-f"]
 
