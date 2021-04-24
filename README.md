@@ -1,7 +1,4 @@
-<img src="logo.png"
-     alt="wxc logo"
-     height="50"
-     style="float: left; margin-right: 10px;" />
+# wxc
 
 [![PyPI](https://img.shields.io/pypi/v/wxc)](https://pypi.org/project/wxc/)
 [![codecov](https://codecov.io/gh/neutrinoceros/wxc/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/wxc)
