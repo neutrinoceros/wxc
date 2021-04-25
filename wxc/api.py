@@ -73,7 +73,7 @@ def get_version(package_name: str) -> str:
 
 
 def get_full_data(name: str) -> dict:
-    data = defaultdict(None)
+    data = defaultdict(str)
     package_name, _, _ = name.partition(".")
 
     try:

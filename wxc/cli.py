@@ -38,7 +38,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     if args.version:
-        if data["version"] is None:
+        if not data["version"]:
             print(
                 f"Error: did not find version metadata for '{args.name}'",
                 file=sys.stderr,
@@ -47,5 +47,8 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(data["version"])
         return 0
 
+    if not data["source"]:
+        print(f"Error: did not manage to find source file for '{args.name}'")
+        return 1
     print(data["source"])
     return 0

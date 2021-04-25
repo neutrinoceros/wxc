@@ -48,3 +48,12 @@ def test_non_existing_member(capsys):
     out, err = capsys.readouterr()
     assert out == ""
     assert err == "Error: did not resolve any data for 'pathlib.lol'\n"
+
+
+@pytest.mark.xfail(reason="This checks stability of the defacto (broken) behavior.")
+def test_compiled_source(capsys):
+    ret = main(["numpy.abs"])
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert err == "Error: did not resolve source file for 'numpy.abs'\n"
+    assert ret == 1
