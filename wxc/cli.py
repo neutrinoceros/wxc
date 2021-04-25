@@ -34,7 +34,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.full:
         data["name"] = args.name
-        print("\n".join([f"{k} = {v}" for k, v in data.items()]))
+        print("\n".join(f"{k} = {v}" for k, v in data.items()))
         return 0
 
     if args.version:
