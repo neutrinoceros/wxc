@@ -16,7 +16,7 @@ from stdlib_list import in_stdlib
 VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION"))
 
 
-def get_importable_obj(name: str):
+def get_obj(name: str):
     name_in = name
     attrs = []
     while name:
@@ -32,8 +32,7 @@ def get_importable_obj(name: str):
         obj = getattr(obj, attrs.pop())
 
     # will raise AttributeError in case of missing attr
-    reduce(getattr, [obj, *attrs])
-    return obj
+    return reduce(getattr, [obj, *attrs])
 
 
 def get_sourcefile(obj):
@@ -54,7 +53,7 @@ def get_sourceline(obj):
 
 
 def get_version(package_name: str) -> str:
-    package = get_importable_obj(package_name)
+    package = get_obj(package_name)
     for version_attr in VERSION_ATTR_LOOKUP_TABLE:
         if hasattr(package, version_attr):
             return getattr(package, version_attr)
@@ -77,7 +76,7 @@ def get_full_data(name: str) -> dict:
     package_name, _, _ = name.partition(".")
 
     try:
-        obj = get_importable_obj(name)
+        obj = get_obj(name)
     except (ImportError, AttributeError):
         return data
 

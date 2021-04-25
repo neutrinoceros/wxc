@@ -25,3 +25,9 @@ def test_finder(package_name):
     assert p.exists()
     if not imp["in_stdlib"]:
         assert package_name in p.parts
+
+
+def test_get_obj():
+    line1 = get_full_data("pathlib.Path")["source"].split(":")[1]
+    line2 = get_full_data("pathlib.Path.chmod")["source"].split(":")[1]
+    assert line1 != line2
