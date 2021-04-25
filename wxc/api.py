@@ -41,10 +41,11 @@ def get_sourcefile(obj):
     except OSError:
         file = obj.__file__
     except TypeError:
-        # this happens for instance wiht `math.sqrt`
-        # because inspect.getsourcefile doesn't work on builtin (compiled) function
-        module = inspect.getmodule(obj)
-        return get_sourcefile(module)
+        # this happens for instance with `math.sqrt`
+        # because inspect.getsourcefile doesn't work on compiled code
+        if inspect.ismodule(obj):
+            raise
+        return get_sourcefile(inspect.getmodule(obj))
     return file
 
 
