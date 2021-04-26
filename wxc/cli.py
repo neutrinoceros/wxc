@@ -48,7 +48,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     if not data["source"]:
-        print(f"Error: did not manage to find source file for '{args.name}'")
+        print(f"Error: did not resolve source file for '{args.name}'")
         return 1
     print(data["source"])
     return 0
