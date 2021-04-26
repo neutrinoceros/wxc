@@ -18,7 +18,7 @@ repos:
       - id: setup-cfg-fmt
 
   - repo: https://github.com/Lucas-C/pre-commit-hooks
-    rev: v1.1.9
+    rev: v1.1.10
     hooks:
         - id: remove-tabs
 
@@ -29,7 +29,7 @@ repos:
         additional_dependencies: ['toml==0.10.2']
 
   - repo: https://github.com/psf/black
-    rev: 20.8b1
+    rev: 21.4b0
     hooks:
       - id: black
         language_version: python3
