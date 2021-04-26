@@ -56,6 +56,6 @@ def test_non_existing_member(capsys):
 def test_compiled_source(capsys):
     ret = main(["numpy.abs"])
     out, err = capsys.readouterr()
-    assert out == ""
     assert err == "Error: did not resolve source file for 'numpy.abs'\n"
-    assert ret == 1
+    assert out == ""
+    assert ret == 0
