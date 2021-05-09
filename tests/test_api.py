@@ -31,3 +31,15 @@ def test_get_obj():
     line1 = get_full_data("pathlib.Path")["source"].split(":")[1]
     line2 = get_full_data("pathlib.Path.chmod")["source"].split(":")[1]
     assert line1 != line2
+
+
+def test_wrong_package():
+    with pytest.raises(ImportError):
+        get_full_data("NotARealPackage")
+
+
+def test_wrong_member():
+    with pytest.raises(
+        AttributeError, match="os.path has no member 'NotARealMember'."
+    ):
+        get_full_data("os.path.NotARealMember")

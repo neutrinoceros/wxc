@@ -7,15 +7,26 @@ else:
 
 import inspect
 from collections import defaultdict
-from functools import reduce
+from functools import lru_cache
 from importlib import import_module
 from platform import python_version
 
 from stdlib_list import in_stdlib
 
+from wxc.levnesthein import levenshtein_distance
+
 VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION"))
 
 
+def get_suggestions(obj, attr):
+    suggestions = []
+    for a in dir(obj):
+        if levenshtein_distance(attr, a, max_dist=2) <= 2:
+            suggestions.append(a)
+    return suggestions
+
+
+@lru_cache(maxsize=128)
 def get_obj(name: str):
     name_in = name
     attrs = []
@@ -28,11 +39,22 @@ def get_obj(name: str):
             attrs.append(attr)
     if not name:
         raise ImportError(name_in)
-    if attrs:
-        obj = getattr(obj, attrs.pop())
 
-    # will raise AttributeError in case of missing attr
-    return reduce(getattr, [obj, *attrs])
+    for attr in reversed(attrs):
+        try:
+            obj = getattr(obj, attr)
+            name += f".{attr}"
+        except AttributeError as exc:
+            msg = f"{name} has no member '{attr}'."
+            suggestions = get_suggestions(obj, attr)
+            if len(suggestions) > 1:
+                repr_suggestions = ", ".join(f"'{s}'" for s in suggestions)
+                msg += f" The following near matches were found: {repr_suggestions}"
+            elif len(suggestions) == 1:
+                msg += f" Did you mean '{suggestions[0]}' ?"
+            raise AttributeError(msg) from exc
+
+    return obj
 
 
 def get_sourcefile(obj):
@@ -76,10 +98,7 @@ def get_full_data(name: str) -> dict:
     data = defaultdict(str)
     package_name, _, _ = name.partition(".")
 
-    try:
-        obj = get_obj(name)
-    except (ImportError, AttributeError):
-        return data
+    obj = get_obj(name)
 
     try:
         source = get_sourcefile(obj)

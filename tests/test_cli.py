@@ -43,11 +43,11 @@ def test_falty_queries(capsys, arg):
 
 
 def test_non_existing_member(capsys):
-    ret = main(["pathlib.lol"])
+    ret = main(["pathlib.nothing"])
     assert ret != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err == "Error: did not resolve any data for 'pathlib.lol'\n"
+    assert err == "Error: pathlib has no member 'nothing'.\n"
 
 
 @pytest.mark.xfail(
@@ -59,3 +59,25 @@ def test_compiled_source(capsys):
     assert err == "Error: did not resolve source file for 'numpy.abs'\n"
     assert out == ""
     assert ret == 0
+
+
+def test_typo1(capsys):
+    ret = main(["pathlib.Path.chmode"])
+    out, err = capsys.readouterr()
+    assert (
+        err
+        == "Error: pathlib.Path has no member 'chmode'. The following near matches were found: 'chmod', 'lchmod'\n"
+    )
+    assert out == ""
+    assert ret != 0
+
+
+def test_typo2(capsys):
+    ret = main(["pathlib.Path.homme"])
+    out, err = capsys.readouterr()
+    assert (
+        err
+        == "Error: pathlib.Path has no member 'homme'. Did you mean 'home' ?\n"
+    )
+    assert out == ""
+    assert ret != 0
