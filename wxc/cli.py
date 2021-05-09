@@ -2,7 +2,7 @@ import sys
 from argparse import ArgumentParser
 from typing import List, Optional
 
-from wxc.api import get_full_data
+from wxc.api import get_full_data, get_obj
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -23,14 +23,19 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    data = get_full_data(args.name)
-
-    if not any(list(data.values())):
+    try:
+        get_obj(args.name)
+    except ImportError:
         print(
             f"Error: did not resolve any data for '{args.name}'",
             file=sys.stderr,
         )
         return 1
+    except AttributeError as exc:
+        print(f"Error: {exc}", file=sys.stderr)
+        return 1
+
+    data = get_full_data(args.name)
 
     if args.full:
         data["name"] = args.name

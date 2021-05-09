@@ -1,6 +1,5 @@
 from pathlib import Path
 
-import pytest
 from schema import Optional, Schema
 
 from wxc.api import get_full_data
@@ -12,12 +11,6 @@ template = Schema(
         Optional("version"): str,
     }
 )
-
-
-@pytest.mark.parametrize("name", ["NotARealPackage", "os.path.NotARealMember"])
-def test_non_existing_member(name):
-    data = get_full_data(name)
-    assert data == {}
 
 
 def test_empty_module_query(shared_datadir, monkeypatch):
