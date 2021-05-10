@@ -1,6 +1,3 @@
-import numpy as np
-
-
 def levenshtein_distance(seq1, seq2, max_dist=None):
     """
     Compute the levenshtein distance between seq1 and seq2.
@@ -31,29 +28,37 @@ def levenshtein_distance(seq1, seq2, max_dist=None):
 
     if abs(size_x - size_y) > max_dist:
         return max_dist + 1
-    matrix = np.zeros((size_x, size_y), dtype=int)
+
+    matrix = []
+    for _ in range(size_x):
+        # this somewhat clumsy initialization is intended to avoid
+        # side effects of the "smart" way. See
+        # >>> matrix = [[0]*size_y]*size_x
+        # >>> matrix[0] is matrix[1]
+        # True
+        matrix.append([0] * size_y)
     for x in range(size_x):
-        matrix[x, 0] = x
+        matrix[x][0] = x
     for y in range(size_y):
-        matrix[0, y] = y
+        matrix[0][y] = y
 
     for x in range(1, size_x):
         for y in range(1, size_y):
             if seq1[x - 1] == seq2[y - 1]:
-                matrix[x, y] = min(
-                    matrix[x - 1, y] + 1,
-                    matrix[x - 1, y - 1],
-                    matrix[x, y - 1] + 1,
+                matrix[x][y] = min(
+                    matrix[x - 1][y] + 1,
+                    matrix[x - 1][y - 1],
+                    matrix[x][y - 1] + 1,
                 )
             else:
-                matrix[x, y] = min(
-                    matrix[x - 1, y] + 1,
-                    matrix[x - 1, y - 1] + 1,
-                    matrix[x, y - 1] + 1,
+                matrix[x][y] = min(
+                    matrix[x - 1][y] + 1,
+                    matrix[x - 1][y - 1] + 1,
+                    matrix[x][y - 1] + 1,
                 )
 
         # Early break: the minimum distance is already larger than
         # maximum allow value, can return safely.
-        if matrix[x].min() > max_dist:
+        if min(matrix[x]) > max_dist:
             return max_dist + 1
-    return matrix[size_x - 1, size_y - 1]
+    return matrix[size_x - 1][size_y - 1]
