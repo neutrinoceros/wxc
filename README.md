@@ -5,9 +5,10 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-`wxc` (pronounced "which") is a command line tool to query the current Python
-environment, wrapping functionalities from the very useful but fragile builtin
-module `inspect`.
+`wxc` (pronounced "which") allows you to inspect source code in your Python
+environment from the command line. It is based on the `inspect` module from the
+standard library.
+
 
 In essence,
 ```shell
