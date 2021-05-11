@@ -57,10 +57,7 @@ name = stdlib_list
 
 ## Known limitations
 
-`wxc` currently is not able to go past inheritance and will not point to the
-exact location of methods defined outside the queried scope/
-
-`wxc` is also unable to query the origin of compiled code binded into Python. It
+`wxc` is not able to retrieve the source of compiled code binded into Python. It
 should however correctly point to the compiled file that an object is imported
 from.
 
