@@ -13,7 +13,7 @@ from platform import python_version
 
 from stdlib_list import in_stdlib
 
-from wxc.levnesthein import levenshtein_distance
+from wxc.levensthein import levenshtein_distance
 
 VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION"))
 
