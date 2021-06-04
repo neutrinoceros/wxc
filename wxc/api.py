@@ -11,7 +11,13 @@ from functools import lru_cache
 from importlib import import_module
 from platform import python_version
 
-from stdlib_list import in_stdlib
+if sys.version_info.minor < 10:
+    from stdlib_list import in_stdlib
+else:
+
+    def in_stdlib(package_name):
+        return package_name in sys.stdlib_module_names
+
 
 from wxc.levensthein import levenshtein_distance
 
