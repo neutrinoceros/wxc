@@ -53,7 +53,10 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 0
 
     if not data["source"]:
-        print(f"Error: did not resolve source file for '{args.name}'")
+        print(
+            f"Error: did not resolve source file for '{args.name}'",
+            file=sys.stderr,
+        )
         return 1
     print(data["source"])
     return 0
