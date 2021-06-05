@@ -50,15 +50,13 @@ def test_non_existing_member(capsys):
     assert err == "Error: pathlib has no member 'nothing'.\n"
 
 
-@pytest.mark.xfail(
-    reason="This checks stability of the defacto (broken) behavior."
-)
 def test_compiled_source(capsys):
+    pytest.importorskip("numpy")
     ret = main(["numpy.abs"])
     out, err = capsys.readouterr()
     assert err == "Error: did not resolve source file for 'numpy.abs'\n"
     assert out == ""
-    assert ret == 0
+    assert ret != 0
 
 
 def test_typo1(capsys):
