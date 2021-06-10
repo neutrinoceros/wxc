@@ -1,9 +1,9 @@
 import sys
 
-if sys.version_info.minor >= 8:
-    import importlib.metadata as md
-else:
+if sys.version_info < (3, 8):
     import importlib_metadata as md
+else:
+    import importlib.metadata as md
 
 import inspect
 from collections import defaultdict
@@ -11,7 +11,7 @@ from functools import lru_cache
 from importlib import import_module
 from platform import python_version
 
-if sys.version_info.minor < 10:
+if sys.version_info < (3, 10):
     from stdlib_list import in_stdlib
 else:
 
