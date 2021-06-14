@@ -29,7 +29,7 @@ repos:
         additional_dependencies: ['toml==0.10.2']
 
   - repo: https://github.com/psf/black
-    rev: 21.5b2
+    rev: 21.6b0
     hooks:
       - id: black
         language_version: python3
