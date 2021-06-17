@@ -1,6 +1,7 @@
 # wxc
 
 [![PyPI](https://img.shields.io/pypi/v/wxc)](https://pypi.org/project/wxc/)
+[![PyPI](https://img.shields.io/pypi/pyversions/wxc)](https://img.shields.io/pypi/v/wxc)
 [![codecov](https://codecov.io/gh/neutrinoceros/wxc/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/wxc)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -63,9 +64,8 @@ from.
 
 ## Notes
 
-- `wxc` is tested on macOS, Linux, from Python 3.6 to 3.10
-- for Python versions older than 3.10, `wxc` relies on
-  [stdlib_list](https://github.com/jackmaney/python-stdlib-list) to determine
-  which packages are part of the standard library.
+- `wxc` is tested on macOS, Linux, from Python 3.6 to 3.10 (beta)
+- from Python 3.10, `wxc` currently has no dependencies outside of the standard
+  library.
 - this project was formerly named "whych" and renamed to avoid confusion with the
   pypi-available package of the same name.
