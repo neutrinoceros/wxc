@@ -27,7 +27,6 @@ repos:
     rev: 5.8.0
     hooks:
       - id: isort
-        additional_dependencies: ['toml==0.10.2']
 
   - repo: https://github.com/psf/black
     rev: 21.6b0
