@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # TEMP EXPERIMENT: do it every ten minutes
+    - cron: '0,10,20,30,40,50 * * * *'
 
 jobs:
   tests:
