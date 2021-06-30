@@ -20,7 +20,9 @@ else:
 
 from wxc.levensthein import levenshtein_distance
 
-VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION"))
+# sorted by decreasing order of priority
+# the 'version' attribute *may* in some cases (e.g., platform.py) be a function
+VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION", "version"))
 
 
 def get_suggestions(obj, attr):
@@ -84,7 +86,12 @@ def get_version(package_name: str) -> str:
     package = get_obj(package_name)
     for version_attr in VERSION_ATTR_LOOKUP_TABLE:
         if hasattr(package, version_attr):
-            return getattr(package, version_attr)
+            retv = getattr(package, version_attr)
+            if not isinstance(retv, str):
+                # this conditional guards against rare cases like the builtin
+                # platform module, platform.version being a function
+                continue
+            return retv
 
     try:
         return md.version(package_name)
