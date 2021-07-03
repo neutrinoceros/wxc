@@ -2,7 +2,7 @@ import sys
 from argparse import ArgumentParser
 from typing import List, Optional
 
-from wxc.api import get_full_data, get_obj
+from wxc.api import get_full_data, get_obj, is_builtin
 
 
 def main(argv: Optional[List[str]] = None) -> int:
@@ -35,7 +35,16 @@ def main(argv: Optional[List[str]] = None) -> int:
         print(f"Error: {exc}", file=sys.stderr)
         return 1
 
-    data = get_full_data(args.name)
+    try:
+        data = get_full_data(args.name)
+    except TypeError:
+        if is_builtin(args.name):
+            print(
+                "Error: failed to locate source data. "
+                f"'{args.name}' is a builtin object.",
+                file=sys.stderr,
+            )
+            return 1
 
     if args.full:
         data["name"] = args.name

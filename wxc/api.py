@@ -1,3 +1,4 @@
+import builtins
 import inspect
 import sys
 from collections import defaultdict
@@ -25,6 +26,14 @@ from wxc.levensthein import levenshtein_distance
 VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION", "version"))
 
 
+def is_builtin(name: str):
+    return hasattr(builtins, name)
+
+
+def get_builtin_obj(name: str):
+    return getattr(builtins, name)
+
+
 def get_suggestions(obj, attr):
     suggestions = []
     for a in dir(obj):
@@ -35,6 +44,9 @@ def get_suggestions(obj, attr):
 
 @lru_cache(maxsize=128)
 def get_obj(name: str):
+    if is_builtin(name):
+        return get_builtin_obj(name)
+
     name_in = name
     attrs = []
     while name:

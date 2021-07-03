@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [6.2.5] - 2021-07-03
+
+UX: improvements in support to queries on builtin objects.
+
 ## [6.2.4] - 2021-06-30
 
 Improve version checking support for some builtin packages (e.g. `tarfile`) that with a
