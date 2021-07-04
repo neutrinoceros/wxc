@@ -5,6 +5,8 @@ from collections import defaultdict
 from functools import lru_cache
 from importlib import import_module
 from platform import python_version
+from types import BuiltinFunctionType
+from typing import Any
 
 if sys.version_info < (3, 8):
     import importlib_metadata as md
@@ -26,8 +28,14 @@ from wxc.levensthein import levenshtein_distance
 VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION", "version"))
 
 
-def is_builtin(name: str):
+def is_builtin(name: str) -> bool:
     return hasattr(builtins, name)
+
+
+def is_builtin_func(obj: Any) -> bool:
+    if isinstance(obj, str):
+        obj = get_obj(obj)
+    return isinstance(obj, BuiltinFunctionType)
 
 
 def get_builtin_obj(name: str):
@@ -84,7 +92,8 @@ def get_sourcefile(obj):
     except TypeError:
         # this happens for instance with `math.sqrt`
         # because inspect.getsourcefile doesn't work on compiled code
-        if inspect.ismodule(obj):
+        # the second condition is met for os.fspath
+        if inspect.ismodule(obj) or is_builtin_func(obj):
             raise
         return get_sourcefile(inspect.getmodule(obj))
     return file
