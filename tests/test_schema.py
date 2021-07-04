@@ -39,7 +39,3 @@ def test_field_member():
     assert d2["version"] == d1["version"]
     assert d2["in_stdlib"] is True
     assert d1["in_stdlib"] is True
-
-
-def test_compiled_stdlib_member():
-    get_full_data("math.sqrt")
