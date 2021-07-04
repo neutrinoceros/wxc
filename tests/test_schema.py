@@ -1,5 +1,7 @@
+import sys
 from pathlib import Path
 
+import pytest
 from schema import Optional, Schema
 
 from wxc.api import get_full_data
@@ -13,6 +15,10 @@ template = Schema(
 )
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="parsing is more convoluted when ':' is a normal path element",
+)
 def test_empty_module_query(shared_datadir, monkeypatch):
     """Check for robustness of get_full_data
     with an empty module (in particular, no version data)
