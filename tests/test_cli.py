@@ -1,3 +1,4 @@
+import sys
 from importlib import import_module
 
 import pytest
@@ -22,12 +23,19 @@ def test_elementary_queries(capsys, package_name):
     except ImportError:
         pytest.skip()
 
-    res = main([package_name, "--version"])
-    assert res == 0
+    ret = main([package_name, "--version"])
 
     out, err = capsys.readouterr()
+
+    if package_name == "math" and sys.platform.startswith("win"):
+        assert out == ""
+        assert err == "Error: failed to locate source data.\n"
+        assert ret != 0
+        return
+
     assert out != "unknown"
     assert err == ""
+    assert ret == 0
 
 
 @pytest.mark.parametrize("arg", valid_queries)

@@ -1,3 +1,4 @@
+import sys
 from pathlib import Path
 
 import pytest  # type: ignore
@@ -5,6 +6,10 @@ import pytest  # type: ignore
 from wxc.api import get_full_data
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="On Windows, we can't even locate these files",
+)
 @pytest.mark.parametrize(
     "name,except_python_version", [("math", True), ("platform", False)]
 )
@@ -15,6 +20,10 @@ def test_stdlib_versions(name: str, except_python_version: bool):
     assert except_python_version is imp["version"].startswith("Python")
 
 
+@pytest.mark.skipif(
+    sys.platform.startswith("win"),
+    reason="parsing is more convoluted when ':' is a normal path element",
+)
 def test_finder(package_name):
     pytest.importorskip(package_name)
     imp = get_full_data(package_name)
@@ -28,8 +37,8 @@ def test_finder(package_name):
 
 
 def test_get_obj():
-    line1 = get_full_data("pathlib.Path")["source"].split(":")[1]
-    line2 = get_full_data("pathlib.Path.chmod")["source"].split(":")[1]
+    line1 = get_full_data("pathlib.Path")["source"].rpartition(":")[-1]
+    line2 = get_full_data("pathlib.Path.chmod")["source"].rpartition(":")[-1]
     assert line1 != line2
 
 
