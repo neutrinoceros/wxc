@@ -1,4 +1,4 @@
-def levenshtein_distance(seq1, seq2, max_dist=None):
+def levenshtein_distance(seq1: str, seq2: str, max_dist: int) -> int:
     """
     Compute the levenshtein distance between seq1 and seq2.
     From https://stackabuse.com/levenshtein-distance-and-text-similarity-in-python/
@@ -23,8 +23,7 @@ def levenshtein_distance(seq1, seq2, max_dist=None):
     """
     size_x = len(seq1) + 1
     size_y = len(seq2) + 1
-    if max_dist is None:
-        max_dist = max(size_x, size_y)
+    max_dist = min(max(size_x, size_y), max_dist)
 
     if abs(size_x - size_y) > max_dist:
         return max_dist + 1
