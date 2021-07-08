@@ -19,7 +19,7 @@ jobs:
           '3.7',
           '3.8',
           '3.9',
-          '3.10.0-beta.2',
+          '3.10-dev',
         ]
     runs-on: ${{ matrix.os }}
     steps:
