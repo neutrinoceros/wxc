@@ -1,5 +1,6 @@
-# a curated list of available hooks
-# https://pre-commit.com/hooks.html
+ci:
+    autofix_prs: true
+    autoupdate_schedule: "quarterly"
 
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
