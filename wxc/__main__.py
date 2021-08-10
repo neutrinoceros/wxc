@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+import sys
+
 from wxc.cli import main
 
-main()
+if __name__ == "__main__":
+    sys.exit(main())
