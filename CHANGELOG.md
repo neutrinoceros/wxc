@@ -7,6 +7,7 @@ and this project adheres to
 ## Unreleased
 
 - EHN: improve internal string formatting, fix a broken fstring
+- FIX: fix a typo in module name (levenshtein.py -> levenshtein.py)
 
 ## [6.2.9] - 2021-08-16
 

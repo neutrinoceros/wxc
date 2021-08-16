@@ -22,7 +22,7 @@ else:
         return package_name in sys.stdlib_module_names
 
 
-from wxc.levensthein import levenshtein_distance
+from wxc.levenshtein import levenshtein_distance
 
 # sorted by decreasing order of priority
 # the 'version' attribute *may* in some cases (e.g., platform.py) be a function
