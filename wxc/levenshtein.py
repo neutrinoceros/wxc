@@ -12,7 +12,7 @@ def levenshtein_distance(seq1: str, seq2: str, max_dist: int) -> int:
 
     Returns
     -------
-    The Levensthein distance as an integer.
+    The Levenshtein distance as an integer.
 
     Notes
     -----
