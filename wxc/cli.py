@@ -27,7 +27,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         get_obj(args.name)
     except ImportError:
         print(
-            f"Error: did not resolve any data for '{args.name}'",
+            f"Error: did not resolve any data for {args.name!r}",
             file=sys.stderr,
         )
         return 1
@@ -40,9 +40,9 @@ def main(argv: Optional[List[str]] = None) -> int:
     except TypeError:
         msg = "Error: failed to locate source data."
         if is_builtin(args.name):
-            msg += f" '{args.name}' is a builtin object."
+            msg += f" {args.name!r} is a builtin object."
         elif is_builtin_func(args.name):
-            msg += f" '{args.name}' is a builtin function."
+            msg += f" {args.name!r} is a builtin function."
         print(
             msg,
             file=sys.stderr,
@@ -57,7 +57,7 @@ def main(argv: Optional[List[str]] = None) -> int:
     if args.version:
         if not data["version"]:
             print(
-                f"Error: did not find version metadata for '{args.name}'",
+                f"Error: did not find version metadata for {args.name!r}",
                 file=sys.stderr,
             )
             return 1
@@ -66,7 +66,7 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if not data["source"]:
         print(
-            f"Error: did not resolve source file for '{args.name}'",
+            f"Error: did not resolve source file for {args.name!r}",
             file=sys.stderr,
         )
         return 1
