@@ -32,6 +32,6 @@ def test_cli_builtin(name, capsys):
     assert out == ""
     assert (
         err
-        == f"Error: failed to locate source data. '{name}' is a builtin function.\n"
+        == f"Error: failed to locate source data. {name!r} is a builtin function.\n"
     )
     assert ret != 0

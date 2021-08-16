@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## Unreleased
+
+- EHN: improve internal string formatting, fix a broken fstring
+
 ## [6.2.9] - 2021-08-16
 
 UX: improve error message in case of missing attribute

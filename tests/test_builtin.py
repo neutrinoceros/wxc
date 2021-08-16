@@ -25,6 +25,6 @@ def test_fail_builtins(name, capsys):
     assert out == ""
     assert err == (
         "Error: failed to locate source data. "
-        f"'{name}' is a builtin object.\n"
+        f"{name!r} is a builtin object.\n"
     )
     assert ret != 0

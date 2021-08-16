@@ -76,13 +76,13 @@ def get_obj(name: str):
             msg = exc.args[0]
             # force the name to match the one specified by the user even
             # in cases where they are using an alias (for instance os.path is a alias for posixpath on UNIX)
-            msg = re.sub(r"\'[^-\s]*\'", lambda _: f"'{name}'", msg, count=1)
+            msg = re.sub(r"\'[^-\s]*\'", lambda _: f"{name!r}", msg, count=1)
             suggestions = get_suggestions(obj, attr)
             if len(suggestions) > 1:
-                repr_suggestions = ", ".join(f"'{s}'" for s in suggestions)
+                repr_suggestions = ", ".join(f"{s!r}" for s in suggestions)
                 msg += f". The following near matches were found: {repr_suggestions}"
             elif len(suggestions) == 1:
-                msg += f". Did you mean '{suggestions[0]}' ?"
+                msg += f". Did you mean {suggestions[0]!r} ?"
             raise AttributeError(msg) from exc
 
     return obj
@@ -127,7 +127,7 @@ def get_version(package_name: str) -> str:
         return f"Python {python_version()}"
 
     raise LookupError(
-        "Could not determine version metadata from '{package_name}'"
+        f"Could not determine version metadata from {package_name!r}"
     )
 
 
