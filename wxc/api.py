@@ -7,7 +7,7 @@ from functools import lru_cache
 from importlib import import_module
 from platform import python_version
 from types import BuiltinFunctionType
-from typing import Any
+from typing import Any, Dict, List
 
 if sys.version_info < (3, 8):
     import importlib_metadata as md
@@ -43,12 +43,15 @@ def get_builtin_obj(name: str):
     return getattr(builtins, name)
 
 
-def get_suggestions(obj, attr):
-    suggestions = []
+def get_suggestions(obj, attr: str) -> List[str]:
+    suggestions: Dict[int, List[str]] = defaultdict(list)
+    minimal_distance: int = sys.maxsize
     for a in dir(obj):
-        if levenshtein_distance(attr, a, max_dist=2) <= 2:
-            suggestions.append(a)
-    return suggestions
+        d: int = levenshtein_distance(attr, a, max_dist=minimal_distance)
+        if d <= minimal_distance:
+            suggestions[d].append(a)
+            minimal_distance = d
+    return sorted(suggestions[minimal_distance])
 
 
 @lru_cache(maxsize=128)
@@ -80,7 +83,7 @@ def get_obj(name: str):
             suggestions = get_suggestions(obj, attr)
             if len(suggestions) > 1:
                 repr_suggestions = ", ".join(f"{s!r}" for s in suggestions)
-                msg += f". The following near matches were found: {repr_suggestions}"
+                msg += f". Here are the closest matches: {repr_suggestions}"
             elif len(suggestions) == 1:
                 msg += f". Did you mean {suggestions[0]!r} ?"
             raise AttributeError(msg) from exc

@@ -55,7 +55,13 @@ def test_non_existing_member(capsys):
     assert ret != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err == "Error: module 'pathlib' has no attribute 'nothing'\n"
+    assert (
+        # not matching exact results since they are different between Python 3.9 and 3.10
+        err.startswith(
+            "Error: module 'pathlib' has no attribute 'nothing'."
+            " Here are the closest matches:"
+        )
+    )
 
 
 def test_compiled_source(capsys):
@@ -72,7 +78,7 @@ def test_typo1(capsys):
     out, err = capsys.readouterr()
     assert (
         err
-        == "Error: type object 'pathlib.Path' has no attribute 'chmode'. The following near matches were found: 'chmod', 'lchmod'\n"
+        == "Error: type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
     )
     assert out == ""
     assert ret != 0
