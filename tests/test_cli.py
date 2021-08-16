@@ -55,7 +55,7 @@ def test_non_existing_member(capsys):
     assert ret != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err == "Error: pathlib has no member 'nothing'.\n"
+    assert err == "Error: module 'pathlib' has no attribute 'nothing'\n"
 
 
 def test_compiled_source(capsys):
@@ -72,7 +72,7 @@ def test_typo1(capsys):
     out, err = capsys.readouterr()
     assert (
         err
-        == "Error: pathlib.Path has no member 'chmode'. The following near matches were found: 'chmod', 'lchmod'\n"
+        == "Error: type object 'pathlib.Path' has no attribute 'chmode'. The following near matches were found: 'chmod', 'lchmod'\n"
     )
     assert out == ""
     assert ret != 0
@@ -83,7 +83,7 @@ def test_typo2(capsys):
     out, err = capsys.readouterr()
     assert (
         err
-        == "Error: pathlib.Path has no member 'homme'. Did you mean 'home' ?\n"
+        == "Error: type object 'pathlib.Path' has no attribute 'homme'. Did you mean 'home' ?\n"
     )
     assert out == ""
     assert ret != 0

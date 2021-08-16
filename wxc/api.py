@@ -1,5 +1,6 @@
 import builtins
 import inspect
+import re
 import sys
 from collections import defaultdict
 from functools import lru_cache
@@ -72,13 +73,16 @@ def get_obj(name: str):
             obj = getattr(obj, attr)
             name += f".{attr}"
         except AttributeError as exc:
-            msg = f"{name} has no member '{attr}'."
+            msg = exc.args[0]
+            # force the name to match the one specified by the user even
+            # in cases where they are using an alias (for instance os.path is a alias for posixpath on UNIX)
+            msg = re.sub(r"\'[^-\s]*\'", lambda _: f"'{name}'", msg, count=1)
             suggestions = get_suggestions(obj, attr)
             if len(suggestions) > 1:
                 repr_suggestions = ", ".join(f"'{s}'" for s in suggestions)
-                msg += f" The following near matches were found: {repr_suggestions}"
+                msg += f". The following near matches were found: {repr_suggestions}"
             elif len(suggestions) == 1:
-                msg += f" Did you mean '{suggestions[0]}' ?"
+                msg += f". Did you mean '{suggestions[0]}' ?"
             raise AttributeError(msg) from exc
 
     return obj

@@ -49,6 +49,7 @@ def test_wrong_package():
 
 def test_wrong_member():
     with pytest.raises(
-        AttributeError, match="os.path has no member 'NotARealMember'."
+        AttributeError,
+        match="module 'os.path' has no attribute 'NotARealMember'",
     ):
         get_full_data("os.path.NotARealMember")
