@@ -122,7 +122,7 @@ def get_version(package_name: str) -> str:
             return retv
 
     try:
-        return md.version(package_name)
+        return str(md.version(package_name))
     except md.PackageNotFoundError:
         pass
 
