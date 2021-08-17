@@ -4,11 +4,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## Unreleased
+
+- ENH: improve type checking with mypy
+
 ## [6.2.10] - 2021-08-16
 
-- EHN: improve internal string formatting, fix a broken fstring
+- ENH: improve internal string formatting, fix a broken fstring
 - FIX: fix a typo in module name (levenshtein.py -> levenshtein.py)
-- EHN: improve suggestions in case of typo (always show the closest match)
+- ENH: improve suggestions in case of typo (always show the closest match)
 
 ## [6.2.9] - 2021-08-16
 
