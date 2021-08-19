@@ -4,6 +4,11 @@ from typing import List, Optional
 
 from wxc.api import get_full_data, get_obj, is_builtin, is_builtin_func
 
+try:
+    from rich import print
+except ImportError:
+    pass
+
 
 def main(argv: Optional[List[str]] = None) -> int:
     parser = ArgumentParser()
