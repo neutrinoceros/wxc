@@ -4,9 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
-## Unreleased
+## [6.3.0] - 2021-08-19
 
 - ENH: improve type checking with mypy
+- FEAT: support colored printing if rich is installed (optional dependency)
 
 ## [6.2.10] - 2021-08-16
 
