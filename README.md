@@ -23,22 +23,22 @@ $ python3 -m pip install wxc
 
 Get the version number of a package in your current environment
 <p align="center">
-    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_version.png" width="800"></a>
+    <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_version.png" width="800"></a>
 </p>
 
 Locate the file from which a Python package is imported
 <p align="center">
-    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_loc.png" width="800"></a>
+    <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_loc.png" width="800"></a>
 </p>
 
 Locate a specific method's source code
 <p align="center">
-    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_method.png" width="800"></a>
+    <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_method.png" width="800"></a>
 </p>
 
 `wxc`'s resilience against mistakes
 <p align="center">
-    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_resilience.png" width="800"></a>
+    <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_resilience.png" width="800"></a>
 </p>
 
 For more, run
