@@ -1,7 +1,9 @@
 # wxc
 
-[![PyPI](https://img.shields.io/pypi/v/wxc)](https://pypi.org/project/wxc/)
-[![PyPI](https://img.shields.io/pypi/pyversions/wxc)](https://pypi.org/project/wxc/)
+[![PyPI](https://img.shields.io/pypi/v/wxc.svg?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/wxc/)
+[![PyPI](https://img.shields.io/pypi/pyversions/wxc?logo=python&logoColor=white&label=Python)](https://pypi.org/project/wxc/)
+[![](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://github.com/neutrinoceros/wxc/pulls)
+
 [![codecov](https://codecov.io/gh/neutrinoceros/wxc/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/wxc)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
@@ -11,56 +13,48 @@ environment from the command line. It is based on the `inspect` module from the
 standard library.
 
 
-In essence,
-```shell
-$ wxc pandas
-```
-is equivalent to
-```shell
-$ python -c "import pandas; print(pandas.__file__)"
-```
-
-`wxc` can also be used to navigate source code, by locating classes and
-functions by `file:line number`
-```shell
-$ wxc pandas.DataFrame
-/path/to/your/env/site-packages/pandas/core/frame.py:319
-```
-which is extremely convenient when combined with augmented terminal applications
-such as [`iterm2`](https://iterm2.com).
-
 ## Installation
 
 ```shell
-$ pip install wxc
+$ python3 -m pip install wxc
 ```
-Note that `wxc` should never be installed in isolation (for instance via
-[pipx](https://pipxproject.github.io/pipx/)) since it would completely defeat
-the purpose.
 
 ## Usage
 
-Examples
+Get the version number of a package in your current environment
+<p align="center">
+    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_version.png" width="800"></a>
+</p>
 
+Locate the file from which a Python package is imported
+<p align="center">
+    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_loc.png" width="800"></a>
+</p>
+
+Locate a specific method's source code
+<p align="center">
+    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_method.png" width="800"></a>
+</p>
+
+`wxc`'s resilience against mistakes
+<p align="center">
+    <img src="https://github.com/neutrinoceros/wxc/tree/main/gallery/example_resilience.png" width="800"></a>
+</p>
+
+For more, run
 ```shell
-$ wxc numpy
-/path/to/your/env/site-packages/numpy
-
-$ wxc pandas --version
-1.0.3
-
-$ wxc stdlib_list --full
-source = /path/to/your/env/site-packages/stdlib_list/__init__.py:0
-version = v0.8.0
-in_stdlib = False
-name = stdlib_list
+$ wxc --help
 ```
 
 ## Known limitations
 
-`wxc` is not able to retrieve the source of compiled code binded into Python. It
-should however correctly point to the compiled file that an object is imported
-from.
+`wxc` is not currently able to retrieve the source of compiled code binded into
+Python. It should however correctly point to the compiled file that an object is
+imported from.
+
+`wxc` should never be installed in isolation (for instance via
+[pipx](https://pipxproject.github.io/pipx/)) since it would completely defeat
+its purpose.
 
 ## Notes
 
