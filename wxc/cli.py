@@ -4,6 +4,7 @@ from typing import List, Optional
 
 from wxc.api import get_full_data, get_obj, is_builtin, is_builtin_func
 
+builtin_print = print
 try:
     from rich import print
 except ImportError:
@@ -56,7 +57,9 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.full:
         data["name"] = args.name
+        ver = f"version = {data.pop('version')}"
         print("\n".join(f"{k} = {v}" for k, v in data.items()))
+        builtin_print(ver)
         return 0
 
     if args.version:
@@ -66,7 +69,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 file=sys.stderr,
             )
             return 1
-        print(data["version"])
+        builtin_print(data["version"])
         return 0
 
     if not data["source"]:
