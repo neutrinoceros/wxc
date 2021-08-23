@@ -36,6 +36,11 @@ def is_builtin(name: str) -> bool:
 def is_builtin_func(obj: Any) -> bool:
     if isinstance(obj, str):
         obj = get_obj(obj)
+    # this heuristic is equivalent to inspect.isbuiltin()
+    # it should be noted that the type 'BuiltinFunctionType' isn't reserved
+    # to the standard library, but is characteristic of functions that
+    # are "written in C". See
+    # https://docs.python.org/3/library/types.html?highlight=builtinfunctiontype#types.BuiltinMethodType
     return isinstance(obj, BuiltinFunctionType)
 
 
