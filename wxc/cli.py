@@ -48,7 +48,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         if is_builtin(args.name):
             msg += f" {args.name!r} is a builtin object."
         elif is_builtin_func(args.name):
-            msg += f" {args.name!r} is a builtin function."
+            msg += f" {args.name!r} is a C-compiled function."
         print(
             msg,
             file=sys.stderr,
