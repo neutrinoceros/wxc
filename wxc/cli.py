@@ -1,8 +1,12 @@
 import sys
 from argparse import ArgumentParser
-from typing import List, Optional
+from typing import List
+from typing import Optional
 
-from wxc.api import get_full_data, get_obj, is_builtin, is_builtin_func
+from wxc.api import get_full_data
+from wxc.api import get_obj
+from wxc.api import is_builtin
+from wxc.api import is_builtin_func
 
 builtin_print = print
 try:

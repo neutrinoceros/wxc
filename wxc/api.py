@@ -7,7 +7,9 @@ from functools import lru_cache
 from importlib import import_module
 from platform import python_version
 from types import BuiltinFunctionType
-from typing import Any, Dict, List
+from typing import Any
+from typing import Dict
+from typing import List
 
 if sys.version_info < (3, 8):
     import importlib_metadata as md

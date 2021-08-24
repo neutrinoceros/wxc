@@ -2,7 +2,8 @@ import sys
 
 import pytest
 
-from wxc.api import get_obj, get_sourcefile
+from wxc.api import get_obj
+from wxc.api import get_sourcefile
 from wxc.cli import main
 
 TO_CHECK = frozenset(("os.fspath", "math.sqrt"))

@@ -24,10 +24,10 @@ repos:
     hooks:
         - id: remove-tabs
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 5.9.2
+  - repo: https://github.com/asottile/reorder_python_imports
+    rev: v2.6.0
     hooks:
-      - id: isort
+        - id: reorder-python-imports
 
   - repo: https://github.com/psf/black
     rev: 21.6b0
