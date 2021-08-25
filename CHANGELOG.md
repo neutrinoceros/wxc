@@ -8,6 +8,7 @@ and this project adheres to
 
 - ENH: add rich transient progress spinner [PR #124](https://github.com/neutrinoceros/wxc/pull/124)
 - EHN: add --source argument (use rich to display source code) [PR #125](https://github.com/neutrinoceros/wxc/pull/125)
+- ENH: add rich colors to error messages [PR #129](https://github.com/neutrinoceros/wxc/pull/129)
 
 ## [6.4.0] - 2021-08-25
 
