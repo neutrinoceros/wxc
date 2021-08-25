@@ -5,6 +5,7 @@ from typing import Optional
 
 from wxc.api import get_full_data
 from wxc.api import get_obj
+from wxc.api import get_suggestions
 from wxc.api import is_builtin
 from wxc.api import is_builtin_func
 
@@ -36,8 +37,18 @@ def main(argv: Optional[List[str]] = None) -> int:
     try:
         get_obj(args.name)
     except ImportError:
+        package_name = args.name.partition(".")[0]
+        msg = f"Error: no installed package with name {package_name!r}"
+        if sys.version_info >= (3, 10):
+            # the standard library in Python >= 3.10 is the only subset of available packages
+            # for which we have a computationally cheap way to retrieve a list.
+            suggestions = get_suggestions(
+                sys.builtin_module_names, package_name, max_dist=2
+            )
+            if len(suggestions) == 1:
+                msg += f". Did you mean {suggestions[0]!r} ?"
         print(
-            f"Error: did not resolve any data for {args.name!r}",
+            msg,
             file=sys.stderr,
         )
         return 1

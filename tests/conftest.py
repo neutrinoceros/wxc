@@ -29,4 +29,4 @@ def package_name(request):
 def pytest_configure():
     # minimal workaround to avoid false negatives when testing
     # with rich installed.
-    os.environ.update({"COLUMNS": "180"})
+    os.environ.update({"COLUMNS": "90"})

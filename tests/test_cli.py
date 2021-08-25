@@ -47,7 +47,22 @@ def test_falty_queries(capsys, arg):
     assert res != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err == "Error: did not resolve any data for 'NotARealPackage'\n"
+    assert err == "Error: no installed package with name 'NotARealPackage'\n"
+
+
+@pytest.mark.skipif(
+    sys.version_info < (3, 10),
+    reason="this feature is reserved to Python 3.10 and newer",
+)
+def test_stdlib_typos_in_module_name(capsys):
+    res = main(["sis"])
+    assert res != 0
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert (
+        err
+        == "Error: no installed package with name 'sis'. Did you mean 'sys' ?\n"
+    )
 
 
 def test_non_existing_member(capsys):

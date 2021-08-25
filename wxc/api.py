@@ -50,11 +50,13 @@ def get_builtin_obj(name: str):
     return getattr(builtins, name)
 
 
-def get_suggestions(obj, attr: str) -> List[str]:
+def get_suggestions(
+    candidates: List[str], target: str, *, max_dist: int = sys.maxsize
+) -> List[str]:
     suggestions: Dict[int, List[str]] = defaultdict(list)
-    minimal_distance: int = sys.maxsize
-    for a in dir(obj):
-        d: int = levenshtein_distance(attr, a, max_dist=minimal_distance)
+    minimal_distance: int = max_dist
+    for a in candidates:
+        d: int = levenshtein_distance(target, a, max_dist=minimal_distance)
         if d <= minimal_distance:
             suggestions[d].append(a)
             minimal_distance = d
@@ -87,7 +89,7 @@ def get_obj(name: str):
             # force the name to match the one specified by the user even
             # in cases where they are using an alias (for instance os.path is a alias for posixpath on UNIX)
             msg = re.sub(r"\'[^-\s]*\'", lambda _: f"{name!r}", msg, count=1)
-            suggestions = get_suggestions(obj, attr)
+            suggestions = get_suggestions(dir(obj), attr)
             if len(suggestions) > 1:
                 repr_suggestions = ", ".join(f"{s!r}" for s in suggestions)
                 msg += f". Here are the closest matches: {repr_suggestions}"
