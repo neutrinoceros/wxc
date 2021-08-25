@@ -4,9 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
-## Unreleased
+## [6.4.0] - 2021-08-25
 
-ENH: improve error message in case package name is falty
+- ENH: improve error message in case package name is falty
+- ENH: normalize module names in a similar fashion to pip (replace hyphens '-' with underscores '_' at runtime)
+
+This release contains a breaking change for any user relying on the public
+Python API (`wxc.api`) because the signature of `wxc.api.get_suggestions` was changed.
 
 ## [6.3.2] - 2021-08-23
 
