@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+# Unreleased
+
+- ENH: add rich transient progress spinner [PR #124](https://github.com/neutrinoceros/wxc/pull/124)
+
 ## [6.4.0] - 2021-08-25
 
 - ENH: improve error message in case package name is falty

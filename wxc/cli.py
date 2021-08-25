@@ -3,6 +3,10 @@ from argparse import ArgumentParser
 from typing import List
 from typing import Optional
 
+from rich.progress import Progress
+from rich.progress import SpinnerColumn
+from rich.progress import TextColumn
+
 from wxc.api import get_full_data
 from wxc.api import get_obj
 from wxc.api import get_suggestions
@@ -10,10 +14,7 @@ from wxc.api import is_builtin
 from wxc.api import is_builtin_func
 
 builtin_print = print
-try:
-    from rich import print
-except ImportError:
-    pass
+from rich import print  # noqa: E402
 
 
 class ScopeName(str):
@@ -40,27 +41,33 @@ def main(argv: Optional[List[str]] = None) -> int:
     )
     args = parser.parse_args(argv)
 
-    try:
-        get_obj(args.name)
-    except ImportError:
-        package_name = args.name.partition(".")[0]
-        msg = f"Error: no installed package with name {package_name!r}"
-        if sys.version_info >= (3, 10):
-            # the standard library in Python >= 3.10 is the only subset of available packages
-            # for which we have a computationally cheap way to retrieve a list.
-            suggestions = get_suggestions(
-                sys.builtin_module_names, package_name, max_dist=2
+    with Progress(
+        SpinnerColumn(),
+        TextColumn("[progress.description]{task.description}"),
+        transient=True,
+    ) as progress:
+        progress.add_task("[bold] Resolving source")
+        try:
+            get_obj(args.name)
+        except ImportError:
+            package_name = args.name.partition(".")[0]
+            msg = f"Error: no installed package with name {package_name!r}"
+            if sys.version_info >= (3, 10):
+                # the standard library in Python >= 3.10 is the only subset of available packages
+                # for which we have a computationally cheap way to retrieve a list.
+                suggestions = get_suggestions(
+                    sys.builtin_module_names, package_name, max_dist=2
+                )
+                if len(suggestions) == 1:
+                    msg += f". Did you mean {suggestions[0]!r} ?"
+            print(
+                msg,
+                file=sys.stderr,
             )
-            if len(suggestions) == 1:
-                msg += f". Did you mean {suggestions[0]!r} ?"
-        print(
-            msg,
-            file=sys.stderr,
-        )
-        return 1
-    except AttributeError as exc:
-        print(f"Error: {exc}", file=sys.stderr)
-        return 1
+            return 1
+        except AttributeError as exc:
+            print(f"Error: {exc}", file=sys.stderr)
+            return 1
 
     try:
         data = get_full_data(args.name)
