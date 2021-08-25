@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
-# Unreleased
+## [6.5.0] - 2021-08-25
 
 - ENH: add rich transient progress spinner [PR #124](https://github.com/neutrinoceros/wxc/pull/124)
 - EHN: add --source argument (use rich to display source code) [PR #125](https://github.com/neutrinoceros/wxc/pull/125)

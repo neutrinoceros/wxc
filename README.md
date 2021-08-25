@@ -36,7 +36,13 @@ Locate a specific method's source code
     <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_method.png" width="800"></a>
 </p>
 
-`wxc`'s resilience against mistakes
+View the source code of function directly from the terminal stdout
+<p align="center">
+    <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_source.png" width="800"></a>
+</p>
+
+
+`wxc` tries to be helpful when you mistype
 <p align="center">
     <img src="https://raw.githubusercontent.com/neutrinoceros/wxc/main/gallery/example_resilience.png" width="800"></a>
 </p>
