@@ -7,6 +7,7 @@ and this project adheres to
 # Unreleased
 
 - ENH: add rich transient progress spinner [PR #124](https://github.com/neutrinoceros/wxc/pull/124)
+- EHN: add --source argument (use rich to display source code) [PR #125](https://github.com/neutrinoceros/wxc/pull/125)
 
 ## [6.4.0] - 2021-08-25
 

@@ -9,4 +9,5 @@ omit = [
   "setup.py",
   "wxc/__main__.py",
   "install_app.py",
+  "tests/data/*.py",
 ]

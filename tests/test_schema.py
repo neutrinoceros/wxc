@@ -20,14 +20,11 @@ template = Schema(
     sys.platform.startswith("win"),
     reason="parsing is more convoluted when ':' is a normal path element",
 )
-def test_empty_module_query(shared_datadir, monkeypatch):
+def test_empty_module_query(fake_module):
     """Check for robustness of get_full_data
     with an empty module (in particular, no version data)
     """
-    fake_module = shared_datadir / "fake_empty_module"
-    syspath, name = fake_module.parent, fake_module.name
-    monkeypatch.syspath_prepend(syspath)
-
+    syspath, name = fake_module
     data = get_full_data(name)
     filename, _, _ = data["source"].partition(":")
     assert Path(syspath, name) in Path(filename).parents

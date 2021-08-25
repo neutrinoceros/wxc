@@ -117,3 +117,19 @@ def test_normalize_hyphen(capsys):
     assert err == ""
     assert out
     assert ret == 0
+
+
+def test_source(fake_module, capsys):
+
+    expected = (
+        """  4 def import_me_if_you_can():\n"""
+        '''  5     """Docstrings are good. Use them."""\n'''
+        """  6     return "Gotcha"\n"""
+        """  7 \n"""
+    )
+    syspath, name = fake_module
+    ret = main([f"{name}.import_me_if_you_can", "--source"])
+    out, err = capsys.readouterr()
+    assert out.startswith(expected)
+    assert err == ""
+    assert ret == 0
