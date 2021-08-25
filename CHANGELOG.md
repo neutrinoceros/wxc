@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## Unreleased
+
+ENH: improve error message in case package name is falty
+
 ## [6.3.2] - 2021-08-23
 
 FIX: fix a important distinction between builtin functions and C-compiled functions
