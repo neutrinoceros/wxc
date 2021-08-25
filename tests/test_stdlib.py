@@ -33,6 +33,6 @@ def test_cli_builtin(name, capsys):
     assert out == ""
     assert (
         err
-        == f"Error: failed to locate source data. {name!r} is a C-compiled function.\n"
+        == f"ERROR failed to locate source data. {name!r} is a C-compiled function.\n"
     )
     assert ret != 0

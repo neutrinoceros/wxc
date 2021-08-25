@@ -29,7 +29,7 @@ def test_elementary_queries(capsys, package_name):
 
     if package_name == "math" and sys.platform.startswith("win"):
         assert out == ""
-        assert err == "Error: failed to locate source data.\n"
+        assert err == "ERROR failed to locate source data.\n"
         assert ret != 0
         return
 
@@ -47,7 +47,7 @@ def test_falty_queries(capsys, arg):
     assert res != 0
     out, err = capsys.readouterr()
     assert out == ""
-    assert err == "Error: no installed package with name 'NotARealPackage'\n"
+    assert err == "ERROR no installed package with name 'NotARealPackage'\n"
 
 
 @pytest.mark.skipif(
@@ -61,7 +61,7 @@ def test_stdlib_typos_in_module_name(capsys):
     assert out == ""
     assert (
         err
-        == "Error: no installed package with name 'sis'. Did you mean 'sys' ?\n"
+        == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
     )
 
 
@@ -73,7 +73,7 @@ def test_non_existing_member(capsys):
     assert (
         # not matching exact results since they are different between Python 3.9 and 3.10
         err.startswith(
-            "Error: module 'pathlib' has no attribute 'nothing'."
+            "ERROR module 'pathlib' has no attribute 'nothing'."
             " Here are the closest matches:"
         )
     )
@@ -83,7 +83,7 @@ def test_compiled_source(capsys):
     pytest.importorskip("numpy")
     ret = main(["numpy.abs"])
     out, err = capsys.readouterr()
-    assert err == "Error: did not resolve source file for 'numpy.abs'\n"
+    assert err == "ERROR did not resolve source file for 'numpy.abs'\n"
     assert out == ""
     assert ret != 0
 
@@ -93,7 +93,7 @@ def test_typo1(capsys):
     out, err = capsys.readouterr()
     assert (
         err
-        == "Error: type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
+        == "ERROR type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
     )
     assert out == ""
     assert ret != 0
@@ -104,7 +104,7 @@ def test_typo2(capsys):
     out, err = capsys.readouterr()
     assert (
         err
-        == "Error: type object 'pathlib.Path' has no attribute 'homme'. Did you mean 'home' ?\n"
+        == "ERROR type object 'pathlib.Path' has no attribute 'homme'. Did you mean 'home' ?\n"
     )
     assert out == ""
     assert ret != 0

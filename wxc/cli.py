@@ -20,6 +20,10 @@ builtin_print = print
 from rich import print  # noqa: E402
 
 
+def print_err(msg):
+    print(f"[bold white on red]ERROR[/] {msg}", file=sys.stderr)
+
+
 class ScopeName(str):
     def __new__(cls, content):
         return str.__new__(cls, content.replace("-", "_"))
@@ -57,7 +61,7 @@ def main(argv: Optional[List[str]] = None) -> int:
             obj = get_obj(args.name)
         except ImportError:
             package_name = args.name.partition(".")[0]
-            msg = f"Error: no installed package with name {package_name!r}"
+            msg = f"no installed package with name {package_name!r}"
             if sys.version_info >= (3, 10):
                 # the standard library in Python >= 3.10 is the only subset of available packages
                 # for which we have a computationally cheap way to retrieve a list.
@@ -66,26 +70,24 @@ def main(argv: Optional[List[str]] = None) -> int:
                 )
                 if len(suggestions) == 1:
                     msg += f". Did you mean {suggestions[0]!r} ?"
-            print(
-                msg,
-                file=sys.stderr,
-            )
+            progress.stop()
+            print_err(msg)
             return 1
         except AttributeError as exc:
-            print(f"Error: {exc}", file=sys.stderr)
+            progress.stop()
+            print_err(exc)
             return 1
 
     try:
         data = get_full_data(args.name)
     except TypeError:
-        msg = "Error: failed to locate source data."
+        msg = "failed to locate source data."
         if is_builtin(args.name):
             msg += f" {args.name!r} is a builtin object."
         elif is_builtin_func(args.name):
             msg += f" {args.name!r} is a C-compiled function."
-        print(
+        print_err(
             msg,
-            file=sys.stderr,
         )
         return 1
 
@@ -98,18 +100,16 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if args.version:
         if not data["version"]:
-            print(
-                f"Error: did not find version metadata for {args.name!r}",
-                file=sys.stderr,
+            print_err(
+                f"did not find version metadata for {args.name!r}",
             )
             return 1
         builtin_print(data["version"])
         return 0
 
     if not data["source"]:
-        print(
-            f"Error: did not resolve source file for {args.name!r}",
-            file=sys.stderr,
+        print_err(
+            f"did not resolve source file for {args.name!r}",
         )
         return 1
 
