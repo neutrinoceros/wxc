@@ -16,10 +16,16 @@ except ImportError:
     pass
 
 
+class ScopeName(str):
+    def __new__(cls, content):
+        return str.__new__(cls, content.replace("-", "_"))
+
+
 def main(argv: Optional[List[str]] = None) -> int:
     parser = ArgumentParser()
     parser.add_argument(
         "name",
+        type=ScopeName,
         help="target Python scope (package.module.submodule.class.method)",
     )
     command_group = parser.add_mutually_exclusive_group()

@@ -108,3 +108,12 @@ def test_typo2(capsys):
     )
     assert out == ""
     assert ret != 0
+
+
+def test_normalize_hyphen(capsys):
+    pytest.importorskip("matplotlib_inline")
+    ret = main(["matplotlib-inline"])
+    out, err = capsys.readouterr()
+    assert err == ""
+    assert out
+    assert ret == 0
