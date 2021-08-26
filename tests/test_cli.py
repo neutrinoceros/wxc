@@ -133,3 +133,18 @@ def test_source(fake_module, capsys):
     assert out.startswith(expected)
     assert err == ""
     assert ret == 0
+
+
+def test_source_error(capsys):
+    pytest.importorskip("numpy")
+    ret1 = main(["numpy.VisibleDeprecationWarning"])
+    assert ret1 == 0
+    out, err = capsys.readouterr()
+    assert out != ""
+    assert err == ""
+
+    ret2 = main(["numpy.VisibleDeprecationWarning", "-s"])
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert err == "ERROR could not find class definition\n"
+    assert ret2 != 0

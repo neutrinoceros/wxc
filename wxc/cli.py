@@ -114,7 +114,15 @@ def main(argv: Optional[List[str]] = None) -> int:
         return 1
 
     if args.source:
-        code = inspect.getsource(obj)
+        try:
+            code = inspect.getsource(obj)
+        except OSError as exc:
+            # inspect.getsource _can_ be the first failing call so we wrap its
+            # error because it's inline with wxc's own error messages and
+            # there's probably not much else we can do about it.
+            print_err(exc)
+            return 1
+
         print(
             Syntax(
                 code,
