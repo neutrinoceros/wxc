@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## [6.5.2] - 2021-09-03
+
+ENH: disable source line printing by default, add a flag to reactivate them [PR
+#133](https://github.com/neutrinoceros/wxc/pull/133)
+
 ## [6.5.1] - 2021-08-26
 
 BUG: fix an issue where failing calls to inspect.getsource would leak as Python errors

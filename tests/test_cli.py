@@ -128,7 +128,7 @@ def test_source(fake_module, capsys):
         """  7 \n"""
     )
     syspath, name = fake_module
-    ret = main([f"{name}.import_me_if_you_can", "--source"])
+    ret = main([f"{name}.import_me_if_you_can", "--source", "--lines"])
     out, err = capsys.readouterr()
     assert out.startswith(expected)
     assert err == ""
