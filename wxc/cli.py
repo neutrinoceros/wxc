@@ -49,6 +49,12 @@ def main(argv: Optional[List[str]] = None) -> int:
     parser.add_argument(
         "-s", "--source", action="store_true", help="print the source code"
     )
+    parser.add_argument(
+        "--lines",
+        dest="show_lines",
+        action="store_true",
+        help="show source lines",
+    )
     args = parser.parse_args(argv)
 
     with Progress(
@@ -128,7 +134,7 @@ def main(argv: Optional[List[str]] = None) -> int:
                 code,
                 "python",
                 theme="monokai",
-                line_numbers=True,
+                line_numbers=args.show_lines,
                 start_line=get_sourceline(obj),
                 background_color="default",
             )
