@@ -113,7 +113,7 @@ def main(argv: Optional[List[str]] = None) -> int:
         builtin_print(data["version"])
         return 0
 
-    if not data["source"]:
+    if "source" not in data:
         print_err(
             f"did not resolve source file for {args.name!r}",
         )

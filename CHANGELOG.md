@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## [6.5.3] - 2021-09-04
+
+ENH: add fallback support for properties, which are not yet supported by inspect.getfile
+[PR #136](https://github.com/neutrinoceros/wxc/pull/136)
+
 ## [6.5.2] - 2021-09-03
 
 ENH: disable source line printing by default, add a flag to reactivate them [PR

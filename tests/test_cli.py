@@ -81,9 +81,12 @@ def test_non_existing_member(capsys):
 
 def test_compiled_source(capsys):
     pytest.importorskip("numpy")
-    ret = main(["numpy.abs"])
+    ret = main(["numpy.abs.at"])
     out, err = capsys.readouterr()
-    assert err == "ERROR did not resolve source file for 'numpy.abs'\n"
+    assert (
+        err
+        == "ERROR failed to locate source data. 'numpy.abs.at' is a C-compiled function.\n"
+    )
     assert out == ""
     assert ret != 0
 
@@ -148,3 +151,11 @@ def test_source_error(capsys):
     assert out == ""
     assert err == "ERROR could not find class definition\n"
     assert ret2 != 0
+
+
+def test_property(capsys):
+    ret = main(["rich.progress.Task.started"])
+    assert ret == 0
+    out, err = capsys.readouterr()
+    assert out != ""
+    assert err == ""
