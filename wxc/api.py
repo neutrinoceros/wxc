@@ -64,12 +64,13 @@ def get_suggestions(
 
 
 @lru_cache(maxsize=128)
-def get_obj(name: str):
+def get_objects(name: str) -> List[Any]:
     if is_builtin(name):
-        return get_builtin_obj(name)
+        return [get_builtin_obj(name)]
 
     name_in = name
     attrs = []
+    objects = []
     while name:
         try:
             obj = import_module(name)
@@ -80,10 +81,11 @@ def get_obj(name: str):
     if not name:
         raise ImportError(name_in)
 
+    objects.append(obj)
+
     for attr in reversed(attrs):
         try:
             obj = getattr(obj, attr)
-            name += f".{attr}"
         except AttributeError as exc:
             msg = exc.args[0]
             # force the name to match the one specified by the user even
@@ -96,8 +98,16 @@ def get_obj(name: str):
             elif len(suggestions) == 1:
                 msg += f". Did you mean {suggestions[0]!r} ?"
             raise AttributeError(msg) from exc
+        else:
+            name += f".{attr}"
+            objects.append(obj)
 
-    return obj
+    return objects
+
+
+def get_obj(name: str):
+    # for backwards compatibility
+    return get_objects(name)[-1]
 
 
 def get_sourcefile(obj):
@@ -111,6 +121,8 @@ def get_sourcefile(obj):
         # the second condition is met for os.fspath
         if inspect.ismodule(obj) or is_builtin_func(obj):
             raise
+        if isinstance(obj, property):
+            return get_sourcefile()
         return get_sourcefile(inspect.getmodule(obj))
     return file
 
@@ -147,21 +159,29 @@ def get_full_data(name: str) -> dict:
     data = defaultdict(str)
     package_name, _, _ = name.partition(".")
 
-    obj = get_obj(name)
+    objects = get_objects(name)
 
-    try:
-        source = get_sourcefile(obj)
-    except RecursionError:
-        source = ""
-
-    try:
-        lineno = get_sourceline(obj)
-        source += f":{lineno}" if lineno else ""
-    except (OSError, TypeError):
-        pass
-
-    if source:
-        data["source"] = source
+    for obj in reversed(objects):
+        try:
+            source = get_sourcefile(obj)
+        except RecursionError:
+            pass
+        except TypeError:
+            # as of Python 3.9, inspect.getfile doesn't have support for properties
+            # but we're not making this a hard failure in case it is added in the future
+            # and we faillback on finding out the sourcefile of the class itself
+            if not isinstance(obj, property):
+                raise
+        else:
+            try:
+                lineno = get_sourceline(obj)
+            except (OSError, TypeError):
+                pass
+            else:
+                source += f":{lineno}" if lineno else ""
+                break
+            finally:
+                data["source"] = source
 
     try:
         data["version"] = get_version(package_name)
