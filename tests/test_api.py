@@ -37,8 +37,10 @@ def test_finder(package_name):
 
 
 def test_get_obj():
-    line1 = get_full_data("pathlib.Path")["source"].rpartition(":")[-1]
-    line2 = get_full_data("pathlib.Path.chmod")["source"].rpartition(":")[-1]
+    line1 = get_full_data("pathlib.Path")["source"].partition(":")[-1]
+    line2 = get_full_data("pathlib.Path.chmod")["source"].partition(":")[-1]
+    assert line1 != ""
+    assert line2 != ""
     assert line1 != line2
 
 
