@@ -76,6 +76,8 @@ def main(argv: Optional[List[str]] = None) -> int:
                 )
                 if len(suggestions) == 1:
                     msg += f". Did you mean {suggestions[0]!r} ?"
+            else:
+                pass
             progress.stop()
             print_err(msg)
             return 1
