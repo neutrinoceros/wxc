@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import builtins
 import inspect
 import re
@@ -8,8 +10,6 @@ from importlib import import_module
 from platform import python_version
 from types import BuiltinFunctionType
 from typing import Any
-from typing import Dict
-from typing import List
 
 if sys.version_info < (3, 8):
     import importlib_metadata as md
@@ -51,9 +51,9 @@ def get_builtin_obj(name: str):
 
 
 def get_suggestions(
-    candidates: List[str], target: str, *, max_dist: int = sys.maxsize
-) -> List[str]:
-    suggestions: Dict[int, List[str]] = defaultdict(list)
+    candidates: list[str], target: str, *, max_dist: int = sys.maxsize
+) -> list[str]:
+    suggestions: dict[int, list[str]] = defaultdict(list)
     minimal_distance: int = max_dist
     for a in candidates:
         d: int = levenshtein_distance(target, a, max_dist=minimal_distance)
@@ -64,7 +64,7 @@ def get_suggestions(
 
 
 @lru_cache(maxsize=128)
-def get_objects(name: str) -> List[Any]:
+def get_objects(name: str) -> list[Any]:
     if is_builtin(name):
         return [get_builtin_obj(name)]
 

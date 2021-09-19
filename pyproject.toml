@@ -11,3 +11,6 @@ omit = [
   "install_app.py",
   "tests/data/*.py",
 ]
+
+[tool.mypy]
+python_version = "3.7"

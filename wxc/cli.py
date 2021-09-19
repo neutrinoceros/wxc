@@ -1,8 +1,8 @@
+from __future__ import annotations
+
 import inspect
 import sys
 from argparse import ArgumentParser
-from typing import List
-from typing import Optional
 
 from rich.progress import Progress
 from rich.progress import SpinnerColumn
@@ -29,7 +29,7 @@ class ScopeName(str):
         return str.__new__(cls, content.replace("-", "_"))
 
 
-def main(argv: Optional[List[str]] = None) -> int:
+def main(argv: list[str] | None = None) -> int:
     parser = ArgumentParser()
     parser.add_argument(
         "name",
