@@ -1,5 +1,3 @@
-import sys
-
 import pytest
 
 from wxc.api import get_obj
@@ -9,10 +7,6 @@ from wxc.cli import main
 TO_CHECK = frozenset(("os.fspath", "math.sqrt"))
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 7),
-    reason="This error message was changed in Python 3.7",
-)
 @pytest.mark.parametrize("name", TO_CHECK)
 def test_get_data_builtin(name):
     obj = get_obj(name)

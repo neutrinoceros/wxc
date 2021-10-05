@@ -64,6 +64,6 @@ its purpose.
 
 ## Notes
 
-- `wxc` is tested on macOS, Linux, and partially on Windows, from Python 3.6 to 3.10 (beta)
+- `wxc` is tested on macOS, Linux, and partially on Windows, from Python 3.7 to 3.10
 - this project was formerly named "whych" and renamed to avoid confusion with the
   pypi-available package of the same name.
