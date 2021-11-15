@@ -22,7 +22,7 @@ def test_fail_builtins(name, capsys):
     ret = main([name])
 
     out, err = capsys.readouterr()
-    assert out == ""
+    assert out == "\n"
     assert err == (
         "ERROR failed to locate source data. "
         f"{name!r} is a builtin object.\n"

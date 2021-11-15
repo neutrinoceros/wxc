@@ -4,7 +4,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
-## [6.5.3] - 2021-11-15
+## [6.5.5] - 2021-11-15
+
+MNT: bump required rich version to 10.13, adapt tests accordingly (no actual change in behaviour)
+[PR #144](https://github.com/neutrinoceros/wxc/pull/144)
+
+## [6.5.4] - 2021-11-15
 
 BUG: fix a crash when calling `wxc <pkg> --full` for packages for which no implemented method
 to get the version tag works.
