@@ -28,7 +28,7 @@ def test_elementary_queries(capsys, package_name):
     out, err = capsys.readouterr()
 
     if package_name == "math" and sys.platform.startswith("win"):
-        assert out == ""
+        assert out == "\n"
         assert err == "ERROR failed to locate source data.\n"
         assert ret != 0
         return
@@ -46,7 +46,7 @@ def test_falty_queries(capsys, arg):
     res = main(argv)
     assert res != 0
     out, err = capsys.readouterr()
-    assert out == ""
+    assert out == "\n"
     assert err == "ERROR no installed package with name 'NotARealPackage'\n"
 
 
@@ -58,7 +58,7 @@ def test_stdlib_typos_in_module_name(capsys):
     res = main(["sis"])
     assert res != 0
     out, err = capsys.readouterr()
-    assert out == ""
+    assert out == "\n"
     assert (
         err
         == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
@@ -69,7 +69,7 @@ def test_non_existing_member(capsys):
     ret = main(["pathlib.nothing"])
     assert ret != 0
     out, err = capsys.readouterr()
-    assert out == ""
+    assert out == "\n"
     assert (
         # not matching exact results since they are different between Python 3.9 and 3.10
         err.startswith(
@@ -87,7 +87,7 @@ def test_compiled_source(capsys):
         err
         == "ERROR failed to locate source data. 'numpy.abs.at' is a C-compiled function.\n"
     )
-    assert out == ""
+    assert out == "\n"
     assert ret != 0
 
 
@@ -98,7 +98,7 @@ def test_typo1(capsys):
         err
         == "ERROR type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
     )
-    assert out == ""
+    assert out == "\n"
     assert ret != 0
 
 
@@ -109,7 +109,7 @@ def test_typo2(capsys):
         err
         == "ERROR type object 'pathlib.Path' has no attribute 'homme'. Did you mean 'home' ?\n"
     )
-    assert out == ""
+    assert out == "\n"
     assert ret != 0
 
 
@@ -125,6 +125,7 @@ def test_normalize_hyphen(capsys):
 def test_source(fake_module, capsys):
 
     expected = (
+        """\n"""
         """  4 def import_me_if_you_can():\n"""
         '''  5     """Docstrings are good. Use them."""\n'''
         """  6     return "Gotcha"\n"""
@@ -148,7 +149,7 @@ def test_source_error(capsys):
 
     ret2 = main(["numpy.VisibleDeprecationWarning", "-s"])
     out, err = capsys.readouterr()
-    assert out == ""
+    assert out == "\n"
     assert err == "ERROR could not find class definition\n"
     assert ret2 != 0
 
