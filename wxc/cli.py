@@ -101,7 +101,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.full:
         data["name"] = args.name
-        ver = f"version = {data.pop('version')}"
+        ver = f"version = {data.pop('version', 'unknown')}"
         print("\n".join(f"{k} = {v}" for k, v in data.items()))
         builtin_print(ver)
         return 0
