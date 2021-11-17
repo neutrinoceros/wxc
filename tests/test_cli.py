@@ -28,7 +28,9 @@ def test_elementary_queries(capsys, package_name):
     out, err = capsys.readouterr()
 
     if package_name == "math" and sys.platform.startswith("win"):
-        assert out == "\n"
+        # rich may output an unspecified amount of newlines
+        # that don't actually affect the result visually
+        assert out.strip() == ""
         assert err == "ERROR failed to locate source data.\n"
         assert ret != 0
         return
@@ -46,7 +48,9 @@ def test_falty_queries(capsys, arg):
     res = main(argv)
     assert res != 0
     out, err = capsys.readouterr()
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert err == "ERROR no installed package with name 'NotARealPackage'\n"
 
 
@@ -58,7 +62,9 @@ def test_stdlib_typos_in_module_name(capsys):
     res = main(["sis"])
     assert res != 0
     out, err = capsys.readouterr()
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert (
         err
         == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
@@ -69,7 +75,9 @@ def test_non_existing_member(capsys):
     ret = main(["pathlib.nothing"])
     assert ret != 0
     out, err = capsys.readouterr()
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert (
         # not matching exact results since they are different between Python 3.9 and 3.10
         err.startswith(
@@ -87,7 +95,9 @@ def test_compiled_source(capsys):
         err
         == "ERROR failed to locate source data. 'numpy.abs.at' is a C-compiled function.\n"
     )
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert ret != 0
 
 
@@ -98,7 +108,9 @@ def test_typo1(capsys):
         err
         == "ERROR type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
     )
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert ret != 0
 
 
@@ -109,7 +121,9 @@ def test_typo2(capsys):
         err
         == "ERROR type object 'pathlib.Path' has no attribute 'homme'. Did you mean 'home' ?\n"
     )
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert ret != 0
 
 
@@ -149,7 +163,9 @@ def test_source_error(capsys):
 
     ret2 = main(["numpy.VisibleDeprecationWarning", "-s"])
     out, err = capsys.readouterr()
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert err == "ERROR could not find class definition\n"
     assert ret2 != 0
 

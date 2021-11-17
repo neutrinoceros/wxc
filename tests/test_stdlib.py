@@ -24,7 +24,9 @@ def test_get_data_builtin(name):
 def test_cli_builtin(name, capsys):
     ret = main([name])
     out, err = capsys.readouterr()
-    assert out == "\n"
+    # rich may output an unspecified amount of newlines
+    # that don't actually affect the result visually
+    assert out.strip() == ""
     assert (
         err
         == f"ERROR failed to locate source data. {name!r} is a C-compiled function.\n"
