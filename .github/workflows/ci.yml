@@ -7,9 +7,6 @@ on:
   push:
     branches:
       - main
-  schedule:
-    # run this every day at 3 am UTC
-    - cron: '0 3 * * *'
   workflow_dispatch:
 
 jobs:
