@@ -1,0 +1,37 @@
+name: CI (bleeding edge)
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # run this every day at 3 am UTC
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: Dev upstream
+    timeout-minutes: 20
+
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11-dev'
+
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install --upgrade setuptools wheel
+        python3 -m pip install git+https://github.com/willmcgugan/rich.git
+        python3 -m pip install git+https://github.com/pytest-dev/pytest.git
+    - name: Build
+      run: python3 -m pip install .
+    - name: Run tests
+      run: pytest
