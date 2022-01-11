@@ -14,7 +14,8 @@ omit = [
 
 [tool.mypy]
 python_version = "3.7"
-
+warn_return_any = true
+warn_unused_configs = true
 
 [tool.pytest]
 filterwarnings = [
