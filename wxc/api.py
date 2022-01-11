@@ -27,8 +27,7 @@ else:
 from wxc.levenshtein import levenshtein_distance
 
 # sorted by decreasing order of priority
-# the 'version' attribute *may* in some cases (e.g., platform.py) be a function
-VERSION_ATTR_LOOKUP_TABLE = frozenset(("__version__", "VERSION", "version"))
+VERSION_ATTR_LOOKUP_TABLE = ("__version__", "VERSION", "version")
 
 
 def is_builtin(name: str) -> bool:
