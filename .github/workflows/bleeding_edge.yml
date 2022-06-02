@@ -7,6 +7,9 @@ on:
   schedule:
     # run this every day at 3 am UTC
     - cron: '0 3 * * *'
+  pull_request:
+    paths:
+      - .github/workflows/bleeding_edge.yml
   workflow_dispatch:
 
 jobs:
@@ -35,7 +38,4 @@ jobs:
     - name: Build
       run: python3 -m pip install .
     - name: Run tests
-      # using --assert=plain to workaround an incompatibility
-      # between pytest and Python 3.11.0b2
-      # see https://mail.python.org/archives/list/python-dev@python.org/thread/VZ222BFFAWW73DYFCR7NZR2C5M3TXD65/
-      run: pytest --assert=plain
+      run: pytest
