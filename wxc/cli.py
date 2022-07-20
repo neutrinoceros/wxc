@@ -3,6 +3,12 @@ from __future__ import annotations
 import inspect
 import sys
 from argparse import ArgumentParser
+from importlib.util import find_spec
+
+if sys.version_info < (3, 8):
+    import importlib_metadata as md
+else:
+    import importlib.metadata as md
 
 from rich.progress import Progress
 from rich.progress import SpinnerColumn
@@ -56,6 +62,28 @@ def main(argv: list[str] | None = None) -> int:
         help="show source lines",
     )
     args = parser.parse_args(argv)
+
+    if "." not in args.name:
+        # this is a simple module request
+        # let's try to get the result without actually importing it first
+        if args.version:
+            try:
+                version = md.version(args.name)
+            except md.PackageNotFoundError:
+                pass  # resort to expensive search
+            else:
+                builtin_print(version)
+                return 0
+        elif args.full:
+            # quick lookup not possible (or at least, not implemented)
+            pass
+        else:
+            spec = find_spec(args.name)
+            if spec is None:
+                pass  # resort to expensive search
+            else:
+                print(spec.origin)
+                return 0
 
     with Progress(
         SpinnerColumn(),

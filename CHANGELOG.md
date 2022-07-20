@@ -9,6 +9,9 @@ and this project adheres to
 BUG: fix a bug where version look up table's order wasn't being preserved
 [PR #152](https://github.com/neutrinoceros/wxc/pull/152)
 
+ENH: implement fast lookups for simple queries (module location and version)
+[PR #161](https://github.com/neutrinoceros/wxc/pull/161)
+
 ## [6.5.5] - 2021-11-15
 
 MNT: bump required rich version to 10.13, adapt tests accordingly (no actual change in behaviour)
