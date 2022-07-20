@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
-## Unreleased
+## [6.6.0] - 2022-07-20
 
 BUG: fix a bug where version look up table's order wasn't being preserved
 [PR #152](https://github.com/neutrinoceros/wxc/pull/152)
