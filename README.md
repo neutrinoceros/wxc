@@ -1,7 +1,7 @@
 # wxc
 
 [![PyPI](https://img.shields.io/pypi/v/wxc.svg?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/wxc/)
-[![PyPI](https://img.shields.io/pypi/pyversions/wxc/6.5.4?logo=python&logoColor=white&label=Python)](https://pypi.org/project/wxc/)
+[![PyPI](https://img.shields.io/badge/requires-Python%20≥%203.7-blue?logo=python&logoColor=white)](https://pypi.org/project/wxc/)
 [![](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://github.com/neutrinoceros/wxc/pulls)
 
 [![codecov](https://codecov.io/gh/neutrinoceros/wxc/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/wxc)
