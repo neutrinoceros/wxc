@@ -89,7 +89,7 @@ def get_objects(name: str) -> list[Any]:
             msg = exc.args[0]
             # force the name to match the one specified by the user even
             # in cases where they are using an alias (for instance os.path is a alias for posixpath on UNIX)
-            msg = re.sub(r"\'[^-\s]*\'", lambda _: f"{name!r}", msg, count=1)
+            msg = re.sub(r"\'[^-\s]*\'", f"{name!r}", msg, count=1)
             suggestions = get_suggestions(dir(obj), attr)
             if len(suggestions) > 1:
                 repr_suggestions = ", ".join(f"{s!r}" for s in suggestions)
