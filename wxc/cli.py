@@ -5,10 +5,10 @@ import sys
 from argparse import ArgumentParser
 from importlib.util import find_spec
 
-if sys.version_info < (3, 8):
-    import importlib_metadata as md
-else:
+if sys.version_info >= (3, 8):
     import importlib.metadata as md
+else:
+    import importlib_metadata as md
 
 from rich.progress import Progress
 from rich.progress import SpinnerColumn
