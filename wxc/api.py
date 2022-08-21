@@ -11,18 +11,18 @@ from platform import python_version
 from types import BuiltinFunctionType
 from typing import Any
 
-if sys.version_info < (3, 8):
-    import importlib_metadata as md
-else:
+if sys.version_info >= (3, 8):
     import importlib.metadata as md
-
-if sys.version_info < (3, 10):
-    from stdlib_list import in_stdlib
 else:
+    import importlib_metadata as md
 
-    def in_stdlib(package_name):
+if sys.version_info >= (3, 10):
+
+    def in_stdlib(package_name: str) -> bool:
         return package_name in sys.stdlib_module_names
 
+else:
+    from stdlib_list import in_stdlib  # type: ignore
 
 from wxc.levenshtein import levenshtein_distance
 
