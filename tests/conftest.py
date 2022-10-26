@@ -12,12 +12,9 @@ packages_to_try = [
     # common third party
     "numpy",
     "matplotlib",
-    "pandas",
     "requests",
-    "django",
-    "flask",
-    "IPython",
-    "tqdm",
+    # edge cases
+    "matplotlib_inline",
 ]
 
 
