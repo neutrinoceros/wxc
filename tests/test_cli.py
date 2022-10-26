@@ -1,5 +1,6 @@
 import sys
 from importlib import import_module
+from importlib.util import find_spec
 
 import pytest
 
@@ -54,10 +55,6 @@ def test_falty_queries(capsys, arg):
     assert err == "ERROR no installed package with name 'NotARealPackage'\n"
 
 
-@pytest.mark.skipif(
-    sys.version_info < (3, 10),
-    reason="this feature is reserved to Python 3.10 and newer",
-)
 def test_stdlib_typos_in_module_name(capsys):
     res = main(["sis"])
     assert res != 0
@@ -65,10 +62,13 @@ def test_stdlib_typos_in_module_name(capsys):
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert out.strip() == ""
-    assert (
-        err
-        == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
-    )
+    if sys.version_info >= (3, 10):
+        assert (
+            err
+            == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
+        )
+    else:
+        assert err == "ERROR no installed package with name 'sis'\n"
 
 
 def test_non_existing_member(capsys):
@@ -127,8 +127,13 @@ def test_typo2(capsys):
     assert ret != 0
 
 
+@pytest.mark.skipif(
+    find_spec("matplotlib_inline") is None,
+    reason="matplotlib_inline isn't a hard dependency",
+)
 def test_normalize_hyphen(capsys):
-    pytest.importorskip("matplotlib_inline")
+    # note that use a simple pytest.mark.skipif instead of pytest.importorskip
+    # because the latter doesn't seem to play nice with coverage
     ret = main(["matplotlib-inline"])
     out, err = capsys.readouterr()
     assert err == ""
