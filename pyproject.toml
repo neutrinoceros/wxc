@@ -4,14 +4,37 @@ requires = ["setuptools", "wheel"]
 [tool.black]
 line-length = 80
 
+[tool.coverage.paths]
+source = [
+  "/home/runner/work/wxc",
+  "/Users/runner/work/wxc",
+  "D:\\a\\wxc",
+]
+
 [tool.coverage.run]
 omit = [
   "setup.py",
   "wxc/__main__.py",
-  "install_app.py",
   "tests/data/*.py",
 ]
+parallel = true
 
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+exclude_lines = [
+    # a more strict default pragma
+    "\\# pragma: no cover\\b",
+
+    # allow defensive code
+    "^\\s*raise NotImplementedError\\b",
+
+    # typing-related code
+    "^if TYPE_CHECKING:",
+    ": \\.\\.\\.(\\s*#.*)?$",
+    "^ +\\.\\.\\.$",
+    "-> ['\"]?NoReturn['\"]?:",
+]
 [tool.mypy]
 python_version = "3.7"
 warn_return_any = true

@@ -4,7 +4,6 @@
 [![PyPI](https://img.shields.io/badge/requires-Python%20≥%203.7-blue?logo=python&logoColor=white)](https://pypi.org/project/wxc/)
 [![](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://github.com/neutrinoceros/wxc/pulls)
 
-[![codecov](https://codecov.io/gh/neutrinoceros/wxc/branch/master/graph/badge.svg)](https://codecov.io/gh/neutrinoceros/wxc)
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
