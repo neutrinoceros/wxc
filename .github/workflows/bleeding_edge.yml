@@ -3,19 +3,18 @@ name: CI (bleeding edge)
 on:
   push:
     branches:
-      - main
+    - main
   schedule:
-    # run this every day at 3 am UTC
-    - cron: '0 3 * * *'
+    # run this every wednesday at 3 am UTC
+  - cron: 0 3 * * 3
   pull_request:
     paths:
-      - .github/workflows/bleeding_edge.yml
+    - .github/workflows/bleeding_edge.yml
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    name: Dev upstream
     timeout-minutes: 20
 
     steps:
@@ -26,16 +25,16 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.11-dev'
+        python-version: 3.12-dev
 
     - name: Install dependencies
       run: |
-        python3 -m pip install --upgrade pip
-        python3 -m pip install --upgrade setuptools wheel
-        python3 -m pip install git+https://github.com/willmcgugan/rich.git
-        python3 -m pip install git+https://github.com/pytest-dev/pytest.git
-        python3 -m pip install schema
+        python -m pip install --upgrade pip
+        python -m pip install --upgrade setuptools wheel
+        python -m pip install git+https://github.com/willmcgugan/rich.git
+        python -m pip install git+https://github.com/pytest-dev/pytest.git
+        python -m pip install schema
     - name: Build
-      run: python3 -m pip install .
+      run: python -m pip install .
     - name: Run tests
       run: pytest
