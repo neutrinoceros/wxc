@@ -1,5 +1,57 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = [
+    "setuptools>=61.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "wxc"
+version = "6.6.0"
+description = "A CLI facility to inspect Python environments."
+authors = [
+    { name = "C.M.T. Robert" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.7"
+dependencies = [
+    "rich>=10.13.0",
+    "importlib-metadata;python_version < \"3.8\"",
+    "stdlib-list>=0.8;python_version < \"3.10\"",
+]
+
+[project.license]
+text = "GPL-3.0"
+
+[project.optional-dependencies]
+test = [
+    "coverage[toml]>=6.5.0",
+    "matplotlib-inline",
+    "numpy",
+    "pytest>=6.0.2",
+    "pytest-mock>=3.5.1",
+    "schema>=0.7.2",
+]
+typecheck = [
+    "mypy==0.971",
+    "importlib-metadata;python_version < \"3.8\"",
+]
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.scripts]
+wxc = "wxc.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/neutrinoceros/wxc"
 
 [tool.black]
 line-length = 80
@@ -10,14 +62,6 @@ source = [
   "/Users/runner/work/wxc",
   "D:\\a\\wxc",
 ]
-
-[tool.coverage.run]
-omit = [
-  "setup.py",
-  "wxc/__main__.py",
-  "tests/data/*.py",
-]
-parallel = true
 
 [tool.coverage.report]
 show_missing = true
@@ -35,6 +79,15 @@ exclude_lines = [
     "^ +\\.\\.\\.$",
     "-> ['\"]?NoReturn['\"]?:",
 ]
+
+[tool.coverage.run]
+omit = [
+  "setup.py",
+  "wxc/__main__.py",
+  "tests/data/*.py",
+]
+parallel = true
+
 [tool.mypy]
 python_version = "3.7"
 warn_return_any = true
@@ -44,3 +97,16 @@ warn_unused_configs = true
 filterwarnings = [
   "error",
 ]
+
+[tool.setuptools]
+license-files = [
+    "LICENSE",
+]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = [
+    "tests*",
+    "testing*",
+]
+namespaces = false
