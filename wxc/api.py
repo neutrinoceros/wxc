@@ -149,9 +149,7 @@ def get_version(package_name: str) -> str:
     if in_stdlib(package_name):
         return f"Python {python_version()}"
 
-    raise LookupError(
-        f"Could not determine version metadata from {package_name!r}"
-    )
+    raise LookupError(f"Could not determine version metadata from {package_name!r}")
 
 
 def get_full_data(name: str) -> dict:
