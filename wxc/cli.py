@@ -10,17 +10,17 @@ if sys.version_info >= (3, 8):
 else:
     import importlib_metadata as md
 
-from rich.progress import Progress
-from rich.progress import SpinnerColumn
-from rich.progress import TextColumn
+from rich.progress import Progress, SpinnerColumn, TextColumn
 from rich.syntax import Syntax
 
-from wxc.api import get_full_data
-from wxc.api import get_obj
-from wxc.api import get_sourceline
-from wxc.api import get_suggestions
-from wxc.api import is_builtin
-from wxc.api import is_builtin_func
+from wxc.api import (
+    get_full_data,
+    get_obj,
+    get_sourceline,
+    get_suggestions,
+    is_builtin,
+    is_builtin_func,
+)
 
 builtin_print = print
 from rich import print  # noqa: E402

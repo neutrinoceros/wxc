@@ -18,7 +18,6 @@ def test_query_valid_field(arg):
 
 
 def test_elementary_queries(capsys, package_name):
-
     try:
         import_module(package_name)
     except ImportError:
@@ -64,8 +63,7 @@ def test_stdlib_typos_in_module_name(capsys):
     assert out.strip() == ""
     if sys.version_info >= (3, 10):
         assert (
-            err
-            == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
+            err == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
         )
     else:
         assert err == "ERROR no installed package with name 'sis'\n"
@@ -142,7 +140,6 @@ def test_normalize_hyphen(capsys):
 
 
 def test_source(fake_module, capsys):
-
     expected = (
         """\n"""
         """  4 def import_me_if_you_can():\n"""

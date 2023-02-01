@@ -53,8 +53,34 @@ wxc = "wxc.cli:main"
 [project.urls]
 Homepage = "https://github.com/neutrinoceros/wxc"
 
-[tool.black]
-line-length = 80
+[tool.setuptools]
+license-files = [
+    "LICENSE",
+]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = [
+    "tests*",
+    "testing*",
+]
+namespaces = false
+
+[tool.ruff]
+target-version = "py37" # https://github.com/charliermarsh/ruff/issues/2039
+exclude = ["*__init__.py"]
+ignore = ["E501"]
+select = [
+    "E",
+    "F",
+    "W",
+    "B",
+    "I",
+    "UP",
+]
+
+[tool.ruff.isort]
+combine-as-imports = true
 
 [tool.coverage.paths]
 source = [
@@ -97,16 +123,3 @@ warn_unused_configs = true
 filterwarnings = [
   "error",
 ]
-
-[tool.setuptools]
-license-files = [
-    "LICENSE",
-]
-include-package-data = false
-
-[tool.setuptools.packages.find]
-exclude = [
-    "tests*",
-    "testing*",
-]
-namespaces = false
