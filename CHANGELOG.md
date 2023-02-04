@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## [7.0.0] - 2023-02-04
+
+- TYP: better type checking [PR #165](https://github.com/neutrinoceros/wxc/pull/165)
+- TST: activate CI on Python 3.11, and additional housekeeping tasks [PR #167](https://github.com/neutrinoceros/wxc/pull/167)
+- STY: migrate linting to ruff [PR #172](https://github.com/neutrinoceros/wxc/pull/172)
+- TST: move test dependencies to requirement files [PR #173](https://github.com/neutrinoceros/wxc/pull/173)
+
 ## [6.6.0] - 2022-07-20
 
 BUG: fix a bug where version look up table's order wasn't being preserved
