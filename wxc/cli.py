@@ -1,17 +1,7 @@
 from __future__ import annotations
 
-import inspect
 import sys
 from argparse import ArgumentParser
-from importlib.util import find_spec
-
-if sys.version_info >= (3, 8):
-    import importlib.metadata as md
-else:
-    import importlib_metadata as md
-
-from rich.progress import Progress, SpinnerColumn, TextColumn
-from rich.syntax import Syntax
 
 from wxc.api import (
     get_full_data,
@@ -23,10 +13,11 @@ from wxc.api import (
 )
 
 builtin_print = print
-from rich import print  # noqa: E402
 
 
 def print_err(msg):
+    from rich import print
+
     print(f"[bold white on red]ERROR[/] {msg}", file=sys.stderr)
 
 
@@ -67,6 +58,10 @@ def main(argv: list[str] | None = None) -> int:
         # this is a simple module request
         # let's try to get the result without actually importing it first
         if args.version:
+            if sys.version_info >= (3, 8):
+                import importlib.metadata as md
+            else:
+                import importlib_metadata as md
             try:
                 version = md.version(args.name)
             except md.PackageNotFoundError:
@@ -78,12 +73,18 @@ def main(argv: list[str] | None = None) -> int:
             # quick lookup not possible (or at least, not implemented)
             pass
         else:
+            from importlib.util import find_spec
+
             spec = find_spec(args.name)
             if spec is None:
                 pass  # resort to expensive search
             else:
+                from rich import print
+
                 print(spec.origin)
                 return 0
+
+    from rich.progress import Progress, SpinnerColumn, TextColumn
 
     with Progress(
         SpinnerColumn(),
@@ -122,12 +123,12 @@ def main(argv: list[str] | None = None) -> int:
             msg += f" {args.name!r} is a builtin object."
         elif is_builtin_func(args.name):
             msg += f" {args.name!r} is a C-compiled function."
-        print_err(
-            msg,
-        )
+        print_err(msg)
         return 1
 
     if args.full:
+        from rich import print
+
         data["name"] = args.name
         ver = f"version = {data.pop('version', 'unknown')}"
         print("\n".join(f"{k} = {v}" for k, v in data.items()))
@@ -136,20 +137,20 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.version:
         if not data["version"]:
-            print_err(
-                f"did not find version metadata for {args.name!r}",
-            )
+            print_err(f"did not find version metadata for {args.name!r}")
             return 1
         builtin_print(data["version"])
         return 0
 
     if "source" not in data:
-        print_err(
-            f"did not resolve source file for {args.name!r}",
-        )
+        print_err(f"did not resolve source file for {args.name!r}")
         return 1
 
     if args.source:
+        import inspect
+
+        from rich.syntax import Syntax
+
         try:
             code = inspect.getsource(obj)
         except OSError as exc:
@@ -158,6 +159,8 @@ def main(argv: list[str] | None = None) -> int:
             # there's probably not much else we can do about it.
             print_err(exc)
             return 1
+
+        from rich import print
 
         print(
             Syntax(
@@ -169,6 +172,8 @@ def main(argv: list[str] | None = None) -> int:
                 background_color="default",
             )
         )
+
+    from rich import print
 
     print(data["source"])
 
