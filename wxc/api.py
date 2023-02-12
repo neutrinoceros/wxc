@@ -29,7 +29,7 @@ def is_builtin(name: str) -> bool:
     return hasattr(builtins, name)
 
 
-def is_builtin_func(obj: "Any") -> bool:
+def is_builtin_func(obj: Any) -> bool:
     if isinstance(obj, str):
         obj = get_obj(obj)
     # this heuristic is equivalent to inspect.isbuiltin()
