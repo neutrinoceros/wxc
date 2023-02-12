@@ -1,20 +1,11 @@
 from __future__ import annotations
 
 import builtins
-import inspect
 import re
 import sys
 from collections import defaultdict
 from functools import lru_cache
-from importlib import import_module
-from platform import python_version
 from types import BuiltinFunctionType
-from typing import Any
-
-if sys.version_info >= (3, 8):
-    import importlib.metadata as md
-else:
-    import importlib_metadata as md
 
 if sys.version_info >= (3, 10):
 
@@ -26,6 +17,10 @@ else:
 
 from wxc.levenshtein import levenshtein_distance
 
+if False:
+    # typecheck only
+    from typing import Any
+
 # sorted by decreasing order of priority
 VERSION_ATTR_LOOKUP_TABLE = ("__version__", "VERSION", "version")
 
@@ -34,7 +29,7 @@ def is_builtin(name: str) -> bool:
     return hasattr(builtins, name)
 
 
-def is_builtin_func(obj: Any) -> bool:
+def is_builtin_func(obj: "Any") -> bool:
     if isinstance(obj, str):
         obj = get_obj(obj)
     # this heuristic is equivalent to inspect.isbuiltin()
@@ -63,9 +58,11 @@ def get_suggestions(
 
 
 @lru_cache(maxsize=128)
-def get_objects(name: str) -> list[Any]:
+def get_objects(name: str) -> list:
     if is_builtin(name):
         return [get_builtin_obj(name)]
+
+    from importlib import import_module
 
     name_in = name
     attrs = []
@@ -110,6 +107,8 @@ def get_obj(name: str):
 
 
 def get_sourcefile(obj):
+    import inspect
+
     try:
         file = inspect.getfile(obj)
     except OSError:
@@ -127,6 +126,8 @@ def get_sourcefile(obj):
 
 
 def get_sourceline(obj):
+    import inspect
+
     return inspect.getsourcelines(obj)[1]
 
 
@@ -141,12 +142,19 @@ def get_version(package_name: str) -> str:
                 continue
             return retv
 
+    if sys.version_info >= (3, 8):
+        import importlib.metadata as md
+    else:
+        import importlib_metadata as md
+
     try:
         return str(md.version(package_name))
     except md.PackageNotFoundError:
         pass
 
     if in_stdlib(package_name):
+        from platform import python_version
+
         return f"Python {python_version()}"
 
     raise LookupError(f"Could not determine version metadata from {package_name!r}")
