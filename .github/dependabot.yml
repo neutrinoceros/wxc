@@ -7,3 +7,8 @@ updates:
   directory: /requirements
   schedule:
     interval: monthly
+
+- package-ecosystem: github-actions
+  directory: /.github/workflows
+  schedule:
+    interval: monthly
