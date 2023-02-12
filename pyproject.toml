@@ -94,7 +94,6 @@ exclude_lines = [
 
 [tool.coverage.run]
 omit = [
-  "setup.py",
   "wxc/__main__.py",
   "tests/data/*.py",
 ]
