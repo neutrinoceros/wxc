@@ -58,10 +58,8 @@ def main(argv: list[str] | None = None) -> int:
         # this is a simple module request
         # let's try to get the result without actually importing it first
         if args.version:
-            if sys.version_info >= (3, 8):
-                import importlib.metadata as md
-            else:
-                import importlib_metadata as md
+            import importlib.metadata as md
+
             try:
                 version = md.version(args.name)
             except md.PackageNotFoundError:
