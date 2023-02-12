@@ -93,6 +93,17 @@ jobs:
   type-check:
     runs-on: ubuntu-latest
     name: type check
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        python-version:
+        # Match minimal supported Python version
+        # to make sure we're not using unparseable syntax,
+        # and also run on the most recent version possible to make sure
+        # the code typechecks also there
+        - '3.8'
+        - '3.11'
 
     concurrency:
       group: ${{ github.ref }}-dev
@@ -106,9 +117,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        # Match minimal supported Python version
-        # to make sure we're not using unparseable syntax
-        python-version: '3.8'
+        python-version: ${{ matrix.python-version }}
 
     - name: Build
       run: |
