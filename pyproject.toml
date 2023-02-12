@@ -101,8 +101,11 @@ parallel = true
 
 [tool.mypy]
 python_version = "3.7"
+show_error_codes = true
+pretty = true
 warn_return_any = true
 warn_unused_configs = true
+warn_unreachable = true
 
 [tool.pytest]
 filterwarnings = [
