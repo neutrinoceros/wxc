@@ -142,10 +142,7 @@ def get_version(package_name: str) -> str:
                 continue
             return retv
 
-    if sys.version_info >= (3, 8):
-        import importlib.metadata as md
-    else:
-        import importlib_metadata as md
+    import importlib.metadata as md
 
     try:
         return str(md.version(package_name))

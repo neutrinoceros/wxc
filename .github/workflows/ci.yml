@@ -21,7 +21,6 @@ jobs:
         os:
         - ubuntu-latest
         python-version:
-        - '3.7'
         - '3.8'
         - '3.9'
         - '3.10'
@@ -109,7 +108,7 @@ jobs:
       with:
         # Match minimal supported Python version
         # to make sure we're not using unparseable syntax
-        python-version: '3.7'
+        python-version: '3.8'
 
     - name: Build
       run: |
