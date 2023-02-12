@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wxc"
-version = "7.0.0"
+version = "7.1.0"
 description = "A CLI facility to inspect Python environments."
 authors = [
     { name = "C.M.T. Robert" },
