@@ -19,7 +19,7 @@ from wxc.levenshtein import levenshtein_distance
 
 if False:
     # typecheck only
-    from typing import Any
+    from typing import Any  # type: ignore [unreachable]
 
 # sorted by decreasing order of priority
 VERSION_ATTR_LOOKUP_TABLE = ("__version__", "VERSION", "version")
