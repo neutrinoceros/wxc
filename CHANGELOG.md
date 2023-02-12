@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to
 
+## [7.1.0] - 2023-02-12
+
+ENH: import dependencies lazily to minimize startup time on individual queries [PR #176](https://github.com/neutrinoceros/wxc/pull/176)
+
 ## [7.0.0] - 2023-02-04
 
 - TYP: better type checking [PR #165](https://github.com/neutrinoceros/wxc/pull/165)
