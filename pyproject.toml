@@ -37,6 +37,7 @@ wxc = "wxc.cli:main"
 
 [project.urls]
 Homepage = "https://github.com/neutrinoceros/wxc"
+Changelog = "https://github.com/neutrinoceros/wxc/blob/main/CHANGELOG.md"
 
 [tool.setuptools]
 license-files = [
