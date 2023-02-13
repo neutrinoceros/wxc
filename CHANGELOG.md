@@ -6,7 +6,8 @@ and this project adheres to
 
 ## [7.1.0] - 2023-02-12
 
-ENH: import dependencies lazily to minimize startup time on individual queries [PR #176](https://github.com/neutrinoceros/wxc/pull/176)
+- ENH: import dependencies lazily to minimize startup time on individual queries [PR #176](https://github.com/neutrinoceros/wxc/pull/176)
+- BLD: drop support for CPython 3.7 [PR #183](https://github.com/neutrinoceros/wxc/pull/183)
 
 ## [7.0.0] - 2023-02-04
 
