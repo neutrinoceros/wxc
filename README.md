@@ -1,7 +1,7 @@
 # wxc
 
 [![PyPI](https://img.shields.io/pypi/v/wxc.svg?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/wxc/)
-[![PyPI](https://img.shields.io/badge/requires-Python%20≥%203.7-blue?logo=python&logoColor=white)](https://pypi.org/project/wxc/)
+[![PyPI](https://img.shields.io/badge/requires-Python%20≥%203.8-blue?logo=python&logoColor=white)](https://pypi.org/project/wxc/)
 [![](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://github.com/neutrinoceros/wxc/pulls)
 
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
@@ -17,7 +17,7 @@ standard library.
 ## Installation
 
 ```shell
-$ python3 -m pip install wxc
+$ python -m pip install wxc
 ```
 
 ## Usage
