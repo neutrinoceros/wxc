@@ -17,7 +17,7 @@ standard library.
 ## Installation
 
 ```shell
-$ python3 -m pip install wxc
+$ python -m pip install wxc
 ```
 
 ## Usage
