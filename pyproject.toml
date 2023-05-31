@@ -6,7 +6,6 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "wxc"
-version = "7.1.0"
 description = "A CLI facility to inspect Python environments."
 authors = [
     { name = "C.M.T. Robert" },
@@ -24,6 +23,7 @@ dependencies = [
     "rich>=10.13.0",
     "stdlib-list>=0.8;python_version < \"3.10\"",
 ]
+dynamic = ["version"]
 
 [project.license]
 text = "GPL-3.0"
@@ -44,6 +44,9 @@ license-files = [
     "LICENSE",
 ]
 include-package-data = false
+
+[tool.setuptools.dynamic]
+version = {attr = "wxc.__version__"}
 
 [tool.setuptools.packages.find]
 exclude = [
