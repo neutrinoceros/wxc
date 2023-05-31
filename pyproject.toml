@@ -46,10 +46,7 @@ license-files = [
 include-package-data = false
 
 [tool.setuptools.packages.find]
-exclude = [
-    "tests*",
-    "testing*",
-]
+where = ["src"]
 namespaces = false
 
 [tool.ruff]
@@ -68,6 +65,7 @@ select = [
 
 [tool.ruff.isort]
 combine-as-imports = true
+known-first-party = ["wxc"]
 
 [tool.coverage.paths]
 source = [

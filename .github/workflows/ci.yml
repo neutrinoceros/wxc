@@ -122,4 +122,4 @@ jobs:
         python -m pip install --requirement requirements/typecheck.txt
 
     - name: Run mypy
-      run: mypy wxc
+      run: mypy src/wxc
