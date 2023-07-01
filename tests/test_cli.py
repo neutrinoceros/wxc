@@ -157,13 +157,13 @@ def test_source(fake_module, capsys):
 
 def test_source_error(capsys):
     pytest.importorskip("numpy")
-    ret1 = main(["numpy.VisibleDeprecationWarning"])
+    ret1 = main(["numpy.ndarray"])
     assert ret1 == 0
     out, err = capsys.readouterr()
     assert out != ""
     assert err == ""
 
-    ret2 = main(["numpy.VisibleDeprecationWarning", "-s"])
+    ret2 = main(["numpy.ndarray", "-s"])
     out, err = capsys.readouterr()
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
