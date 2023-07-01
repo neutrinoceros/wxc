@@ -17,6 +17,7 @@ concurrency:
 jobs:
   unit-tests:
     strategy:
+      fail-fast: false
       matrix:
         os:
         - ubuntu-latest
