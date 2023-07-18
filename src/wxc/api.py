@@ -166,7 +166,9 @@ def get_full_data(name: str) -> dict:
             # as of Python 3.11, inspect.getfile doesn't have support for properties
             # but we're not making this a hard failure in case it is added in the future
             # and we fallback to finding out the sourcefile of the class itself
-            if not isinstance(obj, property):
+            if isinstance(obj, property):
+                continue
+            else:
                 raise
         else:
             try:
