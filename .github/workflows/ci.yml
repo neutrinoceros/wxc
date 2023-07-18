@@ -22,8 +22,6 @@ jobs:
         os:
         - ubuntu-latest
         python-version:
-        - '3.8'
-        - '3.9'
         - '3.10'
         - '3.11'
         include:
@@ -103,7 +101,7 @@ jobs:
         # to make sure we're not using unparseable syntax,
         # and also run on the most recent version possible to make sure
         # the code typechecks also there
-        - '3.8'
+        - '3.10'
         - '3.11'
 
     steps:
