@@ -61,12 +61,7 @@ def test_stdlib_typos_in_module_name(capsys):
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert out.strip() == ""
-    if sys.version_info >= (3, 10):
-        assert (
-            err == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
-        )
-    else:
-        assert err == "ERROR no installed package with name 'sis'\n"
+    assert err == "ERROR no installed package with name 'sis'. Did you mean 'sys' ?\n"
 
 
 def test_non_existing_member(capsys):
@@ -76,12 +71,10 @@ def test_non_existing_member(capsys):
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert out.strip() == ""
-    assert (
-        # not matching exact results since they are different between Python 3.9 and 3.10
-        err.startswith(
-            "ERROR module 'pathlib' has no attribute 'nothing'."
-            " Here are the closest matches:"
-        )
+
+    assert err.startswith(
+        "ERROR module 'pathlib' has no attribute 'nothing'."
+        " Here are the closest matches:"
     )
 
 

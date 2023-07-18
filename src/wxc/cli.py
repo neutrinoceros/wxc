@@ -1,5 +1,3 @@
-from __future__ import annotations
-
 import sys
 from argparse import ArgumentParser
 
@@ -95,16 +93,11 @@ def main(argv: list[str] | None = None) -> int:
         except ImportError:
             package_name = args.name.partition(".")[0]
             msg = f"no installed package with name {package_name!r}"
-            if sys.version_info >= (3, 10):
-                # the standard library in Python >= 3.10 is the only subset of available packages
-                # for which we have a computationally cheap way to retrieve a list.
-                suggestions = get_suggestions(
-                    sys.builtin_module_names, package_name, max_dist=2
-                )
-                if len(suggestions) == 1:
-                    msg += f". Did you mean {suggestions[0]!r} ?"
-            else:
-                pass
+            suggestions = get_suggestions(
+                sys.builtin_module_names, package_name, max_dist=2
+            )
+            if len(suggestions) == 1:
+                msg += f". Did you mean {suggestions[0]!r} ?"
             progress.stop()
             print_err(msg)
             return 1

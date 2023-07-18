@@ -7,19 +7,13 @@ from collections import defaultdict
 from functools import lru_cache
 from types import BuiltinFunctionType
 
-if sys.version_info >= (3, 10):
-
-    def in_stdlib(package_name: str) -> bool:
-        return package_name in sys.stdlib_module_names
-
-else:
-    from stdlib_list import in_stdlib  # type: ignore
-
 from wxc.levenshtein import levenshtein_distance
 
 if False:
     # typecheck only
-    from typing import Any  # type: ignore [unreachable]
+    from collections.abc import Iterable  # type: ignore [unreachable]
+    from typing import Any
+
 
 # sorted by decreasing order of priority
 VERSION_ATTR_LOOKUP_TABLE = ("__version__", "VERSION", "version")
@@ -45,7 +39,7 @@ def get_builtin_obj(name: str):
 
 
 def get_suggestions(
-    candidates: list[str], target: str, *, max_dist: int = sys.maxsize
+    candidates: Iterable[str], target: str, *, max_dist: int = sys.maxsize
 ) -> list[str]:
     suggestions: dict[int, list[str]] = defaultdict(list)
     minimal_distance: int = max_dist
@@ -120,7 +114,7 @@ def get_sourcefile(obj):
         if inspect.ismodule(obj) or is_builtin_func(obj):
             raise
         if isinstance(obj, property):
-            return get_sourcefile()
+            raise
         return get_sourcefile(inspect.getmodule(obj))
     return file
 
@@ -149,7 +143,7 @@ def get_version(package_name: str) -> str:
     except md.PackageNotFoundError:
         pass
 
-    if in_stdlib(package_name):
+    if package_name in sys.stdlib_module_names:
         from platform import python_version
 
         return f"Python {python_version()}"
@@ -169,9 +163,9 @@ def get_full_data(name: str) -> dict:
         except RecursionError:
             pass
         except TypeError:
-            # as of Python 3.9, inspect.getfile doesn't have support for properties
+            # as of Python 3.11, inspect.getfile doesn't have support for properties
             # but we're not making this a hard failure in case it is added in the future
-            # and we faillback on finding out the sourcefile of the class itself
+            # and we fallback to finding out the sourcefile of the class itself
             if not isinstance(obj, property):
                 raise
         else:
@@ -190,6 +184,6 @@ def get_full_data(name: str) -> dict:
     except LookupError:
         pass
 
-    data["in_stdlib"] = in_stdlib(package_name)
+    data["in_stdlib"] = package_name in sys.stdlib_module_names
 
     return data
