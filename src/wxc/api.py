@@ -109,7 +109,7 @@ def get_sourcefile(obj):
         file = obj.__file__
     except TypeError:
         # this happens for instance with `math.sqrt`
-        # because inspect.getsourcefile doesn't work on compiled code
+        # because inspect.getfile doesn't work on compiled code
         # the second condition is met for os.fspath
         if inspect.ismodule(obj) or is_builtin_func(obj):
             raise

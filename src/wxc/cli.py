@@ -146,7 +146,7 @@ def main(argv: list[str] | None = None) -> int:
             code = inspect.getsource(obj)
         except OSError as exc:
             # inspect.getsource _can_ be the first failing call so we wrap its
-            # error because it's inline with wxc's own error messages and
+            # error because it's in line with wxc's own error messages and
             # there's probably not much else we can do about it.
             print_err(exc)
             return 1
