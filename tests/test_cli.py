@@ -165,6 +165,14 @@ def test_source_error(capsys):
     assert ret2 != 0
 
 
+def test_lines_no_source(capsys):
+    ret1 = main(["inspect.getfile", "--lines"])
+    assert ret1 != 0
+    out, err = capsys.readouterr()
+    assert out == ""
+    assert err == "ERROR --lines flag is meaningless if --source isn't passed too\n"
+
+
 def test_property(capsys):
     ret = main(["rich.progress.Task.started"])
     assert ret == 0

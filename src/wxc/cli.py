@@ -52,6 +52,10 @@ def main(argv: list[str] | None = None) -> int:
     )
     args = parser.parse_args(argv)
 
+    if args.show_lines and not args.source:
+        print_err("--lines flag is meaningless if --source isn't passed too")
+        return 1
+
     if "." not in args.name:
         # this is a simple module request
         # let's try to get the result without actually importing it first
