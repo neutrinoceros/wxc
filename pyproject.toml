@@ -94,9 +94,14 @@ exclude_lines = [
 ]
 
 [tool.coverage.run]
+source = ["src/wxc"]
+include = [
+  "src/wxc",
+  "tests",
+]
 omit = [
-  "wxc/__main__.py",
   "tests/data/*.py",
+  "src/wxc/__main__.py",
 ]
 parallel = true
 
