@@ -3,7 +3,7 @@ from pathlib import Path
 
 import pytest  # type: ignore
 
-from wxc.api import get_full_data
+from wxc.api import get_full_data, get_version
 
 
 @pytest.mark.skipif(
@@ -55,3 +55,12 @@ def test_wrong_member():
         match="module 'os.path' has no attribute 'NotARealMember'",
     ):
         get_full_data("os.path.NotARealMember")
+
+
+def test_get_version_platform():
+    # platform.version is a function
+    # while get_version is currently able to retrieve the correct result
+    # without hitting this problem, this test improves coverage of the defensive
+    # programming that was deployed when this special case was discovered
+    ret = get_version("platform", _version_attr_lookup_table=("version", "__version__"))
+    assert isinstance(ret, str)

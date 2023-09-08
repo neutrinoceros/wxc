@@ -125,9 +125,11 @@ def get_sourceline(obj):
     return inspect.getsourcelines(obj)[1]
 
 
-def get_version(package_name: str) -> str:
+def get_version(
+    package_name: str, *, _version_attr_lookup_table=VERSION_ATTR_LOOKUP_TABLE
+) -> str:
     package = get_obj(package_name)
-    for version_attr in VERSION_ATTR_LOOKUP_TABLE:
+    for version_attr in _version_attr_lookup_table:
         if hasattr(package, version_attr):
             retv = getattr(package, version_attr)
             if not isinstance(retv, str):
