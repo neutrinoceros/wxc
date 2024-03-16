@@ -1,6 +1,6 @@
 coverage[toml]>=6.5.0
 matplotlib-inline
-numpy ; python_version < '3.12'
+numpy ; python_version < '3.13'
 pytest>=6.0.2
 pytest-mock>=3.5.1
 schema>=0.7.2
