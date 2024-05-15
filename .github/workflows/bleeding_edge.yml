@@ -14,18 +14,31 @@ on:
 
 jobs:
   build:
+    name: 'py${{ matrix.python-version }} (free-threading: ${{ matrix.free-threading }})'
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version:
+        - 3.13-dev
+        free-threading:
+        - false
+        - true
+
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - uses: actions/setup-python@v5
+      if: ${{ !matrix.free-threading }}
       with:
-        python-version: 3.12-dev
+        python-version: ${{ matrix.python-version }}
+    - uses: deadsnakes/action@v3.1.0
+      if: ${{ matrix.free-threading }}
+      with:
+        python-version: ${{ matrix.python-version }}
+        nogil: true
 
     - name: Install dependencies
       run: |
@@ -36,5 +49,6 @@ jobs:
         python -m pip install schema
     - name: Build
       run: python -m pip install .
+    - run: python -m pip list
     - name: Run tests
-      run: pytest
+      run: pytest --color=yes
