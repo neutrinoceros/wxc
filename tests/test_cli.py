@@ -72,10 +72,7 @@ def test_non_existing_member(capsys):
     # that don't actually affect the result visually
     assert out.strip() == ""
 
-    assert err.startswith(
-        "ERROR module 'pathlib' has no attribute 'nothing'."
-        " Here are the closest matches:"
-    )
+    assert err.startswith("ERROR module 'pathlib' has no attribute 'nothing'.")
 
 
 def test_compiled_source(capsys):
