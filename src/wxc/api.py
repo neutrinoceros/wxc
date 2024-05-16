@@ -153,7 +153,7 @@ def get_version(
     raise LookupError(f"Could not determine version metadata from {package_name!r}")
 
 
-def get_full_data(name: str) -> dict:
+def get_full_data(name: str) -> dict[str, str]:
     data = defaultdict(str)
     package_name, _, _ = name.partition(".")
 
@@ -188,6 +188,6 @@ def get_full_data(name: str) -> dict:
     except LookupError:
         pass
 
-    data["in_stdlib"] = package_name in sys.stdlib_module_names
+    data["in_stdlib"] = str(package_name in sys.stdlib_module_names)
 
     return data
