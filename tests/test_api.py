@@ -30,6 +30,8 @@ def test_finder(package_name):
     assert "source" in imp
 
     filename, _, line = imp["source"].partition(":")
+    if filename == "built-in":
+        return
     p = Path(filename)
     assert p.exists()
     if not imp["in_stdlib"]:

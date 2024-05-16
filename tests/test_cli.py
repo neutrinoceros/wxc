@@ -1,4 +1,3 @@
-import sys
 from importlib import import_module
 from importlib.util import find_spec
 
@@ -26,15 +25,6 @@ def test_elementary_queries(capsys, package_name):
     ret = main([package_name, "--version"])
 
     out, err = capsys.readouterr()
-
-    if package_name == "math" and sys.platform.startswith("win"):
-        # rich may output an unspecified amount of newlines
-        # that don't actually affect the result visually
-        assert out.strip() == ""
-        assert err == "ERROR failed to locate source data.\n"
-        assert ret != 0
-        return
-
     assert out != "unknown"
     assert err == ""
     assert ret == 0

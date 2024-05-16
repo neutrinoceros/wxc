@@ -111,9 +111,12 @@ def get_sourcefile(obj):
         # this happens for instance with `math.sqrt`
         # because inspect.getfile doesn't work on compiled code
         # the second condition is met for os.fspath
-        if inspect.ismodule(obj) or is_builtin_func(obj):
-            raise
-        if isinstance(obj, property):
+        if (
+            inspect.ismodule(obj)
+            or is_builtin_func(obj)
+            or inspect.getmodule(obj) is builtins
+            or isinstance(obj, property)
+        ):
             raise
         return get_sourcefile(inspect.getmodule(obj))
     return file
@@ -164,11 +167,15 @@ def get_full_data(name: str) -> dict:
             source = get_sourcefile(obj)
         except RecursionError:
             pass
-        except TypeError:
-            # as of Python 3.11, inspect.getfile doesn't have support for properties
-            # but we're not making this a hard failure in case it is added in the future
-            # and we fallback to finding out the sourcefile of the class itself
-            if isinstance(obj, property):
+        except TypeError as exc:
+            if "built-in module" in str(exc):
+                # see https://github.com/neutrinoceros/wxc/issues/233
+                data["source"] = "built-in"
+                break
+            elif isinstance(obj, property):
+                # as of Python 3.11, inspect.getfile doesn't have support for properties
+                # but we're not making this a hard failure in case it is added in the future
+                # and we fallback to finding out the sourcefile of the class itself
                 continue
             else:
                 raise
