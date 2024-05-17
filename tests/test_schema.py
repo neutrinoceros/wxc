@@ -27,7 +27,7 @@ def test_empty_module_query(fake_module):
     data = get_full_data(name)
     filename, _, _ = data["source"].partition(":")
     assert Path(syspath, name) in Path(filename).parents
-    assert "version" not in data
+    assert data["version"] == "unknown"
 
     template.validate(data)
 

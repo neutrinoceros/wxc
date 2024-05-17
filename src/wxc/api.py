@@ -12,7 +12,12 @@ from wxc.levenshtein import levenshtein_distance
 if False:
     # typecheck only
     from collections.abc import Iterable  # type: ignore [unreachable]
-    from typing import Any
+    from typing import Any, TypedDict
+
+    class FullDataDict(TypedDict):
+        source: str | None
+        version: str
+        in_stdlib: bool
 
 
 # sorted by decreasing order of priority
@@ -156,11 +161,11 @@ def get_version(
     raise LookupError(f"Could not determine version metadata from {package_name!r}")
 
 
-def get_full_data(name: str) -> dict:
-    data = defaultdict(str)
+def get_full_data(name: str) -> FullDataDict:
     package_name, _, _ = name.partition(".")
 
     objects = get_objects(name)
+    _d_source: str | None = None
 
     for obj in reversed(objects):
         try:
@@ -170,7 +175,7 @@ def get_full_data(name: str) -> dict:
         except TypeError as exc:
             if "built-in module" in str(exc):
                 # see https://github.com/neutrinoceros/wxc/issues/233
-                data["source"] = "built-in"
+                _d_source = "built-in"
                 break
             elif isinstance(obj, property):
                 # as of Python 3.11, inspect.getfile doesn't have support for properties
@@ -188,13 +193,15 @@ def get_full_data(name: str) -> dict:
                 source += f":{lineno}" if lineno else ""
                 break
             finally:
-                data["source"] = source
+                _d_source = source
 
     try:
-        data["version"] = get_version(package_name)
+        _d_version = get_version(package_name)
     except LookupError:
-        pass
+        _d_version = "unknown"
 
-    data["in_stdlib"] = package_name in sys.stdlib_module_names
-
-    return data
+    return {
+        "source": _d_source,
+        "version": _d_version,
+        "in_stdlib": package_name in sys.stdlib_module_names,
+    }
