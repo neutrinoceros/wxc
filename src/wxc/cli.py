@@ -124,9 +124,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.full:
         from rich import print
 
-        data["name"] = args.name
-        ver = f"version = {data.pop('version', 'unknown')}"
-        print("\n".join(f"{k} = {v}" for k, v in data.items()))
+        all_data = {**data, "name": args.name}
+        ver = f"version = {all_data['version']}"
+        print("\n".join(f"{k} = {v}" for k, v in all_data.items()))
         builtin_print(ver)
         return 0
 
@@ -137,7 +137,7 @@ def main(argv: list[str] | None = None) -> int:
         builtin_print(data["version"])
         return 0
 
-    if "source" not in data:
+    if data["source"] == "":
         print_err(f"did not resolve source file for {args.name!r}")
         return 1
 
