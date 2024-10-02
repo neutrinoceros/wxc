@@ -59,7 +59,7 @@ jobs:
         name: wxc_coverage_data-${{ matrix.os }}-${{ matrix.python-version }}
         path: .coverage.*
         if-no-files-found: ignore
-
+        include-hidden-files: true
 
   coverage:
     name: Combine & check coverage
