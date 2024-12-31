@@ -37,7 +37,7 @@ jobs:
     - name: Checkout Source
       uses: actions/checkout@v4
     - name: Setup uv
-      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -63,7 +63,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup uv
-      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: '3.13'
 
@@ -105,7 +105,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup uv
-      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
+      uses: astral-sh/setup-uv@887a942a15af3a7626099df99e897a18d9e5ab3a # v5.1.0
       with:
         python-version: ${{ matrix.python-version }}
     - name: Run mypy
