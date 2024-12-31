@@ -148,7 +148,8 @@ def test_source_error(capsys):
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert out.strip() == ""
-    assert err == "ERROR could not find class definition\n"
+    # the exact error message varies depending on the Python runtime, which is fine
+    assert err.startswith("ERROR")
     assert ret2 != 0
 
 
