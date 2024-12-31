@@ -1,14 +1,16 @@
 {
-    "extends": [
-      "config:base"
-    ],
-    "schedule": [
-      "* 2 1 * *"
-    ],
-    "packageRules": [
-      {
-        "matchFiles": ["uv.lock"],
-        "enabled": true
-      }
-    ]
-  }
+  "extends": [
+    "config:recommended"
+  ],
+  "schedule": [
+    "* 2 1 * *"
+  ],
+  "packageRules": [
+    {
+      "matchFileNames": [
+        "uv.lock"
+      ],
+      "enabled": true
+    }
+  ]
+}
