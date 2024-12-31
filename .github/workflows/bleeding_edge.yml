@@ -14,41 +14,28 @@ on:
 
 jobs:
   build:
-    name: 'py${{ matrix.python-version }} (free-threading: ${{ matrix.free-threading }})'
+    name: bleeding edge
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
     strategy:
       fail-fast: false
-      matrix:
-        python-version:
-        - 3.13-dev
-        free-threading:
-        - false
-        - true
 
     steps:
     - uses: actions/checkout@v4
 
+    - name: Setup uv
+      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
     - uses: actions/setup-python@v5
-      if: ${{ !matrix.free-threading }}
       with:
-        python-version: ${{ matrix.python-version }}
-    - uses: deadsnakes/action@v3.2.0
-      if: ${{ matrix.free-threading }}
-      with:
-        python-version: ${{ matrix.python-version }}
-        nogil: true
+        python-version: 3.14-dev
 
-    - name: Install dependencies
+    - name: Configure uv
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install --upgrade setuptools wheel
-        python -m pip install git+https://github.com/willmcgugan/rich.git
-        python -m pip install git+https://github.com/pytest-dev/pytest.git
-        python -m pip install schema
-    - name: Build
-      run: python -m pip install .
-    - run: python -m pip list
+        echo "UV_PYTHON_PREFERENCE=only-system" >> $GITHUB_ENV
+        pin=${{ matrix.python-version }}
+        echo "UV_PYTHON=${pin%-dev}" >> $GITHUB_ENV
+
+    - run: uv lock --upgrade --prerelease=allow
     - name: Run tests
-      run: pytest --color=yes
+      run: uv run --frozen --no-editable --group test pytest --color=yes

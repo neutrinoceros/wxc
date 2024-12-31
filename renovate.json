@@ -1,0 +1,14 @@
+{
+    "extends": [
+      "config:base"
+    ],
+    "schedule": [
+      "* 2 1 * *"
+    ],
+    "packageRules": [
+      {
+        "matchFiles": ["uv.lock"],
+        "enabled": true
+      }
+    ]
+  }
