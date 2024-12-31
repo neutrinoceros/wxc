@@ -36,22 +36,16 @@ jobs:
     steps:
     - name: Checkout Source
       uses: actions/checkout@v4
-    - name: Setup Python
-      uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Build
-      # installing in editable mode to allow coverage + src layout
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install --editable .
-        python -m pip install --requirement requirements/tests.txt
-
     - name: Test
+      shell: bash # windows compat
       run: |
-        python -m pip freeze
-        python -m coverage run -m pytest --color=yes
+        uv run --frozen --group test --group covcheck --dev \
+          coverage run -m pytest --color=yes
 
     - name: Upload coverage data
       uses: actions/upload-artifact@v4
@@ -68,12 +62,12 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-    - uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
       with:
-        # Use latest Python, so it understands all syntax.
-        python-version: 3.x
+        python-version: '3.13'
 
-    - run: python -m pip install --upgrade coverage[toml]
+    - run: uv sync --only-group covcheck
 
     - uses: actions/download-artifact@v4
       with:
@@ -82,9 +76,9 @@ jobs:
 
     - name: Check coverage
       run: |
-        python -m coverage combine
-        python -m coverage html --skip-covered --skip-empty
-        python -m coverage report --fail-under=95
+        uv run --frozen --only-group covcheck coverage combine
+        uv run --frozen --only-group covcheck coverage html --skip-covered --skip-empty
+        uv run --frozen --only-group covcheck coverage report --fail-under=95
 
     - name: Upload HTML report if check failed.
       uses: actions/upload-artifact@v4
@@ -110,19 +104,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      with:
-        fetch-depth: 0
-
-    - name: Set up Python
-      uses: actions/setup-python@v5
+    - name: Setup uv
+      uses: astral-sh/setup-uv@38f3f104447c67c051c4a08e39b64a148898af3a # v4.2.0
       with:
         python-version: ${{ matrix.python-version }}
-
-    - name: Build
-      run: |
-        python -m pip install --upgrade pip
-        python -m pip install .
-        python -m pip install --requirement requirements/typecheck.txt
-
     - name: Run mypy
-      run: mypy src/wxc
+      run: uv run --frozen --group typecheck mypy src
