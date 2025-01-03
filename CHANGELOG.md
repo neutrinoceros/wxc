@@ -8,6 +8,15 @@ and this project adheres to
 
 - BLD: migrate build backend to `flit-core`
 
+## [7.1.2] - 2024-05-17
+
+BUG: add support for inspecting built-in modules
+
+## [7.1.1] - 2023-09-08
+
+- BLD: drop support for Python 3.8 and 3.9
+- BUG: error out if `--lines` is passed but `--source` is not
+
 ## [7.1.0] - 2023-02-12
 
 - ENH: import dependencies lazily to minimize startup time on individual queries [PR #176](https://github.com/neutrinoceros/wxc/pull/176)
