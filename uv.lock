@@ -391,8 +391,8 @@ covcheck = [
     { name = "schema" },
 ]
 dev = [
-    { name = "matplotlib-inline" },
-    { name = "numpy" },
+    { name = "matplotlib-inline", marker = "python_full_version < '3.14'" },
+    { name = "numpy", marker = "python_full_version < '3.14'" },
 ]
 test = [
     { name = "pytest" },
@@ -415,8 +415,8 @@ covcheck = [
     { name = "schema", specifier = ">=0.7.2" },
 ]
 dev = [
-    { name = "matplotlib-inline", specifier = ">=0.1.7" },
-    { name = "numpy", specifier = ">=2.0.2" },
+    { name = "matplotlib-inline", marker = "python_full_version < '3.14'", specifier = ">=0.1.7" },
+    { name = "numpy", marker = "python_full_version < '3.14'", specifier = ">=2.0.2" },
 ]
 test = [
     { name = "pytest", specifier = ">=6.0.2" },
