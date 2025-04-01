@@ -26,16 +26,8 @@ jobs:
 
     - name: Setup uv
       uses: astral-sh/setup-uv@0c5e2b8115b80b4c7c5ddf6ffdd634974642d182 # v5.4.1
-    - uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
       with:
-        python-version: 3.14-dev
-
-    - name: Configure uv
-      run: |
-        echo "UV_PYTHON_PREFERENCE=only-system" >> $GITHUB_ENV
-        pin=${{ matrix.python-version }}
-        echo "UV_PYTHON=${pin%-dev}" >> $GITHUB_ENV
-
+        python-version: '3.14'
     - run: uv lock --upgrade --prerelease=allow
     - name: Run tests
       run: uv run --frozen --no-editable --group test pytest --color=yes

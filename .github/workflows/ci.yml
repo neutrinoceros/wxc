@@ -76,9 +76,9 @@ jobs:
 
     - name: Check coverage
       run: |
-        uv run --frozen --only-group covcheck coverage combine
-        uv run --frozen --only-group covcheck coverage html --skip-covered --skip-empty
-        uv run --frozen --only-group covcheck coverage report --fail-under=95
+        uv run --no-sync coverage combine
+        uv run --no-sync coverage html --skip-covered --skip-empty
+        uv run --no-sync coverage report --fail-under=95
 
     - name: Upload HTML report if check failed.
       uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
