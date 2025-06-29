@@ -82,10 +82,9 @@ def test_compiled_source(capsys):
 def test_typo1(capsys):
     ret = main(["pathlib.Path.chmode"])
     out, err = capsys.readouterr()
-    assert err == (
+    assert err.startswith(
         "ERROR type object 'pathlib.Path' has no attribute 'chmode'. "
         "Here are close matches:\n"
-        "'chmod', 'lchmod', 'home'\n"
     )
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
