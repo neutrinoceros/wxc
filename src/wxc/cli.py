@@ -1,11 +1,11 @@
 import sys
 from argparse import ArgumentParser
+from difflib import get_close_matches
 
 from wxc.api import (
     get_full_data,
     get_obj,
     get_sourceline,
-    get_suggestions,
     is_builtin,
     is_builtin_func,
 )
@@ -97,9 +97,7 @@ def main(argv: list[str] | None = None) -> int:
         except ImportError:
             package_name = args.name.partition(".")[0]
             msg = f"no installed package with name {package_name!r}"
-            suggestions = get_suggestions(
-                sys.builtin_module_names, package_name, max_dist=2
-            )
+            suggestions = get_close_matches(package_name, sys.builtin_module_names)
             if len(suggestions) == 1:
                 msg += f". Did you mean {suggestions[0]!r} ?"
             progress.stop()
