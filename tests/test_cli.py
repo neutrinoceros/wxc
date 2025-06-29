@@ -62,7 +62,7 @@ def test_non_existing_member(capsys):
     # that don't actually affect the result visually
     assert out.strip() == ""
 
-    assert err.startswith("ERROR module 'pathlib' has no attribute 'nothing'.")
+    assert err.startswith("ERROR module 'pathlib' has no attribute 'nothing'")
 
 
 def test_compiled_source(capsys):
@@ -82,9 +82,10 @@ def test_compiled_source(capsys):
 def test_typo1(capsys):
     ret = main(["pathlib.Path.chmode"])
     out, err = capsys.readouterr()
-    assert (
-        err
-        == "ERROR type object 'pathlib.Path' has no attribute 'chmode'. Did you mean 'chmod' ?\n"
+    assert err == (
+        "ERROR type object 'pathlib.Path' has no attribute 'chmode'. "
+        "Here are close matches:\n"
+        "'chmod', 'lchmod', 'home'\n"
     )
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually

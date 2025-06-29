@@ -7,6 +7,7 @@ and this project adheres to
 ## Unreleased
 
 - BLD: migrate build backend to `flit-core`
+- RFC: replace custom levenshtein function with stdlib `difflib.get_close_matches`
 
 ## [7.1.2] - 2024-05-17
 

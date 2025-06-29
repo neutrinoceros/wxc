@@ -3,16 +3,13 @@ from __future__ import annotations
 import builtins
 import re
 import sys
-from collections import defaultdict
+from difflib import get_close_matches
 from functools import lru_cache
 from types import BuiltinFunctionType
 
-from wxc.levenshtein import levenshtein_distance
-
 if False:
     # typecheck only
-    from collections.abc import Iterable  # type: ignore [unreachable]
-    from typing import Any, TypedDict
+    from typing import Any, TypedDict  # type: ignore [unreachable]
 
     class FullDataDict(TypedDict):
         source: str | None
@@ -41,19 +38,6 @@ def is_builtin_func(obj: Any) -> bool:
 
 def get_builtin_obj(name: str):
     return getattr(builtins, name)
-
-
-def get_suggestions(
-    candidates: Iterable[str], target: str, *, max_dist: int = sys.maxsize
-) -> list[str]:
-    suggestions: dict[int, list[str]] = defaultdict(list)
-    minimal_distance: int = max_dist
-    for a in candidates:
-        d: int = levenshtein_distance(target, a, max_dist=minimal_distance)
-        if d <= minimal_distance:
-            suggestions[d].append(a)
-            minimal_distance = d
-    return sorted(suggestions[minimal_distance])
 
 
 @lru_cache(maxsize=128)
@@ -86,10 +70,10 @@ def get_objects(name: str) -> list:
             # force the name to match the one specified by the user even
             # in cases where they are using an alias (for instance os.path is a alias for posixpath on UNIX)
             msg = re.sub(r"\'[^-\s]*\'", f"{name!r}", msg, count=1)
-            suggestions = get_suggestions(dir(obj), attr)
+            suggestions = get_close_matches(attr, dir(obj), cutoff=0.5)
             if len(suggestions) > 1:
                 repr_suggestions = ", ".join(f"{s!r}" for s in suggestions)
-                msg += f". Here are the closest matches: {repr_suggestions}"
+                msg += f". Here are close matches:\n{repr_suggestions}"
             elif len(suggestions) == 1:
                 msg += f". Did you mean {suggestions[0]!r} ?"
             raise AttributeError(msg) from exc
