@@ -1,10 +1,7 @@
 # wxc
 
 [![PyPI](https://img.shields.io/pypi/v/wxc.svg?logo=pypi&logoColor=white&label=PyPI)](https://pypi.org/project/wxc/)
-[![](https://img.shields.io/badge/contributions-welcome-brightgreen)](https://github.com/neutrinoceros/wxc/pulls)
-
-[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/neutrinoceros/wxc/main.svg)](https://results.pre-commit.ci/latest/github/neutrinoceros/wxc/main)
-[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/charliermarsh/ruff/main/assets/badge/v2.json)](https://github.com/charliermarsh/ruff)
+[![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
 
 
 `wxc` (pronounced "which") allows you to inspect source code in your Python
