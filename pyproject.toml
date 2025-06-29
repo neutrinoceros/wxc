@@ -4,7 +4,7 @@ build-backend = "flit_core.buildapi"
 
 [project]
 name = "wxc"
-version = "7.1.2"
+version = "7.2.0"
 description = "A CLI facility to inspect Python environments."
 authors = [
     { name = "C.M.T. Robert" },
