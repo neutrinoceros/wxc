@@ -10,7 +10,7 @@ packages_to_try = [
     "uuid",
     "fractions",
     # common third party
-    "numpy",
+    "Cython",
     "requests",
     # edge cases
     "importlib_metadata",

@@ -66,12 +66,12 @@ def test_non_existing_member(capsys):
 
 
 def test_compiled_source(capsys):
-    pytest.importorskip("numpy")
-    ret = main(["numpy.abs.at"])
+    pytest.importorskip("Cython")
+    ret = main(["Cython.Compiler.Code.IntConst"])
     out, err = capsys.readouterr()
-    assert (
-        err
-        == "ERROR failed to locate source data. 'numpy.abs.at' is a C-compiled function.\n"
+    assert err == (
+        "ERROR failed to locate source data. 'Cython.Compiler.Code.IntConst' "
+        "is a C-compiled function.\n"
     )
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
@@ -136,14 +136,14 @@ def test_source(fake_module, capsys):
 
 
 def test_source_error(capsys):
-    pytest.importorskip("numpy")
-    ret1 = main(["numpy.ndarray"])
+    pytest.importorskip("Cython")
+    ret1 = main(["Cython.array"])
     assert ret1 == 0
     out, err = capsys.readouterr()
     assert out != ""
     assert err == ""
 
-    ret2 = main(["numpy.ndarray", "-s"])
+    ret2 = main(["Cython.array", "-s"])
     out, err = capsys.readouterr()
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
