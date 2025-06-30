@@ -11,10 +11,9 @@ packages_to_try = [
     "fractions",
     # common third party
     "numpy",
-    "matplotlib",
     "requests",
     # edge cases
-    "matplotlib_inline",
+    "importlib_metadata",
 ]
 
 

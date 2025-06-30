@@ -106,13 +106,13 @@ def test_typo2(capsys):
 
 
 @pytest.mark.skipif(
-    find_spec("matplotlib_inline") is None,
-    reason="matplotlib_inline isn't a hard dependency",
+    find_spec("importlib_metadata") is None,
+    reason="importlib_metadata isn't a hard dependency",
 )
 def test_normalize_hyphen(capsys):
     # note that use a simple pytest.mark.skipif instead of pytest.importorskip
     # because the latter doesn't seem to play nice with coverage
-    ret = main(["matplotlib-inline"])
+    ret = main(["importlib-metadata"])
     out, err = capsys.readouterr()
     assert err == ""
     assert out
