@@ -50,7 +50,7 @@ typecheck = [
     "mypy>=1.13.0",
 ]
 dev = [
-    "matplotlib-inline>=0.1.7 ; python_version < '3.14'",
+    "importlib-metadata>=0.1.7",
     "numpy>=2.0.2 ; python_version < '3.14'",
 ]
 
