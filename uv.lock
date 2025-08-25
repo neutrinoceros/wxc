@@ -3,7 +3,8 @@ revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
     "python_full_version >= '3.11'",
-    "python_full_version < '3.11'",
+    "python_full_version > '3.10' and python_full_version < '3.11'",
+    "python_full_version <= '3.10'",
 ]
 
 [[package]]
@@ -102,7 +103,7 @@ wheels = [
 
 [package.optional-dependencies]
 toml = [
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version <= '3.10'" },
 ]
 
 [[package]]
@@ -218,7 +219,8 @@ name = "numpy"
 version = "2.2.6"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.11'",
+    "python_full_version > '3.10' and python_full_version < '3.11'",
+    "python_full_version <= '3.10'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/76/21/7d2a95e4bba9dc13d043ee156a356c0a8f0c6309dff6b21b4d71a073b8a8/numpy-2.2.6.tar.gz", hash = "sha256:e29554e2bef54a90aa5cc07da6ce955accb83f21ab5de01a62c8478897b264fd", size = 20276440, upload-time = "2025-05-17T22:38:04.611Z" }
 wheels = [
@@ -509,7 +511,7 @@ dependencies = [
 [package.dev-dependencies]
 covcheck = [
     { name = "coverage" },
-    { name = "coverage", extra = ["toml"], marker = "python_full_version < '3.11'" },
+    { name = "coverage", extra = ["toml"], marker = "python_full_version <= '3.10'" },
     { name = "pytest" },
     { name = "pytest-mock" },
     { name = "schema" },
@@ -533,8 +535,8 @@ requires-dist = [{ name = "rich", specifier = ">=10.13.0" }]
 
 [package.metadata.requires-dev]
 covcheck = [
-    { name = "coverage", marker = "python_full_version >= '3.11'", specifier = ">=6.5.0" },
-    { name = "coverage", extras = ["toml"], marker = "python_full_version < '3.11'", specifier = ">=6.5.0" },
+    { name = "coverage", specifier = ">=7.10.0" },
+    { name = "coverage", extras = ["toml"], marker = "python_full_version == '3.10'" },
     { name = "pytest", specifier = ">=6.0.2" },
     { name = "pytest-mock", specifier = ">=3.5.1" },
     { name = "schema", specifier = ">=0.7.2" },

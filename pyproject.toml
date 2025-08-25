@@ -43,8 +43,8 @@ test = [
 ]
 covcheck = [
     {include-group = "test"},
-    "coverage>=6.5.0 ; python_full_version >= '3.11'",
-    "coverage[toml]>=6.5.0 ; python_full_version < '3.11'",
+    "coverage[toml] ; python_full_version == '3.10'",
+    "coverage>=7.10.0",
 ]
 typecheck = [
     "mypy>=1.13.0",
@@ -82,19 +82,14 @@ source = [
 
 [tool.coverage.report]
 show_missing = true
-skip_covered = true
-exclude_lines = [
-    # a more strict default pragma
-    "\\# pragma: no cover\\b",
+skip_covered = false
 
-    # allow defensive code
+# use exclude_also to *extend* the default exclude_lines,
+# and allow purely defensive code patterns
+exclude_also = [
     "^\\s*raise NotImplementedError\\b",
-
-    # typing-related code
-    "^if TYPE_CHECKING:",
-    ": \\.\\.\\.(\\s*#.*)?$",
-    "^ +\\.\\.\\.$",
-    "-> ['\"]?NoReturn['\"]?:",
+    "^\\s*raise RuntimeError\\b",
+    "^\\s*case _ as unreachable:",
 ]
 
 [tool.coverage.run]
