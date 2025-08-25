@@ -78,6 +78,7 @@ jobs:
       run: |
         uv run --no-sync coverage combine
         uv run --no-sync coverage html --skip-covered --skip-empty
+        uv run --no-sync coverage report --format=markdown >> "$GITHUB_STEP_SUMMARY"
         uv run --no-sync coverage report --fail-under=95
 
     - name: Upload HTML report if check failed.
