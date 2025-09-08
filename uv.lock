@@ -519,7 +519,7 @@ covcheck = [
 dev = [
     { name = "importlib-metadata" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "numpy", version = "2.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' and python_full_version < '3.14'" },
+    { name = "numpy", version = "2.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
 ]
 test = [
     { name = "pytest" },
@@ -543,7 +543,7 @@ covcheck = [
 ]
 dev = [
     { name = "importlib-metadata", specifier = ">=0.1.7" },
-    { name = "numpy", marker = "python_full_version < '3.14'", specifier = ">=2.0.2" },
+    { name = "numpy", specifier = ">=2.0.2" },
 ]
 test = [
     { name = "pytest", specifier = ">=6.0.2" },

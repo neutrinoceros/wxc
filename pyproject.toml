@@ -51,7 +51,7 @@ typecheck = [
 ]
 dev = [
     "importlib-metadata>=0.1.7",
-    "numpy>=2.0.2 ; python_version < '3.14'",
+    "numpy>=2.0.2",
 ]
 
 
