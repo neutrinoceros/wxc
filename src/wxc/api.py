@@ -3,6 +3,7 @@ from __future__ import annotations
 import builtins
 import re
 import sys
+import warnings
 from difflib import get_close_matches
 from functools import lru_cache
 from types import BuiltinFunctionType
@@ -117,12 +118,18 @@ def get_sourceline(obj):
     return inspect.getsourcelines(obj)[1]
 
 
+def safe_hasattr(obj, name: str) -> bool:
+    with warnings.catch_warnings():
+        warnings.simplefilter("default", category=DeprecationWarning)
+        return hasattr(obj, name)
+
+
 def get_version(
     package_name: str, *, _version_attr_lookup_table=VERSION_ATTR_LOOKUP_TABLE
 ) -> str:
     package = get_obj(package_name)
     for version_attr in _version_attr_lookup_table:
-        if hasattr(package, version_attr):
+        if safe_hasattr(package, version_attr):
             retv = getattr(package, version_attr)
             if not isinstance(retv, str):
                 # this conditional guards against rare cases like the builtin
