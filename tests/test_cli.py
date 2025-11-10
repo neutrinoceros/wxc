@@ -1,3 +1,4 @@
+import sys
 from importlib import import_module
 from importlib.util import find_spec
 
@@ -65,11 +66,15 @@ def test_non_existing_member(capsys):
     assert err.startswith("ERROR module 'pathlib' has no attribute 'nothing'")
 
 
+@pytest.mark.skipif(
+    sys.version_info >= (3, 15),
+    reason="only pure python wheels are available for coverage at the moment",
+)
 def test_compiled_source(capsys):
     pytest.importorskip("coverage")
     ret = main(["coverage.tracer.CTracer"])
     out, err = capsys.readouterr()
-    assert out != ""
+    assert out.strip() != ""
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert err.strip() == ""
