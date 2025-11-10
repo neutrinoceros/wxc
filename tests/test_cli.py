@@ -66,17 +66,14 @@ def test_non_existing_member(capsys):
 
 
 def test_compiled_source(capsys):
-    pytest.importorskip("numpy")
-    ret = main(["numpy.abs.at"])
+    pytest.importorskip("coverage")
+    ret = main(["coverage.tracer.CTracer"])
     out, err = capsys.readouterr()
-    assert (
-        err
-        == "ERROR failed to locate source data. 'numpy.abs.at' is a C-compiled function.\n"
-    )
+    assert out != ""
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
-    assert out.strip() == ""
-    assert ret != 0
+    assert err.strip() == ""
+    assert ret == 0
 
 
 def test_typo1(capsys):
@@ -136,21 +133,16 @@ def test_source(fake_module, capsys):
 
 
 def test_source_error(capsys):
-    pytest.importorskip("numpy")
-    ret1 = main(["numpy.ndarray"])
-    assert ret1 == 0
-    out, err = capsys.readouterr()
-    assert out != ""
-    assert err == ""
+    pytest.importorskip("coverage")
 
-    ret2 = main(["numpy.ndarray", "-s"])
+    ret = main(["coverage.tracer.CTracer", "-s"])
     out, err = capsys.readouterr()
     # rich may output an unspecified amount of newlines
     # that don't actually affect the result visually
     assert out.strip() == ""
     # the exact error message varies depending on the Python runtime, which is fine
     assert err.startswith("ERROR")
-    assert ret2 != 0
+    assert ret != 0
 
 
 def test_lines_no_source(capsys):

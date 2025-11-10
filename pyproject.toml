@@ -50,8 +50,8 @@ typecheck = [
     "mypy>=1.13.0",
 ]
 dev = [
-    "importlib-metadata>=0.1.7",
-    "numpy>=2.0.2",
+    "coverage>=7.10.0",
+    "runtime-introspect>=0.3.0",
 ]
 
 
