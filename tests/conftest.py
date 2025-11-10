@@ -10,10 +10,12 @@ packages_to_try = [
     "uuid",
     "fractions",
     # common third party
-    "numpy",
     "requests",
-    # edge cases
-    "importlib_metadata",
+    # package with extensions
+    # *and* a portable wheel
+    "coverage",
+    # hyphen
+    "runtime-introspect",
 ]
 
 
