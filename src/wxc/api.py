@@ -5,7 +5,7 @@ import re
 import sys
 import warnings
 from difflib import get_close_matches
-from functools import lru_cache
+from functools import lru_cache, wraps
 from types import BuiltinFunctionType
 
 if False:
@@ -37,8 +37,23 @@ def is_builtin_func(obj: Any) -> bool:
     return isinstance(obj, BuiltinFunctionType)
 
 
+def safe(func):
+    # ensure deprecation warnings are not treated as errors
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        with warnings.catch_warnings():
+            warnings.simplefilter("default", category=DeprecationWarning)
+            return func(*args, **kwargs)
+
+    return wrapper
+
+
+safe_hasattr = safe(hasattr)
+safe_getattr = safe(getattr)
+
+
 def get_builtin_obj(name: str):
-    return getattr(builtins, name)
+    return safe_getattr(builtins, name)
 
 
 @lru_cache(maxsize=128)
@@ -65,7 +80,7 @@ def get_objects(name: str) -> list:
 
     for attr in reversed(attrs):
         try:
-            obj = getattr(obj, attr)
+            obj = safe_getattr(obj, attr)
         except AttributeError as exc:
             msg = exc.args[0]
             # force the name to match the one specified by the user even
@@ -118,19 +133,13 @@ def get_sourceline(obj):
     return inspect.getsourcelines(obj)[1]
 
 
-def safe_hasattr(obj, name: str) -> bool:
-    with warnings.catch_warnings():
-        warnings.simplefilter("default", category=DeprecationWarning)
-        return hasattr(obj, name)
-
-
 def get_version(
     package_name: str, *, _version_attr_lookup_table=VERSION_ATTR_LOOKUP_TABLE
 ) -> str:
     package = get_obj(package_name)
     for version_attr in _version_attr_lookup_table:
         if safe_hasattr(package, version_attr):
-            retv = getattr(package, version_attr)
+            retv = safe_getattr(package, version_attr)
             if not isinstance(retv, str):
                 # this conditional guards against rare cases like the builtin
                 # platform module, platform.version being a function
