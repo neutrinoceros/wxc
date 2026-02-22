@@ -28,6 +28,11 @@ jobs:
       uses: astral-sh/setup-uv@681c641aba71e4a1c380be3ab5e12ad51f415867 # v7.1.6
       with:
         python-version: '3.15'
+
+    # waiting for pygments > 2.19.2
+    # https://github.com/pygments/pygments/issues/3039
+    - run: uv add --group test git+https://github.com/pygments/pygments
+
     - run: uv lock --upgrade --prerelease=allow
     - name: Run tests
       run: uv run --frozen --no-editable --group test pytest --color=yes
