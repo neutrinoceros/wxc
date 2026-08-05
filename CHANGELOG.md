@@ -8,6 +8,7 @@ and this project adheres to
 
 - ENH: future-proof `get_version` against deprecation warnings from modules with
   deprecated `__version__` attributes
+- BLD: adjust build time requirement on `flit-core`
 
 ## [7.2.0] - 2025-06-29
 
