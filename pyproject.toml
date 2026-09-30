@@ -54,6 +54,11 @@ dev = [
     "runtime-introspect>=0.3.0",
 ]
 
+[tool.uv]
+no-build-package = [
+    "librt",
+    "mypy",
+]
 
 [tool.ruff.lint]
 exclude = ["*__init__.py"]
